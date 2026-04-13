@@ -172,6 +172,26 @@ body{
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
   position: relative;
   text-align: center;
+  z-index: 1001;
+  overflow-y: auto;
+}
+#login-form, #signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+#signup-form {
+    display: none; 
+    visibility: visible;
+    opacity: 1;
+    color: #333333;
+}
+#signup-form input {
+    border: 1px solid #ccc !important;
+    color: #000 !important;
+    background: #fff !important;
+    display: block !important;
+    margin-bottom: 10px;
 }
 .modal-content h2 {
   color: #ffb300; /* Golden Orange */

@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,7 +48,13 @@
      <i class="fa-solid fa-user search-icon"></i>
   <div class="login-pill">
     <i class="fa-regular fa-circle-user"></i>
-   <span>Login/Sign up</span>
+   <span>  <?php 
+      if (isset($_SESSION['username'])) {
+          echo "Hi, " . htmlspecialchars($_SESSION['username']); 
+      } else {
+          echo "Login/Sign up";
+      }
+    ?></span>
 
 
   
@@ -1363,16 +1370,20 @@ Food Tours</span>
     <span class="close-btn">&times;</span>
 
     <!-- LOGIN FORM -->
-    <div id="login-form">
+     <form id="login-form" action="login.php" method="POST">
+      <div id="login-form">
       <h2>Sign In</h2>
       <input type="text" placeholder="Username" required>
       <input type="password" placeholder="Password" required>
       <button type="submit" class="btn">Login</button>
       <p>New here? <a href="#" id="go-to-signup">Create an account</a></p>
     </div>
+     </form>
+    
 
     <!-- SIGN UP FORM (Hidden by default) -->
-    <div id="signup-form" style="display:none;">
+     <form id="signup-form" action="login.php" method="post" style="display: none;">
+      <div id="signup-form" style="display:none;">
       <h2>Sign Up</h2>
       <input type="text" placeholder="Full Name" required>
       <input type="email" placeholder="Email" required>
@@ -1382,6 +1393,8 @@ Food Tours</span>
       <button type="submit" class="btn">Register</button>
       <p>Already have an account? <a href="#" id="go-to-login">Sign In</a></p>
     </div>
+     </form>
+    
   </div>
 </div>
 
@@ -1405,11 +1418,11 @@ loginPill.onclick = () => modal.style.display = "block";
 closeBtn.onclick = () => modal.style.display = "none";
 window.onclick = (event) => { if (event.target == modal) modal.style.display = "none"; }
 
-// Toggle between forms
+// Toggle between forms (Fixed the "Empty" issue by ensuring display: block)
 document.getElementById("go-to-signup").onclick = (e) => {
   e.preventDefault();
   loginForm.style.display = "none";
-  signupForm.style.display = "block";
+  signupForm.style.display = "flex";
 }
 
 document.getElementById("go-to-login").onclick = (e) => {
@@ -1422,54 +1435,30 @@ document.getElementById("go-to-login").onclick = (e) => {
  * VALIDATION LOGIC 
  **/
 
-// 1. Validate Sign Up
-signupForm.querySelector(".btn").onclick = (e) => {
-  const inputs = signupForm.querySelectorAll("input");
-  const name = inputs[0].value;
-  const email = inputs[1].value;
-  const phone = inputs[2].value;
-  const pass = inputs[3].value;
-  const confirmPass = inputs[4].value;
+// 1. Validate Sign Up before sending to PHP
+signupForm.onsubmit = (e) => {
+  const pass = signupForm.querySelector('input[name="password"]').value;
+  const confirmPass = signupForm.querySelectorAll('input[type="password"]')[1].value;
 
-  // Simple check for empty fields
-  if (!name || !email || !phone || !pass || !confirmPass) {
-    alert("Please fill in all fields.");
-    return;
-  }
-
-  // Email format check
-  if (!email.includes("@")) {
-    alert("Please enter a valid email address.");
-    return;
-  }
-
-  // Password matching check
   if (pass !== confirmPass) {
+    e.preventDefault(); // Stop form from sending to PHP
     alert("Passwords do not match!");
-    // Highlight the border red for a visual cue
-    inputs[3].style.borderColor = "red";
-    inputs[4].style.borderColor = "red";
-    return;
+    return false;
   }
-
-  alert("Success! Your account is created.");
-  modal.style.display = "none";
+  // If passwords match, the form will automatically submit to auth.php
 };
 
-// 2. Validate Login
-loginForm.querySelector(".btn").onclick = (e) => {
-  const inputs = loginForm.querySelectorAll("input");
-  const user = inputs[0].value;
-  const pass = inputs[1].value;
+// 2. Validate Login (Optional, usually handled by PHP)
+loginForm.onsubmit = (e) => {
+  const user = loginForm.querySelector('input[name="username"]').value;
+  const pass = loginForm.querySelector('input[name="password"]').value;
 
   if (!user || !pass) {
+    e.preventDefault();
     alert("Please enter both username and password.");
-    return;
   }
-
-  alert("Welcome back, " + user + "!");
-  modal.style.display = "none";
 };
+
 
 
 
