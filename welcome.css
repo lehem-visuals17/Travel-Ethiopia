@@ -1,31 +1,33 @@
 *{
-  margin:0;
-  padding:0;
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body{
-  margin:0;
-  padding:0;
-  background:black;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: black;
+  overflow-x: hidden; /* Prevents side-scrolling gaps */
+  width: 100%;
 
 }
 /* NAVBAR */
 #navbar{
-  position:fixed;
-  gap: 5px;
-  font-size: 8px;
-  top:0;
-  width:100%;
-  height:120px;
-  background:white;
-  color:black;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:0 20px;
-  flex-wrap: nowrap;
-  z-index:1000;
+  position: fixed;
+  top: 0;
+  left: 0;           /* ADD THIS: Ensures it starts at the very edge */
+  width: 100%;       
+  box-sizing: border-box; /* ADD THIS: Includes padding in the 100% width */
+  height: 120px;
+  background: white;
+  color: black;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 40px;   /* Change this to adjust the "inner" gap */
+  z-index: 1000;
 }
 .brand{
   display: flex;
@@ -163,25 +165,29 @@ body{
 /* MOBILE MENU */
 @media(max-width:900px){
   .menu{
-    display:none;
-    flex-direction:column;
-    position:absolute;
-    top:120px;
-    right:20px;
-    background:white;
-    padding:15px;
-    border-radius:10px;
-    width:100%;
-     background: rgba(0,0,0,0.2);
+    display: none;
+    flex-direction: column;
+    position: fixed; /* Changed to fixed so it stays in place while scrolling */
+    top: 0;
+    right: 0;
+    width: 90%; /* Gives it a side-drawer look */
+    height: 100vh; /* Full height */
+   background: rgba(0,0,0,0.2);
     backdrop-filter: blur(8px);
-    
+    padding: 40px 20px;
+    z-index: 2000;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.3);
   }
   .menu-close{
-    display: block;
+     display: block;
+    align-self: flex-end; /* Pushes 'X' to the top right */
+    margin-bottom: 20px;
   }
   .menu-close:hover{
-    
-   box-shadow: 0 20px 40px white;
+    color: goldenrod;
+    transform: scale(1.4);
+   box-shadow: 0 20px 40px goldenrod;
+   
   }
 
   .menu.active{
@@ -194,7 +200,11 @@ body{
   .header-actions {
     margin-right: 10px;
   }
- 
+ .menu li {
+    margin: 15px 0;
+    width: 100%;
+    text-align: center;
+  }
   .menu li a{
     color:white;
     
@@ -215,6 +225,18 @@ body{
   padding:18px 15px;
   font-size:30px ;
 }
+  .header-actions {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-top: auto; /* Pushes button to the very bottom of the drawer */
+    padding-bottom: 20px;
+  }
+    .login-pill {
+    width: 80%; /* Makes button wide enough to see on mobile */
+    text-align: center;
+    justify-content: center;
+  }
 }
 
 
@@ -225,7 +247,7 @@ body{
     position:absolute;
     top:120px;
     right:20px;
-    background:white;
+   
     padding:15px;
     border-radius:10px;
     width:90%;
@@ -268,8 +290,8 @@ body{
   color:goldenrod;
   border:1px solid goldenrod;
   border-radius:30px;
-  padding:8px 8px;
-  font-size:15px ;
+   font-size: 1.2rem;
+    padding: 5px 10px;
 }
 }
 
@@ -308,7 +330,8 @@ body{
 }
 
 .hero-section{
-  margin-top:120px;
+  margin-top:95px;
+  width: 100%;
 }
 
 .swiper{
@@ -498,13 +521,12 @@ body{
 
 
 .stat{
-   display: flex;
+  display: flex;
   justify-content: center;
-  gap: 20px;
-  padding: 50px 20px;
-  font-size: 10px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-
+  flex-wrap: wrap; /* Allows wrapping instead of overlapping */
+  gap: 15px;
+  padding: 40px 10px;
+  height: auto; 
 }
 
 .stat-icons{
@@ -555,39 +577,47 @@ body{
   font-size: 24px;
   margin-left: 4px;
 }
-
-
-@media(max-width:992px){
-  .stat{
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-    gap: 30px;
-    height: 400px;
+@media(max-width: 768px) {
+  /* 1. Ensure the container shows below the Navbar */
+  .hero-section {
+    margin-top: 110px; 
+    height: auto;
+    background: black;
   }
-  .stat-box{
-  width:80px;
-  height: 80px;}
-}
-@media(max-width:600px){
-  .stat{
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-    gap: 30px;
-    height: 400px;
+
+  /* 2. Fix the Swiper and bring back the Text */
+  .swiper {
+    height: 50vh; /* Reduced height so card is visible sooner */
+    position: relative;
+    z-index: 1;
   }
-  .stat-box{
-  width:60px;
-  height: 60px;}
+
+  .video-text {
+    position: absolute;
+    top: 50%; /* Adjusted for better visibility */
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    z-index: 10; /* Ensures text stays on top of the image */
+    display: block !important; /* Forces visibility */
+  }
+
+  /* Shrink text for mobile arrangement */
+  .video-text h2 { font-size: 2.8rem  }
+  .video-text p { font-size: 1.3rem ; margin: 10px 0; }
+  .video-text h3 { width: 180px; height: 40px; font-size: 0.8rem; padding-top: 8px; }
   
-}
-
-.stat-icons h2{
-  font-size: 35px;
-  color: white;
-  margin-bottom: 5px;
-}
-.stat-icons p{
-  font-size: 15px;
-  color: rgb(196, 190, 190);
-}
-
+  .stat {
+      justify-content: center;
+    gap: 10px;
+    padding: 20px 5px;
+  }
+.stat-icons{
+ background: #ffffff;
+  }
+  .se-ca{
+  display: none;
+  }
+  
+   
+  }

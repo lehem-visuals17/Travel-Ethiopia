@@ -346,6 +346,45 @@
     </div>
   </div>
 </footer>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+  // 1. NAVIGATION MENU LOGIC
+  const menuToggle = document.getElementById("mobile-menu-toggle");
+  const menuList = document.getElementById("menu-list");
+  const menuClose = document.getElementById("menu-close");
+  const menuLinks = document.querySelectorAll('.menu li a');
+
+  if (menuToggle && menuList) {
+    // Open/Toggle Menu
+    menuToggle.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevents immediate closing
+      menuList.classList.toggle("active");
+    });
+
+    // Close Menu via 'X' button
+    if (menuClose) {
+      menuClose.addEventListener("click", () => {
+        menuList.classList.remove("active");
+      });
+    }
+
+    // Close menu when clicking any link
+    menuLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        menuList.classList.remove("active");
+      });
+    });
+
+    // Optional: Close menu if clicking anywhere outside the menu
+    document.addEventListener('click', (e) => {
+      if (!menuList.contains(e.target) && !menuToggle.contains(e.target)) {
+        menuList.classList.remove("active");
+      }
+    });
+  }
+});
+
+</script>
 
 </body>
 </html>

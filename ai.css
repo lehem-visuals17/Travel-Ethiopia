@@ -1,7 +1,9 @@
 
 /* Card & Grid Styles */
 .ai-container{
-  padding: 30px;
+  width:100%;
+  padding: 40px 20px; /* Top/Bottom 40px, Left/Right 20px */
+  box-sizing: border-box;
 }
 .main-grid {
   display: grid;
@@ -10,6 +12,7 @@
 }
 
 .card {
+  width:90% ;
   background: white;
   padding: 30px;
   border-radius: 16px;
@@ -75,7 +78,12 @@
 }
 
 .icon-purple { color: var(--accent-purple); width: 20px; }
-.icon-small { width: 14px; }
+.icon-small { 
+  background: transparent !important; /* Remove any background */
+  stroke: #9333ea; /* Purple stroke color */
+  fill: none;
+  width: 14px;
+  height: 18px; }
 
 /* Interest Tags */
 .interests-container {
@@ -152,7 +160,29 @@
   width: 18px;
   height: 18px;
 }
+@media (max-width: 900px) {
+  .ai-container {
+    padding: 20px 15px; /* Slightly tighter padding for small screens */
+  }
 
+  /* Force the side-by-side grid into a single column */
+  .main-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between the top and bottom card */
+  }
+
+  /* Ensure cards take up full width */
+  .card {
+    width: 100%;
+    margin-bottom: 0;
+  }
+
+  /* Optional: Adjust header text for mobile */
+  .head h1 {
+    font-size: 1.8rem;
+  }
+}
 :root {
   --primary-blue: #0ea5e9;
   --text-dark: #1e293b;

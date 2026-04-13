@@ -44,7 +44,7 @@
     <li><a class="underline-text" href="contactus.html#Contact">Contact</a></li>
    
     <div class="header-actions">
-     <i class="fa-solid fa-magnifying-glass search-icon"></i>
+     <i class="fa-solid fa-user search-icon"></i>
   <div class="login-pill">
     <i class="fa-regular fa-circle-user"></i>
    <span>Login/Sign up</span>
@@ -219,7 +219,7 @@ var swiper = new Swiper(".mySwiper", {
   
 <div  class="card">
     <div class="image-container">
-        <!-- Placeholder for the savanna sunset image -->
+       
         <img src="images\lalibela2.jpg" alt="Lalibela" class="hero-img">
         <div class="rating-badge">
             <span>★</span> 4.9
@@ -1364,74 +1364,79 @@ Food Tours</span>
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {
+  // 1. NAVIGATION MENU LOGIC
   const menuToggle = document.getElementById("mobile-menu-toggle");
-  const menu = document.getElementById("menu-list");
+  const menuList = document.getElementById("menu-list");
   const menuClose = document.getElementById("menu-close");
+  const menuLinks = document.querySelectorAll('.menu li a');
 
-  if (menuToggle && menu) {
-    menuToggle.addEventListener("click", () => {
-      menu.classList.toggle("active");
+  if (menuToggle && menuList) {
+    // Open/Toggle Menu
+    menuToggle.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevents immediate closing
+      menuList.classList.toggle("active");
     });
-  }
 
-  if (menuClose && menu) {
-    menuClose.addEventListener("click", () => {
-      menu.classList.remove("active");
-    });
-  }
-});
-
-
-document.addEventListener("DOMContentLoaded", function() {
-  document.querySelectorAll('.card').forEach(card => {
-    const slides = card.querySelectorAll('.slide');
-    const dots = card.querySelectorAll('.dot');
-    let index = 0;
-
-    function showSlide(i) {
-      slides.forEach(s => s.classList.remove('active'));
-      dots.forEach(d => d.classList.remove('active'));
-      slides[i].classList.add('active');
-      dots[i].classList.add('active');
-      index = i; // update current index
+    // Close Menu via 'X' button
+    if (menuClose) {
+      menuClose.addEventListener("click", () => {
+        menuList.classList.remove("active");
+      });
     }
 
-    // Click event for dots
-    dots.forEach((dot, i) => {
-      dot.addEventListener('click', () => {
-        showSlide(i);
+    // Close menu when clicking any link
+    menuLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        menuList.classList.remove("active");
       });
     });
 
-    // Remove setInterval → no automatic sliding
-  });
-});
+    // Optional: Close menu if clicking anywhere outside the menu
+    document.addEventListener('click', (e) => {
+      if (!menuList.contains(e.target) && !menuToggle.contains(e.target)) {
+        menuList.classList.remove("active");
+      }
+    });
+  }
 
-document.addEventListener("DOMContentLoaded", () => {
+  // 2. CARD SLIDER LOGIC
+  document.querySelectorAll('.card').forEach(card => {
+    const slides = card.querySelectorAll('.slide');
+    const dots = card.querySelectorAll('.dot');
+    
+    if (slides.length > 0) {
+      function showSlide(i) {
+        slides.forEach(s => s.classList.remove('active'));
+        dots.forEach(d => d.classList.remove('active'));
+        slides[i].classList.add('active');
+        if (dots[i]) dots[i].classList.add('active');
+      }
+
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', () => showSlide(i));
+      });
+    }
+  });
+
+  // 3. SEARCH & ERROR POPUP LOGIC
   const searchBtn = document.querySelector(".search-btn");
   const destInput = document.getElementById("dest-input");
   const errorPopup = document.getElementById("error-popup");
 
-  searchBtn.addEventListener("click", () => {
-    // Check if the input is empty or just spaces
-    if (destInput.value.trim() === "") {
-      
-      // 1. Show the error popup
-      errorPopup.classList.add("active");
-      setTimeout(() => {
-        errorPopup.classList.remove("active");
-      }, 3000);
-
-    } else {
-      const destination = encodeURIComponent(destInput.value.trim());
-window.location.href = `index.html?search=${destination}#Destinations`;
-
-     
-    }
-  });
+  if (searchBtn && destInput) {
+    searchBtn.addEventListener("click", () => {
+      if (destInput.value.trim() === "") {
+        if (errorPopup) {
+          errorPopup.classList.add("active");
+          setTimeout(() => errorPopup.classList.remove("active"), 3000);
+        }
+      } else {
+        const destination = encodeURIComponent(destInput.value.trim());
+        window.location.href = `index.html?search=${destination}#Destinations`;
+      }
+    });
+  }
 });
-
-
 </script>
 
 
