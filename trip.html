@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discover Ethiopia-Smart Trip Planner</title>
+    <link rel="stylesheet" href="trip.css">
+    <link rel="stylesheet" href="https://cloudflare.com">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+  <link rel="stylesheet" href="welcome.css">
+  
+  <link rel="stylesheet" href="ai.css">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    
+<nav id="navbar">
+  <div class="brand">
+    <div class="bt">BT</div>
+    <div class="logo-text">
+      <h1>  Betora Travels</h1>
+    <h2>Feel History. Live Culture. Explore Nature</h2>
+
+    </div></div>
+    
+
+
+  <div class="menu-toggle" id="mobile-menu-toggle">&#9776;</div>
+
+  <!-- ✅ Added ID here -->
+  <ul class="menu" id="menu-list">
+    <div class="menu-close" id="menu-close">&times;</div>
+     <li><a class="underline-text" href="welcome.html#Home">Home</a></li>
+    <li><a class="underline-text" href="index.html#Destinations">Destinations</a></li>
+    <li><a class="underline-text" href="trip.html#trip">Trip Planner</a></li>
+    <li><a class="underline-text" href="booking.html#Bookings">Bookings</a></li>
+    <li><a class="underline-text" href="packages.html#packages">Packages</a></li>
+    <li><a class="underline-text" href="experience.html#Experience">Experience</a></li>
+    <li><a class="underline-text" href="blog.html#Blog">Blog</a></li>
+    <li><a class="underline-text" href="deals.html#Deals">Deals</a></li>
+    <li><a class="underline-text" href="aboutus.html#About-Us">About Us</a></li>
+    <li><a class="underline-text" href="contactus.html#Contact">Contact</a></li>
+   
+    <div class="header-actions">
+     <i class="fa-solid fa-magnifying-glass search-icon"></i>
+  <div class="login-pill">
+    <i class="fa-regular fa-circle-user"></i>
+   <span>Login/Sign up</span>
+  
+  </div>
+  </div>
+  </ul>  
+</nav>
+
+<section id="trip" class="planner-section">
+
+    <!-- LEFT: INPUT PANEL -->
+    <div class="planner-left">
+
+        <h2>Smart Trip Planner</h2>
+
+        <div class="intro-card">
+            <p>Plan your perfect Ethiopian adventure</p>
+        </div>
+
+        <!-- Destination -->
+        <div class="input-group">
+            <label>Choose Destination</label>
+            <div class="custom-dropdown">
+                <div class="selected">choose your destination.....</div>
+                <div class="dropdown">
+                    <div class="option">Lalibela</div>
+                    <div class="option">Omo Valley</div>
+                    <div class="option">Harar</div>
+                    <div class="option">Gondar</div>
+                    <div class="option">Simien Mountains</div>
+                </div>
+            </div>
+            <div class="destination-preview-card hidden">
+                <img alt="Destination Preview" id="destination-image">
+            </div>
+        </div>
+
+        <!-- Travel Days Slider -->
+        <div class="input-group slider-group">
+            <label>Number of Travel Days: <span id="days-count">2</span></label>
+            <input type="range" min="2" max="14" value="2" step="1" id="days-slider">
+            <div class="slider-labels">
+                <span>2 days</span>
+                <span>14 days</span>
+            </div>
+        </div>
+
+        <!-- Budget Slider -->
+        <div class="input-group slider-group">
+            <label>Budget: <span id="budget-usd">$1400</span> / <span id="budget-etb">ETB 34500</span></label>
+            <input type="range" min="500" max="5000" value="1400" step="50" id="budget-slider">
+            <div class="slider-labels">
+                <span>$500</span>
+                <span>$5000</span>
+            </div>
+        </div>
+
+        <!-- Travel Mode Section -->
+        <div class="travel-mode-cards">
+            <div class="mode-card" data-mode="flight">
+                <div class="icon">✈️</div>
+                <div class="mode-title">Flight</div>
+                <div class="mode-subtitle">Fast Travel</div>
+                <div class="disabled-text hidden">No Flight Transport</div>
+                <div class="checkmark hidden">✔</div>
+            </div>
+
+            <div class="mode-card" data-mode="driving">
+                <div class="icon">🚗</div>
+                <div class="mode-title">Driving</div>
+                <div class="mode-subtitle">Scenic Route</div>
+                <div class="disabled-text hidden">No Driving Available</div>
+                <div class="checkmark hidden">✔</div>
+            </div>
+        </div>
+
+        <!-- Activity Preferences -->
+        <div class="input-group activity-group hidden">
+            <h3>Activity Preferences (Optional)</h3>
+            <div class="activity-cards" id="activity-container">
+                <!-- Activities injected by JS -->
+            </div>
+            <button id="show-more-btn">More</button>
+        </div>
+
+        <!-- STICKY BUTTON -->
+        <button id="generate-btn" class="generate-btn">
+            <i class="fa-solid fa-wand-magic-sparkles"></i>
+            Generate Smart Itinerary
+        </button>
+
+    </div>
+
+   <!-- RIGHT: DASHBOARD / INFO PANEL -->
+<div class="planner-right">
+
+    <!-- ===== PLACEHOLDER (initial view) ===== -->
+    <div id="placeholder" class="right-placeholder">
+        <div class="symbol-card">BT</div>
+
+        <p class="welcome-text">
+            Welcome to Smart Trip Planner<br>
+            Select your destinations, travel preferences, and budget to generate a personalized itinerary for your Ethiopian adventure. Our AI will create a realistic schedule that you can fully customize.
+        </p>
+
+        <div class="feature-cards">
+            <div class="feature-card">
+                <i class="fa-solid fa-route"></i>
+                <span>Smart Routing</span>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-stopwatch"></i>
+                <span>Realistic Timing</span>
+            </div>
+            <div class="feature-card">
+                <i class="fa-solid fa-pen-to-square"></i>
+                <span>Fully Editable</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== RESULT SECTION (after clicking generate) ===== -->
+    <div id="result-container" class="hidden">
+         <div class="timeline-card">
+
+        <div class="result-header">
+            <h3>Smart Timeline</h3>
+            <button id="reset-btn" class="reset-btn">
+                <i class="fa-solid fa-rotate-left"></i>
+            </button>
+        </div>
+
+        <p class="timeline-note">
+            Drag to reorder • Edit times • Delete activities
+        </p>
+
+        <!-- ===== FOCUS DAY CONTROL ===== -->
+<div class="control-row">
+
+    <div class="control-left">
+        <i class="fa-solid fa-calendar-day"></i>
+        <span>Focus on one day</span>
+    </div>
+
+    <div class="toggle-switch" id="focus-toggle">
+        <div class="toggle-circle"></div>
+    </div>
+
+</div>
+
+<!-- ===== ADJUST PLAN ===== -->
+<div class="adjust-section">
+
+    <div class="control-left">
+        <i class="fa-solid fa-sliders"></i>
+        <span>Adjust plan:</span>
+    </div>
+
+    <div class="adjust-options">
+        <button class="adjust-btn" data-mode="packed">Packed</button>
+<button class="adjust-btn" data-mode="balanced">Balanced</button>
+<button class="adjust-btn" data-mode="relaxed">Relaxed</button>
+    </div>
+
+</div>
+
+        <div class="timeline-content">
+            <!-- Future itinerary content will go here -->
+        </div>
+
+    </div>
+    <!-- PLAN CARD -->
+<div class="plan-card-outer">
+    <div class="plan-card-inner">
+        <div class="plan-header">
+            <div class="day-info">
+                <h4>Day 1</h4>
+                <div class="date-card">Apr 5, 2026</div>
+            </div>
+            <button class="toggle-plan">v</button>
+        </div>
+        <div class="plan-body">
+            <div class="location-info">
+                <i class="fa-solid fa-location-dot location-icon"></i>
+                <span class="location-name">Lalibela</span>
+            </div>
+            <div class="note">Light schedule due to arrival flight</div>
+            <hr class="timeline-separator">
+            <div class="timeline-overview">Timeline: 07:00 — 22:00</div>
+            <div class="timeline-cards"></div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+
+
+        </div>
+    </div>
+</div>
+</div>
+
+
+<!-- ===== NOTIFICATION ===== -->
+<div id="notification" class="notification hidden">
+    <i class="fa-solid fa-circle-check"></i>
+    <div class="note-text">
+        <div id="note-title">Smart itinerary generated!</div>
+        <div id="note-sub"></div>
+    </div>
+    
+</div>
+
+
+
+</div>
+</section>
+
+<footer class="footer">
+  <!-- Top Section: Logo, Contact, and Navigation -->
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo-wrapper">
+        <span class="logo-icon">BT</span>
+        <div class="logo-text">
+          <strong>Betora Travels</strong>
+          <span class="tagline">Feel History. Live Culture. Explore Nature</span>
+        </div>
+      </div>
+      <p class="brand-desc">Your trusted partner for authentic Ethiopian travel experiences. Explore ancient wonders and rich culture with confidence.</p>
+      
+      <div class="contact-info">
+        <div class="contact-item"><i data-lucide="phone"></i> +251 11 234 5678</div>
+        <div class="contact-item"><i data-lucide="mail"></i> info@ethiopiatours.com</div>
+        <div class="contact-item"><i data-lucide="map-pin"></i> Addis Ababa, Ethiopia</div>
+      </div>
+    </div>
+
+    <div class="footer-links">
+      <div class="link-column">
+        <h4>Company</h4>
+        <a href="#">About Us</a>
+        <a href="#">Our Team</a>
+        <a href="#">Careers</a>
+      </div>
+      <div class="link-column">
+        <h4>Destinations</h4>
+        <a href="#">Lalibela</a>
+        <a href="#">Simien Mountains</a>
+        <a href="#">Axum</a>
+      </div>
+      <div class="link-column">
+        <h4>Resources</h4>
+        <a href="#">Blog</a>
+        <a href="#">Travel Guide</a>
+        <a href="#">FAQs</a>
+      </div>
+      <div class="link-column">
+        <h4>Legal</h4>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+    </div>
+  </div>
+
+  <hr class="footer-divider">
+
+  <!-- Middle Section: Socials & Payments -->
+  <div class="footer-mid">
+    <div class="socials">
+      <h4>Follow Us</h4>
+      <div class="social-icons">
+        <a href="#"><i data-lucide="facebook"></i></a>
+        <a href="#"><i data-lucide="instagram"></i></a>
+        <a href="#"><i data-lucide="twitter"></i></a>
+        <a href="#"><i data-lucide="youtube"></i></a>
+      </div>
+    </div>
+    <div class="payments">
+      <h4>Secure Payment</h4>
+      <div class="payment-badges">
+        <span>Visa</span>
+        <span>Mastercard</span>
+        <span>PayPal</span>
+        <span>Stripe</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Section: Copyright & Badges -->
+  <div class="footer-bottom">
+    <div class="copyright">© 2026 Betota Travels. All rights reserved.</div>
+    <div class="trust-badges">
+      <span><span class="dot"></span> Licensed Operator</span>
+      <span><span class="dot"></span> SSL Secured</span>
+      <span><span class="dot"></span> 24/7 Support</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
+
+

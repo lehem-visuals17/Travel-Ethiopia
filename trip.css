@@ -1,0 +1,790 @@
+.planner-section {
+    margin-top:120px;
+    display:flex;
+    grid-template-columns: 350px 1fr 300px;
+    gap: 20px;
+    padding: 20px;
+    flex-wrap: wrap;   
+    /* allows moblile wrap */
+    
+}
+
+/* Hide initially */
+.hidden {
+    display: none;
+}
+.planner-left {
+    background: rgb(239, 236, 236);
+    box-shadow:  0 8px 25px rgba(0, 0, 0, 0.45);
+   border-left: 2.5px solid #afa34c;
+    padding: 20px;
+    border-radius: 12px;
+    
+}
+
+.planner-left h2 {
+    margin-bottom: 10px;
+    color: black;
+}
+
+.intro-card {
+    background: rgba(255,255,255,0.1);
+    box-shadow:  0 8px 25px rgba(0, 0, 0, 0.35);
+    background:    rgba(175, 163, 76, 0.22);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.custom-dropdown {
+    z-index: 10;
+    position: relative;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #afa34c;
+    cursor: pointer;
+    color: black;
+}
+
+/* Selected box */
+.selected {
+    padding: 12px;
+}
+
+/* Dropdown menu */
+.dropdown {
+    z-index: 20;
+    position: absolute;
+    width: 100%;
+    background: white;
+    border-radius: 10px;
+    margin-top: 5px;
+    display: none;
+    max-height: 150px;
+    overflow-y: auto;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Options */
+.option {
+    padding: 10px;
+}
+
+.option:hover {
+    background: #f3f4f6;
+}
+
+/* under sellection of destination css===================== */
+
+.destination-preview-card {
+    margin-top: 15px;
+    width: 100%;
+    height: 180px;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    background: #f9fafb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.hidden {
+    display: none;
+}
+.destination-preview-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+     transition: opacity 0.3s ease;
+    opacity: 1
+}
+
+
+/* =================bar number and budget========= */
+/* Shared Slider Styles */
+.slider-group {
+    margin-top: 20px;
+}
+
+.slider-group input[type="range"] {
+    width: 100%;
+    margin: 10px 0;
+}
+
+.slider-group .slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #555;
+}
+
+
+/* ==========travel mode========== */
+.travel-mode-cards {
+    display: none;
+    gap: 12px;
+}
+
+.travel-mode-cards.active {
+    display: flex; /* show after destination selected */
+}
+.mode-card {
+    flex: 1;
+    padding: 12px;
+    text-align: center;
+    border: 2px solid #ccc;
+    border-radius: 12px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.mode-card:hover {
+    border-color: #1D4ED8; /* Abyssinian Blue for hover */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.mode-card .checkmark {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-weight: bold;
+    color: #1D4ED8;
+}
+
+.mode-card.selected {
+    border-color: #1D4ED8;
+    background-color: #E0EBFF; /* subtle highlight */
+}
+
+.mode-card.selected .checkmark {
+    display: block;
+}
+
+
+
+/* css for unavilable modes======================== */
+.mode-card.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: #F59E0B; /* Simien Ochre for warning */
+}
+
+.mode-card .disabled-text {
+    color: #DC2626; /* red notification */
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+/* ============activity preference style====== */
+.activity-cards {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.activity-card {
+      flex: 0 0 calc(50% - 10px); /* 2 per row */
+    padding: 6px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    position: relative;
+    transition: 0.2s ease;
+}
+.activity-card i {
+    font-size: 14px;
+    margin-right: 6px;
+    color: #F59E0B;
+}
+
+.activity-card.selected i {
+    color: #fff;
+}
+
+.activity-card.disabled i {
+    color: #aaa;
+}
+.activity-card.selected {
+    background: #1D4ED8;
+    color: white;
+}
+
+.activity-card.disabled {
+    background: #f5f5f5;
+    color: #999;
+    cursor: not-allowed;
+}
+
+.activity-card .note {
+    display: block;
+    font-size: 10px;
+    color: red;
+}
+
+.hidden {
+    display: none;
+}
+
+#show-more-btn {
+    margin-top: 10px;
+    border: none;
+    background: none;
+    color: #1D4ED8;
+    cursor: pointer;
+}
+
+/* ==============button generate========= */
+.generate-btn {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #ecbb51 0%, #f19c46 50%, #e66231 100%); /* Golden Yellow from your image */
+    color: #fff;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+
+.generate-btn:hover {
+    transform: scale(1.03);
+    opacity: 0.9;
+}
+
+.generate-btn i {
+    font-size: 16px;
+}
+
+/* ==============right section the BT part============ */
+/* Right placeholder container */
+.planner-right {
+    flex: 1 1 400px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* align top of placeholder */
+    padding: 20px;
+    box-sizing: border-box;
+    position: sticky;  /* makes it sticky */
+    top: 20px;         /* distance from top of viewport */
+    height: fit-content; /* shrink to content height */
+}
+@media (max-width: 768px) {
+    .planner-right {
+        position: static; /* remove sticky */
+        order: -1;
+        margin-bottom: 20px;
+        align-items: center;
+    }
+}
+.right-placeholder {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    text-align: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+/* Symbol card "BT" */
+.symbol-card {
+        background: linear-gradient(90deg, #ecbb51 0%, #f19c46 50%, #e66231 100%); /* Golden Yellow from your image */
+    color: white;
+    font-weight: bold;
+    font-size: 22px;
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Welcome text */
+.welcome-text {
+    font-size: 14px;
+    line-height: 1.5;
+    max-width: 300px;
+}
+
+/* Feature cards container */
+.feature-cards {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Each feature card */
+.feature-card {
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 15px 10px;
+    border-radius: 8px;
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 12px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    cursor: default;
+}
+
+.feature-card i {
+    font-size: 20px;
+    margin-bottom: 5px;
+    color: #F59E0B;
+}
+
+
+
+/* ====================bt mobile=========== */
+@media (max-width: 768px) {
+    .planner-section {
+        flex-direction: column;
+    }
+
+    .planner-right {
+        order: -1; /* move above left column */
+        margin-bottom: 20px;
+    }
+
+    .planner-left {
+        order: 1;
+    }
+}
+
+/* ===================css for the notification============= */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #1e293b;
+    color: white;
+    padding: 12px 16px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 9999;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.notification i {
+    color: #22c55e;
+    font-size: 18px;
+}
+
+.notification.hidden {
+    display: none;
+}
+
+/* =========the  split after the generate button clicked======= */
+.timeline-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+.planner-right.split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.result-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+}
+.timeline-note {
+    font-size: 15px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+
+.reset-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 8px 14px;
+    border-radius: 10px;
+
+    background: linear-gradient(90deg, #ecbb51 0%, #f19c46 50%, #e66231 100%); /* Golden Yellow from your image */
+    color: #333;
+
+    border: none;
+    cursor: pointer;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    transition: all 0.25s ease;
+}
+
+
+.control-row,
+.adjust-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 12px 0;
+}
+
+.control-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #333;
+}
+
+.toggle-switch {
+    width: 42px;
+    height: 22px;
+    background: #ddd;
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.toggle-circle {
+    width: 18px;
+    height: 18px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    transition: 0.3s;
+}
+.toggle-switch.active {
+    background: linear-gradient(90deg, #ecbb51 0%, #f19c46 50%, #e66231 100%);
+}
+
+.toggle-switch.active .toggle-circle {
+    left: 22px;
+}
+.toggle-switch.active {
+    background: linear-gradient(90deg, #ecbb51 0%, #f19c46 50%, #e66231 100%);
+}
+
+.toggle-switch.active .toggle-circle {
+    left: 22px;
+}
+/* Default icon style */
+.control-left i {
+    background: linear-gradient(90deg, #ecbb51, #e66231);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Focus icon (calendar) */
+.fa-calendar-day {
+    color: #f19c46;
+}
+
+/* Adjust icon (sliders) */
+.fa-sliders {
+    color: #e66231;
+}
+
+.adjust-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+
+    border-radius: 20px;
+    border: 1px solid #ccc;
+
+    background: white;
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+}
+
+.adjust-btn:hover {
+    border-color: #f19c46;
+    color: #e66231;
+}
+
+
+.adjust-btn.active {
+    background: linear-gradient(90deg, #ecbb51 0%, #f19c46 50%, #e66231 100%);
+    color: white;
+    border: none;
+}
+
+
+/* ===========day 1 cards ==========*/
+.plan-card-outer {
+    background: linear-gradient(90deg, #ecbb51 0%, #f19c46 50%, #e66231 100%);
+    border-radius: 20px;
+    padding: 2px; /* border thickness */
+    margin: 10px 0;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    
+   
+}
+
+.plan-card-inner {
+    background: white;
+    border-radius: 18px; /* slightly smaller than outer */
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.plan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.day-info h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.date-card {
+    background: linear-gradient(90deg, #ecbb51 0%, #f19c46 50%, #e66231 100%);
+    color: white;
+    font-size: 0.8rem;
+    padding: 2px 6px;
+    border-radius: 5px;
+    margin-top: 4px;
+    display: inline-block;
+}
+
+.toggle-plan {
+    background: linear-gradient(90deg, #ecbb51 0%, #f19c46 50%, #e66231 100%);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.plan-body {
+    display: none;
+}
+
+/* This class will be added/removed by JavaScript */
+.plan-body.show {
+    display: block !important;
+}
+.plan-body.is-open {
+    display: block !important;
+}
+/* Note text */
+.plan-body .note {
+    margin-top: 10px;
+    font-size: 0.9em;
+    color: #777;
+}
+
+.location-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.location-icon {
+    color: #f19c46;
+}
+
+.note {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+/* Gradient line */
+.timeline-separator {
+    border: 0;
+    height: 3px;
+    margin: 20px 0 10px;
+    background: linear-gradient(to right, #f57c00, #ffb74d);
+    border-radius: 2px;
+}
+
+/* Timeline overview text */
+.timeline-overview {
+    font-size: 0.95em;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+/* Timeline cards container */
+.timeline-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* Individual timeline card */
+.timeline-card-item {
+    display: flex;
+    align-items: flex-start;
+    background: #fdfdfd;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    padding: 12px 15px;
+    position: relative;
+}
+
+.icon-container {
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 1.2em;
+    color: #f57c00;
+}
+
+.card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.activity-name {
+    font-weight: 600;
+}
+
+.activity-time {
+    font-size: 0.85em;
+    color: #555;
+}
+
+.activity-note {
+    display: flex;
+    align-items: center;
+    font-size: 0.8em;
+    color: #999;
+    gap: 5px;
+}
+
+.card-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-left: 10px;
+}
+
+.card-actions i {
+    cursor: pointer;
+    color: #888;
+}
+
+.card-actions i:hover {
+    color: #f57c00;
+}
+
+
+
+
+
+/* ===========second page */
+/* Sidebar Layout (The part on the left) */
+.itinerary-sidebar {
+    width: 420px;
+    background: #ffffff;
+    border-right: 1px solid #eee;
+    padding: 24px;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+/* Day Card Styling with your Gradient */
+.plan-card-outer {
+    background: linear-gradient(90deg, #ecbb51 0%, #f19c46 50%, #e66231 100%);
+    border-radius: 20px;
+    padding: 2px; /* This creates the gradient border effect */
+    margin: 15px 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.plan-card-inner {
+    background: white;
+    border-radius: 18px;
+    padding: 15px;
+}
+
+/* The toggle button (v/^) colors */
+.toggle-plan {
+    background: linear-gradient(90deg, #ecbb51 0%, #f19c46 50%, #e66231 100%);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Timeline Activity Icons */
+.icon-container i {
+    background: linear-gradient(90deg, #ecbb51, #e66231);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 1.2rem;
+}
+
+/* Date Badge */
+.date-card {
+    background: linear-gradient(90deg, #ecbb51 0%, #f19c46 50%, #e66231 100%);
+    color: white;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Gradient Line inside the card */
+.timeline-separator {
+    border: 0;
+    height: 2px;
+    background: linear-gradient(to right, #ecbb51, #e66231);
+    margin: 15px 0;
+}

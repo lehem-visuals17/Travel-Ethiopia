@@ -1,0 +1,299 @@
+
+  .blog-hero {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                      url('https://images.unsplash.com/photo-1627023851505-2f44e73b30eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxvdmVyaGVhZCUyMGJlYWNoJTIwY3J5c3RhbCUyMHdhdGVyfGVufDF8fHx8MTc3NTcwNDc2N3ww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral');
+    background-size: cover;
+    background-position: center;
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+  }
+
+  .hero-content h1 {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+    /* Headings can be different to stand out */
+    font-family: 'Georgia', serif; 
+  }
+
+  .blog-subtext {
+    /* USE YOUR EXPERIENCE PAGE FONT HERE */
+    font-family: 'Your-Experience-Font-Name', sans-serif; 
+    font-size: 1.25rem;
+    font-weight: 300;
+    letter-spacing: 0.5px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+
+  /* 1. Main Section Container */
+.blog-grid-section {
+  padding: 80px 20px;
+  background-color: #fcfcfc;
+  /* System font stack for a premium, clean feel */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 2. The Grid (3 columns, 2 rows) */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px 30px;
+}
+
+/* 3. The Card */
+.blog-card {
+  background: white;
+  border-radius: 16px; /* Matching the rounded corners in your image */
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column; /* Stacks image on top, text on bottom */
+  height: 100%;
+}
+
+.blog-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+}
+
+/* 4. The Image Wrapper (Prevents overlapping) */
+.card-image-wrap {
+  width: 100%;
+  height: 250px; /* Fixed height so it doesn't cover text */
+  overflow: hidden;
+}
+
+.blog-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures image fills space without stretching */
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+/* Zoom effect on the image when card is touched/hovered */
+.blog-card:hover img {
+  transform: scale(1.1);
+}
+
+/* 5. The Content Area (The "Notes" section) */
+.card-content {
+  padding: 30px; /* Gives the text room to breathe */
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+.category, .meta, .read-more {
+  font-family: Arial, Helvetica, sans-serif; /* Keep these consistent with the paragraph */
+}
+
+.category {
+  font-weight: 700; /* Bold category label */
+}
+
+.read-more {
+  font-weight: 700; /* Bold 'Read More' link */
+}
+.category {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: #c0392b; /* Matching the red "CULTURAL GUIDE" in your image */
+  margin-bottom: 12px;
+}
+
+.blog-card h3 {
+  font-family: "Times New Roman", Times, serif; /* Serif style from your image */
+  font-weight: 800; /* High boldness from your image */
+  font-size: 1.5rem;
+  color: #000;
+  margin-top: 10px;
+  margin-bottom: -5px;
+}
+
+.meta {
+  font-size: 0.85rem;
+  color: #888;
+  margin-bottom: -1px;
+}
+
+.description {
+    font-family: Arial, Helvetica, sans-serif; /* Arial from Experience page */
+  font-weight: 400; /* Regular weight for readability */
+  font-size: 0.8rem;
+  color: #555;
+  line-height: 1.7;
+  margin-bottom: 15px;
+  /* Optional: Truncate text after 3 lines to keep cards equal height */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* 6. Read More Link */
+.read-more {
+  display: inline-flex; /* Keeps it from acting like a block that takes up a whole row */
+  align-items: center;
+  cursor: pointer;
+  text-decoration: none;
+  margin-top: auto; /* Keeps it at the bottom of the card content */
+  width: fit-content; /* Prevents it from stretching the card width */
+  font-family: Arial, sans-serif;
+  font-weight: 700;
+  color: #353333;
+  /* Add this to prevent any layout jumping */
+  vertical-align: middle;
+}
+
+
+.read-more:hover {
+  color: #c0392b;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+  .blog-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .blog-grid { grid-template-columns: 1fr; }
+}
+
+/* 2. THE MODAL POPUP (FIXED) */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.9);
+    overflow-y: auto; /* Allows scrolling of the whole page */
+    padding: 40px 0;
+}
+
+.modal-content {
+    background: #fff;
+    width: 90%;
+    max-width: 750px;
+    margin: 30px auto;
+    border-radius: 15px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column; /* Image on top, text on bottom */
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+}
+
+/* IMAGE FIX: Forces image to take only part of the screen */
+.modal-hero-img, .modal-slider {
+    width: 100%;
+    height: 300px; /* Adjust this to change photo size */
+    min-height: 300px;
+    max-height: 300px;
+    position: relative;
+    overflow: hidden;
+    object-fit: cover;
+}
+
+.slider-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+ .modal-hero-img {
+    width: 100%;
+    height: 100%;
+    flex-shrink: 0;
+    object-fit: cover;
+}
+
+.slider-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0; /* Hidden by default */
+    transition: opacity 1.5s ease-in-out; /* SLOW FADE EFFECT */
+    z-index: 1;
+}
+.slider-img.active {
+    opacity: 1; /* Shows the active image */
+    z-index: 2;
+}
+/* ARTICLE TYPOGRAPHY */
+.article-container {
+    padding: 40px 50px;
+    background: #fff;
+}
+
+.article-title {
+    font-family: "Times New Roman", serif;
+    font-size: 1.8rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    color: #1a1a1a;
+    line-height: 1.1;
+}
+
+.article-content h3 {
+    font-family: Arial, sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #c0392b;
+    margin: 30px 0 10px;
+    text-transform: uppercase;
+}
+
+.article-content p {
+    font-family: Arial, sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* THE CLOSE BUTTON (X) */
+.close-btn {
+    position: absolute;
+    right: 20px; 
+    top: 20px;
+    width: 40px;
+    height: 40px;
+    background: rgba(0,0,0,0.5); /* Dark circle to see on bright photos */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 10001;
+    transition: background 0.3s;
+}
+
+.close-btn:hover {
+    background: #c0392b;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .blog-grid { grid-template-columns: 1fr; }
+    .article-container { padding: 30px 20px; }
+    .article-title { font-size: 1.8rem; }
+}

@@ -1,0 +1,30 @@
+.about-me{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.img-container{
+  width: 100%;
+ height: 100%;
+}
+.me{
+  margin-top: 80px;
+  width: 80%;
+  height:400px ;
+}
+.about-m{
+  border:1px solid #ccc;
+  margin-bottom: 5px;
+  width: 110px;
+  border-radius: 15px;
+  background: rgba(0, 0,0,0.2);
+  gap: 20px;
+  color:#ccc ;
+}
+.about-box{
+  display: flex;
+  gap: 20px;
+  
+}
+.about-m h4{
+  color: #ccc;
+}

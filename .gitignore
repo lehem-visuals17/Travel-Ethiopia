@@ -1,0 +1,20 @@
+# VS Code files
+.vscode/
+
+# Git internal
+.git/
+
+# Node modules (if any)
+node_modules/
+
+# Logs
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Optional (large files)
+*.mp4
+*.zip
+*.rar

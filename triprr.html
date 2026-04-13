@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Smart Itinerary Result</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+body {
+    font-family: Arial;
+    background: #f4f6f9;
+    margin: 0;
+    padding: 20px;
+}
+
+/* Container */
+.planner-right {
+    max-width: 900px;
+    margin: auto;
+}
+
+/* ===== SMART TIMELINE CARD ===== */
+.timeline-card {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.reset-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    padding: 8px 14px;
+    border-radius: 10px;
+
+    background: linear-gradient(90deg, #ecbb51 0%, #f19c46 50%, #e66231 100%); /* Golden Yellow from your image */
+    color: #333;
+
+    border: none;
+    cursor: pointer;
+
+    font-size: 13px;
+    font-weight: 500;
+
+    transition: all 0.25s ease;
+}
+
+.timeline-note {
+    font-size: 13px;
+    color: gray;
+    margin: 10px 0;
+}
+
+/* Controls */
+.control-row, .adjust-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.control-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toggle-switch {
+    width: 42px;
+    height: 22px;
+    background: #ddd;
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.toggle-circle {
+    width: 18px;
+    height: 18px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 3px;
+    transition: 0.3s;
+}
+
+.toggle-switch.active {
+    background: linear-gradient(90deg, #ecbb51 0%, #f19c46 50%, #e66231 100%);
+}
+
+
+.toggle-switch.active .toggle-circle {
+    left: 24px;
+}
+/* Default icon style */
+.control-left i {
+    background: linear-gradient(90deg, #ecbb51, #e66231);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+/* Focus icon (calendar) */
+.fa-calendar-day {
+    color: #f19c46;
+}
+
+/* Adjust icon (sliders) */
+.fa-sliders {
+    color: #e66231;
+}
+.adjust-options {
+    display: flex;
+    gap: 10px;
+}
+
+.adjust-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+
+    border-radius: 20px;
+    border: 1px solid #ccc;
+
+    background: white;
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+}
+
+.adjust-btn:hover {
+    border-color: #f19c46;
+    color: #e66231;
+}
+
+
+.adjust-btn.active {
+    background: linear-gradient(90deg, #ecbb51 0%, #f19c46 50%, #e66231 100%);
+    color: white;
+    border: none;
+}
+
+/* ===== DAY CARDS ===== */
+.plan-card-outer {
+    background: linear-gradient(90deg, #ecbb51 0%, #f19c46 50%, #e66231 100%);
+    border-radius: 20px;
+    padding: 2px; /* border thickness */
+    margin: 10px 0;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    
+   
+}
+
+.plan-card-inner {
+    background: white;
+    border-radius: 18px; /* slightly smaller than outer */
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.plan-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+
+.toggle-plan {
+    background: linear-gradient(90deg, #ecbb51 0%, #f19c46 50%, #e66231 100%);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+
+.plan-body {
+    margin-top: 10px;
+}
+
+/* Timeline cards */
+/* Individual timeline card */
+.timeline-card-item {
+    display: flex;
+    align-items: flex-start;
+    background: #fdfdfd;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    padding: 12px 15px;
+    position: relative;
+}
+
+
+.icon-container {
+    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+    font-size: 1.2em;
+    color: #f57c00;
+}
+
+.activity-name {
+    font-weight: bold;
+    display: block;
+}
+
+.activity-time {
+    font-size: 12px;
+    color: gray;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Smart Travel Itinerary</h2>
+
+<div class="planner-right" id="result-container">
+
+    <!-- ===== SMART TIMELINE ===== -->
+    <div class="timeline-card">
+
+        <div class="result-header">
+            <h3>Smart Timeline</h3>
+            <button id="reset-btn" class="reset-btn">
+                <i class="fa-solid fa-rotate-left"></i>
+            </button>
+        </div>
+
+
+        <p class="timeline-note">
+            Drag to reorder • Edit times • Delete activities
+        </p>
+
+        <!-- Focus -->
+        <div class="control-row">
+            <div class="control-left">
+                <i class="fa-solid fa-calendar-day"></i>
+                <span>Focus on one day</span>
+            </div>
+
+            <div class="toggle-switch" id="focus-toggle">
+                <div class="toggle-circle"></div>
+            </div>
+            <div id="day-navigation" style="display:none; margin-top:10px;">
+    <button id="prev-day">◀</button>
+    <span id="day-label">Day 1</span>
+    <button id="next-day">▶</button>
+</div>
+        </div>
+
+        <!-- Adjust -->
+        <div class="adjust-section">
+            <div class="control-left">
+                <i class="fa-solid fa-sliders"></i>
+                <span>Adjust plan:</span>
+            </div>
+
+            <div class="adjust-options">
+                <button class="adjust-btn" data-mode="packed">Packed</button>
+                <button class="adjust-btn active" data-mode="balanced">Balanced</button>
+                <button class="adjust-btn" data-mode="relaxed">Relaxed</button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+// ================= GET DATA =================
+const params = new URLSearchParams(window.location.search);
+const destination = params.get("destination") || "Lalibela";
+
+// ================= DATA =================
+const originalData = {
+    "Lalibela": [
+        [
+            {name:"Arrival to Lalibela", time:"07:00 • 2h", icon:"fa-car"},
+            {name:"Visit Rock-Hewn Churches", time:"09:30 • 2h", icon:"fa-church"},
+            {name:"Lunch", time:"11:30 • 1h", icon:"fa-utensils"}
+        ],
+        [
+            {name:"Mountain Hike", time:"07:00 • 3h", icon:"fa-mountain"},
+            {name:"Cafe Visit", time:"11:00 • 1h", icon:"fa-mug-hot"},
+            {name:"Market Walk", time:"13:00 • 2h", icon:"fa-shop"}
+        ],
+        [
+            {name:"Monastery Visit", time:"08:00 • 2h", icon:"fa-church"},
+            {name:"Picnic", time:"11:00 • 1h", icon:"fa-utensils"},
+            {name:"Sunset View", time:"15:00 • 2h", icon:"fa-sun"}
+        ],
+        [
+            {name:"Village Tour", time:"08:00 • 3h", icon:"fa-people-group"},
+            {name:"Lunch", time:"12:00 • 1h", icon:"fa-utensils"}
+        ],
+        [
+            {name:"Museum Visit", time:"09:00 • 2h", icon:"fa-landmark"},
+            {name:"Coffee Ceremony", time:"12:00 • 1h", icon:"fa-mug-hot"}
+        ],
+        [
+            {name:"Nature Walk", time:"08:00 • 2h", icon:"fa-tree"},
+            {name:"Relax Time", time:"12:00 • 2h", icon:"fa-spa"}
+        ],
+        [
+            {name:"Departure", time:"07:00 • 2h", icon:"fa-plane"}
+        ]
+    ]
+};
+
+let currentData = JSON.parse(JSON.stringify(originalData[destination]));
+const container = document.getElementById("result-container");
+
+// ================= RENDER FUNCTION =================
+function renderDays() {
+
+    document.querySelectorAll(".plan-card-outer").forEach(el => el.remove());
+
+    currentData.forEach((day, index) => {
+
+        const card = document.createElement("div");
+        card.classList.add("plan-card-outer");
+
+        card.innerHTML = `
+            <div class="plan-card-inner">
+                <div class="plan-header">
+                    <h4>Day ${index + 1}</h4>
+                    <button class="toggle-plan">v</button>
+                </div>
+
+                <div class="plan-body">
+                    ${day.map(act => `
+                        <div class="timeline-card-item">
+                            <div class="icon-container">
+                                <i class="fa-solid ${act.icon}"></i>
+                            </div>
+                            <div>
+                                <span class="activity-name">${act.name}</span>
+                                <span class="activity-time">${act.time}</span>
+                            </div>
+                        </div>
+                    `).join("")}
+                </div>
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+
+    setupToggle();
+}
+
+// ================= DELETE =================
+function deleteAct(d,a){
+    currentData[d].splice(a,1);
+    render();
+}
+// ================= RESET =================
+document.getElementById("reset-btn").onclick = ()=>{
+    currentData = JSON.parse(JSON.stringify(originalData));
+    render();
+};
+// ================= TOGGLE =================
+function setupToggle() {
+    document.querySelectorAll(".toggle-plan").forEach(btn => {
+
+        const body = btn.closest(".plan-card-inner").querySelector(".plan-body");
+
+        body.style.display = "none";
+
+        btn.onclick = () => {
+            if (body.style.display === "none") {
+                body.style.display = "block";
+                btn.textContent = "^";
+            } else {
+                body.style.display = "none";
+                btn.textContent = "v";
+            }
+        };
+    });
+}
+
+// ================= SMART TIMELINE JS =================
+
+// RESET
+document.getElementById("reset-btn").onclick = () => {
+    currentData = JSON.parse(JSON.stringify(originalData[destination]));
+    renderDays();
+};
+
+// ADJUST BUTTONS
+document.querySelectorAll(".adjust-btn").forEach(btn => {
+
+    btn.onclick = () => {
+
+        document.querySelectorAll(".adjust-btn").forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+
+        const mode = btn.dataset.mode;
+
+        if (mode === "packed") {
+            currentData.forEach(day => day.push({
+                name:"Extra Activity",
+                time:"Evening",
+                icon:"fa-star"
+            }));
+        }
+
+        if (mode === "relaxed") {
+            currentData.forEach(day => day.pop());
+        }
+
+        renderDays();
+    };
+});
+
+// FOCUS TOGGLE
+document.getElementById("focus-toggle").onclick = function () {
+
+    this.classList.toggle("active");
+
+    const cards = document.querySelectorAll(".plan-card-outer");
+
+    if (this.classList.contains("active")) {
+        cards.forEach((card, i) => {
+            card.style.display = (i === 0) ? "block" : "none";
+        });
+    } else {
+        cards.forEach(card => card.style.display = "block");
+    }
+};
+
+// INITIAL RENDER
+renderDays();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,624 @@
+/* General Styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background-color: #f9f9f9;
+}
+
+/* Header Section with Gradient */
+.hero {
+    background: linear-gradient(90deg, #ecbb51 0%, #f19c46 50%, #e66231 100%);
+    color: white;
+    text-align: center;
+    padding: 60px 20px;
+    margin-top:120px;
+}
+
+.hero h1 {
+    margin: 0;
+    font-size: 2.5em;
+    font-weight: 700;
+}
+
+.hero p {
+    margin: 10px 0 0;
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+/* Packages Section Layout */
+.packages {
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.package-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap; /* Makes it responsive */
+}
+
+/* Individual Card Styling */
+.card {
+    grid-column: span 2;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px); /* Professional hover effect */
+}
+
+.card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.card-content h3 {
+    margin: 0 0 10px;
+    color: #333;
+}
+
+.card-content p {
+    margin: 0;
+    color: #666;
+    font-size: 0.95em;
+    line-height: 1.5;
+}
+
+/* Responsiveness for mobile */
+@media (max-width: 768px) {
+    .package-container {
+        flex-direction: column;
+    }
+}
+/* Grid Layout: 3 Columns for top, wraps to next line */
+.package-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); /* Uses a 6-column base for easy math */
+    gap: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+/* Force the last 2 cards to sit in a 2-column style on large screens */
+.card.bottom-row {
+    grid-column: span 2; 
+}
+.card.bottom-row:first-of-type {
+    grid-column: 2 / span 2; 
+}
+@media (max-width: 900px) {
+    .package-grid {
+        display: flex;
+        flex-direction: column;
+    }
+    .card.bottom-row:first-of-type {
+        grid-column: auto;
+    }
+}
+
+/* Container for the stacked images */
+.fade-slider {
+    width: 100%;
+    height: 200px;
+    position: relative;
+    background: #eee; /* placeholder while loading */
+    overflow: hidden;
+}
+
+/* Base style for all sliding images */
+.fade-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0; /* Hidden by default */
+    animation: fadeLoop 24s infinite; /* 24s total cycle */
+    transition: transform 0.5s ease;
+}
+.card:hover .fade-img {
+    transform: scale(1.1); /* Zooms in by 10% */
+}
+/* Animation Delays: Each image starts its 24s cycle at a different time */
+.fade-img:nth-child(1) { animation-delay: 0s; }
+.fade-img:nth-child(2) { animation-delay: 6s; }
+.fade-img:nth-child(3) { animation-delay: 12s; }
+.fade-img:nth-child(4) { animation-delay: 18s; }
+
+@keyframes fadeLoop {
+    0% { opacity: 0; }
+    5% { opacity: 1; }   /* Fade in quickly (1.2 seconds) */
+    25% { opacity: 1; }  /* Stay visible for 20% of the time (approx 5s) */
+    30% { opacity: 0; }  /* Fade out slowly */
+    100% { opacity: 0; } /* Stay hidden until the next loop starts */
+}
+
+/* Responsive: 1 column on mobile */
+@media (max-width: 900px) {
+    .package-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* Card Meta (Days and Stars) */
+.card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.days i {
+    color:  #f19c46; /* Golden color from your header */
+    margin-right: 5px;
+}
+
+.rating i {
+    color: #FFD700; /* Bright Star Yellow */
+    margin-right: 5px;
+}
+
+
+/* Budget Styling */
+.budget {
+    font-weight: 700;
+    color: #333;
+    font-size: 1.1em;
+    margin-bottom: 15px;
+}
+
+.etb {
+    color: #e66231; /* Pops out the local currency */
+}
+
+/* Gradient Button */
+.details-btn {
+    display: block;
+    text-align: center;
+    padding: 12px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #FFD54F, #FF9800);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.details-btn:hover {
+    transform: scale(1.02);
+    box-shadow: 0 5px 15px rgba(255, 152, 0, 0.3);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ======================details page bbenouna css============ */
+/* Hero Image Styling */
+/* This section creates the white frame around your image */
+.details-page {
+    padding: 15px; /* This creates the space between the image and the screen edge */
+    background-color: #f9f9f9; /* Match your body color */
+}
+
+.details-hero {
+    color: white;
+    position: relative;
+    max-width: 1300px; /* Keeps the image from getting too wide on big screens */
+    margin: 0 auto;    /* Centers the image on the page */
+    height: 500px;
+    overflow: hidden;
+    border-radius: 15px; /* This gives those nice curved corners in your photo */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Adds a soft professional shadow */
+}
+
+.details-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Adjusting the overlay to fit the new rounded corners */
+.hero-overlay {
+    position: absolute;
+    bottom: 20px; /* Lifted up slightly from the bottom edge */
+    left: 20px;   /* Pushed in from the left edge */
+    padding: 20px;
+    border-radius: 10px; /* Optional: rounds the transparent background too */
+    width: calc(100% - 40px); /* Ensures it doesn't hit the right edge */
+}
+
+
+.hero-overlay h1 { font-size: 3em; margin: 0; }
+.hero-overlay p { font-size: 1.1em; margin-top: 10px; opacity: 0.9; }
+.hero-overlay i { color: #f19c46; margin-right: 8px; }
+
+/* Info Bar (3 Columns + Buttons) */
+.info-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 40px;
+    background: white;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.notes-container { display: flex; gap: 40px; }
+
+/* Note Hover Effect */
+.info-note {
+    font-size: .8em;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.info-note:hover {
+    transform: scale(1.15); /* Zooms out toward the user */
+}
+
+.info-note i { font-size: 1.5em; color: #f19c46; }
+.info-note span { display: block; font-size: 0.8em; color: #888; text-transform: uppercase; }
+.info-note strong { display: block; font-size: 1.1em; color: #333; }
+
+/* Tooltip on Touch/Hover */
+.info-note::after {
+    content: attr(data-hover);
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #333;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 5px;
+    font-size: 0.7em;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.info-note:hover::after { opacity: 1; }
+
+/* Status Badges */
+.status-container { display: flex; gap: 15px; }
+
+.status-btn {
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-size: 0.7em;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    cursor: default;
+    
+}
+
+.status-btn.booked { background: #fff5e6; color: #f19c46; border: 1px solid #fcd34d; }
+.status-btn.spots { background: #fef2f2; color: #dc2626; border: 1px solid #fecaca; }
+.status-btn.booked:hover {
+  background: linear-gradient(to right, #f57c00, #ffb74d);
+    color: white;
+    transform: translateY(-3px);
+}
+.status-btn.spots:hover {
+    background: #dc2626;
+    color: white;
+    transform: translateY(-3px);
+}
+/* Golden Divider */
+.golden-divider {
+    border: 0;
+    height: 1px;
+    margin: 20px 40px;
+    background: linear-gradient(to right, #f57c00, #ffb74d);
+    opacity: 0.6;
+}
+/* Fixed Positioning - Stays while scrolling */
+.back-btn {
+    position: fixed; /* Sticks to the screen */
+    top: 30px;      /* Distance from top */
+    left: 30px;     /* Distance from left */
+    z-index: 9999;  /* Ensures it stays above images and content */
+    
+    /* Professional Styling */
+    background: transparent;
+    padding: 12px 20px;
+    border-radius: 50px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 700;
+    font-size: 0.9em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    /* Shadow and Border for a "Floating" look */
+    box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+    border: 1px solid rgba(236, 187, 81, 0.3); /* Subtle golden border */
+    transition: all 0.3s ease;
+}
+
+.back-btn i {
+    color: #713b04; /* Orange/Red arrow for contrast */
+}
+
+/* Hover Effect */
+.back-btn:hover {
+    background: transparent;
+    transform: scale(1.05) translateX(5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    color: #f1e109;
+}
+
+/* =================day card css============== */
+/* --- Itinerary Section Container --- */
+.itinerary-section {
+    max-width: 1200px;
+    margin: 60px auto;
+    padding: 0 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.section-title {
+    font-size: 2.2em;
+    color: #333;
+    margin-bottom: 40px;
+    text-align: left;
+}
+
+/* --- Split Layout (60% Left / 40% Right) --- */
+.itinerary-split {
+    display: flex;
+    gap: 50px;
+    align-items: flex-start;
+}
+
+.itinerary-left {
+    flex: 0 0 60%; /* Takes exactly 60% */
+}
+
+.itinerary-right {
+    flex: 1; /* Takes the remaining 40% */
+    /* This stays empty for now as requested */
+}
+
+/* --- Main Day Cards (Accordion) --- */
+.day-card {
+    position: relative;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    background: linear-gradient(to right, #f57c00, #ffb74d);
+    padding: 1.5px; /* This creates the thin gradient border */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+/* Zoom out effect on the main card */
+.day-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.day-header {
+    background: #fff;
+    padding: 22px 25px;
+    border-radius: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.day-label {
+    display: block;
+    color: #f19c46;
+    font-weight: 800;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.day-title h3 {
+    margin: 5px 0 0;
+    font-size: 1.3em;
+    color: #222;
+}
+
+.v-icon {
+    color: #f19c46;
+    font-size: 1.2em;
+    transition: transform 0.4s ease;
+}
+
+/* --- Collapsible Content Logic --- */
+.day-content {
+    max-height: 0; /* Hidden by default */
+    overflow: hidden;
+    background: #fff;
+    transition: max-height 0.5s cubic-bezier(0, 1, 0, 1); /* Smooth slide */
+    border-radius: 0 0 14px 14px;
+}
+
+/* When Javascript adds the 'active' class */
+.day-card.active .day-content {
+    max-height: 1000px; /* Large enough to fit content */
+    padding: 10px 25px 30px 25px;
+    transition: max-height 1s ease-in-out;
+}
+
+.day-card.active .v-icon {
+    transform: rotate(180deg);
+}
+
+.day-intro {
+    color: #666;
+    font-size: 0.95em;
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+/* --- Internal Plan Cards (3 Rows, 1 Column) --- */
+.vertical-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.plan-card {
+    display: flex;
+    align-items: center;
+    background: #fffcf5;
+    border: 1px solid #fef2d8;
+    box-shadow: #333;
+    padding: 18px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Zoom out effect on small cards when touched */
+.plan-card:hover {
+    transform: scale(1.05);
+    background: #fff;
+    border-color: #f19c46;
+    box-shadow: 0 5px 15px rgba(236, 187, 81, 0.15);
+}
+
+.plan-card i {
+    color: #f19c46;
+    font-size: 1.5em;
+    width: 40px;
+    text-align: center;
+}
+
+.plan-card h4 {
+    margin: 0;
+    font-size: 1em;
+    color: #333;
+    flex: 1; /* Pushes time to the right */
+    padding-left: 10px;
+}
+
+.plan-card .time-meta {
+    font-size: 0.85em;
+    color: #888;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 992px) {
+    .itinerary-split {
+        flex-direction: column;
+    }
+    .itinerary-left {
+        flex: 0 0 100%;
+    }
+}
+
+
+
+
+/* ============included cards css=============== */
+/* Styling for the Inclusion Cards */
+.inclusion-card {
+    background: #ffffff;
+    border-radius: 15px;
+    padding: 25px;
+    margin-bottom: 25px;
+    /* Box Shadow Only - No Border */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease;
+}
+
+.inclusion-card:hover {
+    transform: translateY(-5px); /* Professional lift on hover */
+}
+
+.inc-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0;
+    padding-bottom: 15px;
+}
+
+.inc-header h3 {
+    margin: 0;
+    font-size: 1.2em;
+    color: #333;
+}
+
+/* Icon Colors */
+.icon-green { color: #027002; font-size: 1.5em; } /* Light Green */
+.icon-red { color: #dc0707; font-size: 1.5em; }   /* Soft Red */
+
+/* List Styling */
+.inc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.inc-list li {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 12px;
+    font-size: 1em;
+    color: #555;
+}
+
+/* Specific item icon styling */
+.inc-list li i.fa-check {
+    color: #027002;
+    font-size: 0.9em;
+}
+
+.inc-list li i.fa-xmark {
+    color: #dc0707;
+    font-size: 0.9em;
+}
+
+/* Alignment for the right side title to match left side */
+.itinerary-right .section-title {
+    margin-top: 0;
+    font-size: 1.8em;
+}
+

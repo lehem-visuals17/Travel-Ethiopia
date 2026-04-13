@@ -1,0 +1,110 @@
+/* GENERAL STYLES */
+body {
+     font-family: 'Times New Roman', Times, serif;
+      margin: 0; 
+      background: #f4f7f6; }
+
+/* HERO SECTION */
+.deals-hero {
+    position: relative;
+    height: 350px;
+    background: url('https://media.gettyimages.com/id/1363277938/photo/palm-tree-lined-street-overlooking-los-angeles-at-sunset.jpg?s=612x612&w=0&k=20&c=auQOZwKoKwVj1WCOB8fPIlWLzqqGDHRXVEf719EMfs4=') center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+}
+.hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); }
+.hero-content { position: relative; z-index: 1; }
+.hero-content h1 { font-size: 3rem; margin: 0; }
+
+/* GRID CONTAINER */
+.deals-grid-section { padding: 60px 20px; }
+.deals-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* CARDS */
+.deal-card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.08); position: relative; }
+.card-image { position: relative; height: 200px; }
+.card-image img { width: 100%; height: 100%; object-fit: cover; }
+
+/* BADGES */
+.discount-badge { position: absolute; top: 15px; right: 15px; background: #e74c3c; color: white; padding: 5px 10px; border-radius: 5px; font-weight: bold; }
+.urgency-badge { 
+    position: absolute; bottom: 10px; left: 10px; background: rgba(255, 165, 0, 0.9); 
+    color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; font-weight: bold;
+    display: none; /* Hidden unless "urgent" class added */
+}
+
+/* SOLD OUT OVERLAY */
+.sold-out-overlay {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+    display: none; align-items: center; justify-content: center; z-index: 10;
+}
+.sold-out-overlay span { 
+    color: white; border: 3px solid white; padding: 10px 20px; 
+    font-size: 1.5rem; font-weight: 900; transform: rotate(-15deg); 
+}
+.is-expired .sold-out-overlay { display: flex; }
+
+/* CONTENT */
+.card-content { padding: 20px; }
+.deal-note { color: #f19c46; 
+    font-size: 0.75rem; 
+    font-weight: bold;
+     margin-bottom: 10px; 
+     text-transform: uppercase; }
+.card-content h3 { margin: 0 0 10px 0;
+                  color: #2c3e50; }
+.card-content p { font-size: 0.9rem; 
+    color: #7f8c8d; line-height: 1.5;
+     height: 40px; }
+
+/* FOOTER */
+.card-footer { display: flex;
+     justify-content: space-between;
+      align-items: flex-end; 
+      margin: 20px 0; }
+.old-price { display: block;
+     text-decoration: line-through; 
+     color: #bdc3c7;
+      font-size: 0.9rem; }
+.new-price { font-size: 1.6rem; 
+    font-weight: bold;
+     color: #2c3e50; }
+.timer-display { font-size: 0.85rem;
+     font-weight: bold;
+      color: #e74c3c; 
+      margin-top: 5px; }
+.is-urgent .timer-display { animation: pulse 1s infinite; color: #ff0000; }
+
+@keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+/* BUTTONS */
+.grab-btn { 
+    width: 100%; padding: 12px; 
+        background: linear-gradient(to right, #f57c00, #ffb74d);
+     color: white; border: none; 
+    border-radius: 6px; font-weight: bold; cursor: pointer; transition: 0.3s; 
+}
+.grab-btn:hover { background: #f19c46; }
+.is-expired .grab-btn { background: #bdc3c7 !important; cursor: not-allowed; }
+
+/* MODAL */
+.modal-overlay { 
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+    background: rgba(0,0,0,0.8); display: none; align-items: center; justify-content: center; z-index: 100; 
+}
+.modal-content { background: white; padding: 40px; border-radius: 15px; width: 90%; max-width: 400px; text-align: center; position: relative; }
+.close-modal { position: absolute; top: 15px; right: 20px; font-size: 24px; cursor: pointer; }
+#dealForm input { width: 100%; padding: 12px; margin: 20px 0; border: 1px solid #ddd; border-radius: 5px; }
+.submit-btn { width: 100%; padding: 12px; background: #27ae60; color: white; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; }
+
+@media (max-width: 768px) { .deals-container { grid-template-columns: 1fr; } }

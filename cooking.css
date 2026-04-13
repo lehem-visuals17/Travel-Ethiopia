@@ -1,0 +1,595 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.main-details-container {
+    width: 100%;
+}
+
+/* Back Button Bar */
+.back-nav {
+    padding: 20px 5%;
+    background: white;
+}
+
+.back-btn {
+  
+  height: 40px;
+  border-radius: 15px;
+    text-decoration: none;
+    color: #f4cb95;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: color 0.3s;
+}
+
+.back-btn:hover {
+    color: #008450; /* Your brand green */
+}
+
+/* Hero Section */
+.detail-hero {
+    height: 500px;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.hero-tint {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* Darkens bottom of image so white text pops */
+    background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0) 100%);
+    display: flex;
+    align-items: flex-end; /* Text at bottom */
+    padding: 60px 5%;
+}
+
+.hero-content-wrapper {
+    color: white;
+}
+
+.category-tag {
+    background: white;
+    color: black;
+    padding: 4px 12px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.hero-content-wrapper h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-meta {
+    display: flex;
+    gap: 30px;
+    font-size: 1.1rem;
+}
+
+.rating i {
+    color: #ffb400; /* Goldenrod color */
+}
+
+.hero-meta i {
+    margin-right: 8px;
+}
+
+/* Content Area */
+.detail-description {
+    padding: 50px 5%;
+    max-width: 1000px;
+    line-height: 1.6;
+    color: #444;
+}
+
+.detail-description h2 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+/* Mobile Tweak */
+@media (max-width: 768px) {
+    .hero-content-wrapper h1 { font-size: 2.2rem; }
+    .detail-hero { height: 400px; }
+}
+/* Layout Container */
+.content-wrapper {
+  display: flex;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 10px 5%;
+  align-items: flex-start; /* Required for Sticky */
+}
+
+.main-info { flex: 2; }
+
+/* Sticky Sidebar - Only on Desktop */
+.sidebar {
+  flex: 1;
+  position: sticky;
+  top: 100px; /* Adjust based on your navbar height */
+  z-index: 10;
+  right: 30px;
+}
+
+/* Quick Stats Styling */
+.quick-stats {
+  display: flex;
+
+  gap: 20px;
+  margin-bottom: 40px;
+}
+.stat { display: flex; gap: 12px; align-items: center; font-size: 0.9rem; }
+.stat i { color: #ff4b2b; font-size: 1.2rem; }
+.fa-star {
+  color: #ffb400; /* Goldenrod stars */
+}
+
+/* Booking Card Styles */
+.booking-card {
+ 
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border: 1px solid #eee;
+}
+
+.price-header .amount { font-size: 2rem; font-weight: 800; color: #1a1a1a; }
+.price-header .per { color: #666; font-size: 0.9rem; margin-left: 5px; }
+
+/* Form Elements */
+.form-group { margin-top: 20px; }
+.form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+
+/* The Gradient Button */
+.book-now-btn {
+  width: 100%;
+  margin-top: 25px;
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ffb347 0%, #ff4b2b 100%);
+  color: white;
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.book-now-btn:hover { transform: scale(1.02); filter: brightness(1.1); }
+
+/* Guest Selector */
+.guest-selector {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ddd;
+  padding: 8px 15px;
+  border-radius: 8px;
+}
+.guest-selector button { border: none; background: none; font-size: 1.5rem; cursor: pointer; color: #ff4b2b; }
+
+/* Included/Not Included Lists */
+.lists-grid { display: flex; gap: 30px; margin-top: 30px; }
+.list-box h4 { margin-bottom: 15px; }
+.list-box ul { list-style: none; padding: 0; }
+.list-box li { margin-bottom: 10px; font-size: 0.95rem; display: flex; gap: 10px; align-items: center; }
+.fa-check { color: #008450; }
+.fa-xmark { color: #ccc; }
+
+.trust-list { margin-top: 20px; font-size: 0.85rem; color: #555; }
+.trust-list p { margin-bottom: 8px; display: flex; gap: 8px; align-items: center; }
+
+/* ✅ MOBILE VIEW FIXES */
+@media (max-width: 900px) {
+  .content-wrapper {
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .sidebar {
+    position: relative; /* Removes sticky on mobile */
+    top: 0;
+    width: 100%;
+    order: 2; /* Moves booking box below description */
+  }
+  
+  .main-info { order: 1; width: 100%; }
+  
+  .quick-stats { grid-template-columns: 1fr; }
+  
+  .lists-grid { flex-direction: column; }
+}
+
+
+.itinerary-section {
+  margin-top: 40px;
+}
+
+.itinerary-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 25px;
+  color: #1a1a1a;
+}
+
+.timeline {
+  position: relative;
+  padding-left: 20px;
+}
+
+/* The vertical line connecting the numbers */
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 37px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background: #eee;
+  z-index: 0;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 25px;
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-number {
+  width: 35px;
+  height: 35px;
+  /* Your brand gradient */
+  background: linear-gradient(135deg, #ffb347 0%, #ff4b2b 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  flex-shrink: 0; /* Prevents circle from squeezing */
+  box-shadow: 0 4px 10px rgba(255, 75, 43, 0.2);
+}
+
+.timeline-content h4 {
+  font-size: 1.1rem;
+  margin: 0 0 8px 0;
+  color: #1a1a1a;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.timeline-content .time {
+  font-size: 0.9rem;
+  color: #888;
+  font-weight: 400;
+}
+
+.timeline-content p {
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* Mobile Tweaks */
+@media (max-width: 600px) {
+  .timeline-content h4 {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+.gallery-section {
+  margin-top: 50px;
+  padding-bottom: 40px;
+}
+
+.gallery-section h3 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  color: #1a1a1a;
+  font-family: sans-serif;
+}
+
+.gallery-grid {
+  display: grid;
+  /* Creates 3 equal columns */
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 15px; /* Space between images */
+}
+
+.gallery-item {
+  width: 100%;
+ 
+  border-radius: 4px; /* Slight rounding like the image */
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1 / 1; /* Makes every image a perfect square */
+  object-fit: cover; /* Prevents stretching */
+  display: block;
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+/* Optional: Zoom effect on hover */
+.gallery-item img:hover {
+  transform: scale(1.05);
+}
+
+/* ✅ MOBILE VIEW FIX: Change to 1 or 2 columns on small screens */
+@media (max-width: 768px) {
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Location Styling */
+.location-section {
+  margin-top: 40px;
+}
+
+.map-placeholder {
+  width: 100%;
+  height: 300px;
+  background-color: #eee; /* Light gray background */
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #666;
+  margin-top: 15px;
+}
+
+.map-content i {
+  font-size: 2.5rem;
+  color: #999;
+  margin-bottom: 10px;
+}
+
+.map-content h4 {
+  color: #333;
+  margin: 5px 0;
+}
+
+.coords {
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+.api-note {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+/* Reviews Styling */
+.reviews-section {
+  margin-top: 50px;
+  padding-bottom: 60px;
+}
+
+.reviews-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.overall-rating {
+  font-size: 1.1rem;
+}
+
+.overall-rating i {
+  color: #ffb400; /* Goldenrod */
+}
+
+/* Review Card */
+.review-card {
+  border-top: 1px solid #eee;
+  padding-top: 25px;
+}
+
+.review-user {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+  position: relative;
+}
+
+.user-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.user-meta strong {
+  display: block;
+  font-size: 1rem;
+}
+
+.user-meta span {
+  font-size: 0.85rem;
+  color: #888;
+}
+
+.user-stars {
+  margin-left: auto; /* Pushes stars to the far right */
+  color: #ffb400;
+  font-size: 0.9rem;
+}
+
+.review-text {
+  line-height: 1.6;
+  color: #444;
+  font-size: 1rem;
+}
+
+.suggested-section {
+  margin-top: 60px;
+  padding-bottom: 40px;
+}
+
+.suggested-section h3 {
+  font-size: 1.4rem;
+  margin-bottom: 25px;
+  color: #1a1a1a;
+}
+
+.suggested-grid {
+  justify-content: center;
+  align-items: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 40px;
+  width:70%;
+}
+
+.suggested-card {
+  padding: 20px;
+  border:1px solid #eee;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.suggested-card:hover {
+  transform: translateY(-5px);
+}
+
+.card-img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 12px;
+}
+
+.card-img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* The small white tags on the images */
+.card-tag {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: white;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #333;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card-info h4 {
+  font-size: 1rem;
+  margin: 0 0 8px 0;
+  color: #1a1a1a;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.card-rating {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.card-rating i {
+  color: #ffb400; /* Goldenrod */
+  margin-right: 4px;
+}
+
+.card-price {
+  font-weight: 700;
+  color: #1a1a1a;
+}
+
+/* ✅ Mobile View: Stack cards */
+@media (max-width: 800px) {
+  .suggested-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+
+/* General Lucide Styling */
+[data-lucide] {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2px;
+  vertical-align: middle;
+}
+
+/* Brand Colors */
+.stat [data-lucide], 
+.back-btn [data-lucide] {
+  stroke: #ff4b2b; /* Your Brand Orange/Red */
+}
+
+.rating [data-lucide], 
+.user-stars [data-lucide] {
+  stroke: #ffb400; /* Goldenrod */
+  fill: #ffb400;   /* Fills the star with color */
+}
+
+.list-box [data-lucide="check-circle-2"] {
+  stroke: #008450; /* Green for included */
+}
+
+.list-box [data-lucide="x-circle"] {
+  stroke: #ccc;    /* Gray for not included */
+}
+
+/* Map Icon in Placeholder */
+.map-content [data-lucide] {
+  width: 40px;
+  height: 40px;
+  stroke: #999;
+}

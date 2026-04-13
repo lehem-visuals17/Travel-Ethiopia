@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lalibela - The New Jerusalem of Africa</title>
+    <link rel="stylesheet" href="lalibela.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-pb3hFTu1QvyR4RCE3D1eR7kEOxJ/Rywb/BYdV6r9Lk+V7w6t9y7R+EoK3xN4h5kR/ZB2tTgi8WdxrP+I6wJXYw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <!-- Back button -->
+    <a href="index.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i><b> Back to Destinations</b>
+    </a>
+
+    <!-- Image header with overlay -->
+    <section class="image-header">
+        <div class="image-container">
+            <img src="https://thumbs.dreamstime.com/b/st-george-church-lalibela-ethiopia-monolithic-saint-bet-giyorgis-amharic-shape-cross-churches-unesco-world-112905363.jpg" alt="Lalibela" class="main-img" onclick="openModel()">
+
+            <!-- Top-right icons -->
+            <div class="top-icons">
+                  <span id="favorite" class="fa-regular fa-heart" onclick="toggleActive(this)"></span>
+                <span id="share" class="fa-solid fa-share-nodes" onclick="toggleActive(this)"></span>
+            </div>
+
+            <!-- Bottom-left text overlay -->
+            <div class="text-overlay">
+                <div class="location">
+                    <i class="fas fa-map-marker-alt"></i> Amhara Region, Ethiopia
+                </div>
+                <h2 class="place-name">Lalibela</h2>
+                <p class="tagline">The New Jerusalem of Africa</p>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- for the mini image gallerys -->
+     <section class="gallery-section">
+
+    <div class="gallery-container">
+        <p> <b>Gallery</b></p>
+
+        <div class="gallery-item active" onclick="changeImage(this, 'https://thumbs.dreamstime.com/b/st-george-church-lalibela-ethiopia-monolithic-saint-bet-giyorgis-amharic-shape-cross-churches-unesco-world-112905363.jpg')">
+            <img src="https://thumbs.dreamstime.com/b/st-george-church-lalibela-ethiopia-monolithic-saint-bet-giyorgis-amharic-shape-cross-churches-unesco-world-112905363.jpg">
+        </div>
+
+        <div class="gallery-item" onclick="changeImage(this, 'images/lalibela1.jpg')">
+            <img src="images/lalibela1.jpg">
+        </div>
+
+        <div class="gallery-item" onclick="changeImage(this, 'images/lalibela2.jpg')">
+            <img src="images/lalibela2.jpg">
+        </div>
+
+        <div class="gallery-item" onclick="changeImage(this, 'images/lalibela3.jpg')">
+            <img src="images/lalibela3.jpg">
+        </div>
+
+        <div class="gallery-item" onclick="changeImage(this, 'images/lalibela4.jfif')">
+            <img src="images/lalibela4.jfif" >
+
+    </div>
+
+</section>
+
+
+<!-- overview section -->
+<section class="details-section">
+    <div class="left-side">
+
+    <div class="overview">
+
+        <div class="overview-header">
+            <i class="fa-solid fa-book-open"></i>
+            <h2>Overview</h2>
+        </div>
+ 
+        <!-- CARD -->
+        <div class="overview-card">
+            <p>
+               Lalibela is a town in the Amhara Region of Ethiopia, famous for its rock-cut monolithic churches. 
+               The whole of Lalibela is a large antiquity of the medieval and post-medieval civilization of Ethiopia.
+                Lalibela is one of Ethiopia's holiest cities, second only to Axum, and a center of pilgrimage. <br><br>
+
+               The churches of Lalibela were hewn from the living rock to 
+            house the faithful after Muslim conquests halted Ethiopian pilgrimages to the Holy Land. Lalibela, revered as 
+            a saint, is said to have seen Jerusalem and then attempted to build a new one as his legacy. Most were carved downwards 
+            from the rock with roofs at ground level, some stand in open quarried caves, and a number occupy caverns. The churches were not 
+            constructed but rather excavated – each one was created by carving out the surrounding rock.
+            </p>
+        </div>
+
+    </div>
+     <!-- HIGHLIGHTS -->
+    <div class="highlights-section">
+        <div class="highlights-title">Highlights</div>
+
+        <div class="highlights-grid">
+
+            <div class="highlight-card">
+                <i class="fas fa-check-circle"></i>
+                <span>UNESCO World Heritage Site</span>
+            </div>
+
+            <div class="highlight-card">
+                <i class="fas fa-check-circle"></i>
+                <span>11 Medieval Rock-Hewn Churches</span>
+            </div>
+
+            <div class="highlight-card">
+                <i class="fas fa-check-circle"></i>
+                <span>Spectacular Underground Passages</span>
+            </div>
+
+            <div class="highlight-card">
+                <i class="fas fa-check-circle"></i>
+                <span>Annual Timkat Festival</span>
+            </div>
+
+            <div class="highlight-card">
+                <i class="fas fa-check-circle"></i>
+                <span>Ancient Pilgrimage Site</span>
+            </div>
+
+            <div class="highlight-card">
+                <i class="fas fa-check-circle"></i>
+                <span>Unique Architecture</span>
+            </div>
+
+        </div>
+    </div>
+
+
+
+
+
+
+    <!-- BEST TIME TO VISIT SECTION -->
+<div class="best-time-section">
+
+    <!-- HEADER -->
+    <div class="best-time-header">
+        <i class="fa-solid fa-sun"></i>
+        <h2>Best Time to Visit</h2>
+    </div>
+
+    <!-- MAIN CARD -->
+    <div class="best-time-card">
+        <h3>October to March</h3>
+        <p>Dry season with pleasant temperatures</p>
+
+        <!-- SUB-CARDS GRID -->
+        <div class="sub-cards-grid">
+
+            <!-- FIRST SUB-CARD -->
+            <div class="sub-card">
+                <div class="sub-card-header">
+                    <span class="left-tag">Dry Season</span>
+                    <span class="right-tag">Excellent</span>
+                </div>
+                <p>Oct - May<br>Best for visiting, comfortable weather</p>
+            </div>
+
+            <!-- SECOND SUB-CARD -->
+            <div class="sub-card">
+                <div class="sub-card-header">
+                    <span class="left-tag">Rainy Season</span>
+                    <span class="right-tag">Fair</span>
+                </div>
+                <p>Jun - Sep<br>Heavy rains, fewer tourists</p>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+
+<!-- WEATHER INFORMATION SECTION -->
+<div class="weather-section">
+
+    <!-- HEADER -->
+    <div class="weather-header">
+        <i class="fa-solid fa-cloud"></i>
+        <h2>Weather Information</h2>
+    </div>
+
+    <!-- WEATHER CARDS GRID -->
+    <div class="weather-grid">
+
+        <!-- JAN CARD -->
+        <div class="weather-card">
+            <i class="fa-solid fa-sun weather-icon sunny"></i>
+            <h3>Jan</h3>
+            <p><i class="fa-solid fa-thermometer-half"></i> 22°C</p>
+            <p>Low Rainfall</p>
+        </div>
+
+        <!-- APR CARD -->
+        <div class="weather-card">
+            <i class="fa-solid fa-sun weather-icon sunny"></i>
+            <h3>Apr</h3>
+            <p><i class="fa-solid fa-thermometer-half"></i> 24°C</p>
+            <p>Low Rainfall</p>
+        </div>
+
+        <!-- JUL CARD -->
+        <div class="weather-card">
+            <i class="fa-solid fa-cloud-showers-heavy weather-icon rainy"></i>
+            <h3>Jul</h3>
+            <p><i class="fa-solid fa-thermometer-half"></i> 20°C</p>
+            <p>High Rainfall</p>
+        </div>
+
+        <!-- OCT CARD -->
+        <div class="weather-card">
+            <i class="fa-solid fa-sun weather-icon sunny"></i>
+            <h3>Oct</h3>
+            <p><i class="fa-solid fa-thermometer-half"></i> 21°C</p>
+            <p>Low Rainfall</p>
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<!-- TOP ATTRACTIONS SECTION -->
+<div class="top-attractions-section">
+
+    <!-- HEADER -->
+    <div class="top-attractions-header">
+        <i class="fa-solid fa-map-location-dot"></i>
+        <h2>Top Attractions</h2>
+    </div>
+
+    <!-- CARD 1 -->
+    <div class="attraction-card">
+        <img src="images/betegiorgis1.jfif" alt="Bete Giyorgis" class="attraction-image">
+        <div class="attraction-info">
+            <h3><i class="fa-solid fa-church"></i> Bete Giyorgis (Church of St. George)</h3>
+            <p>The most famous of Lalibela's churches, carved in the shape of a cross.</p>
+            <p><i class="fa-solid fa-clock"></i> 1-2 hours &nbsp; <i class="fa-solid fa-dollar-sign"></i> $50</p>
+        </div>
+    </div>
+
+    <!-- CARD 2 -->
+    <div class="attraction-card">
+        <img src="images/northern.jfif" alt="Northern Group Churches" class="attraction-image">
+        <div class="attraction-info">
+            <h3><i class="fa-solid fa-church"></i> Northern Group Churches</h3>
+            <p>Complex of six interconnected churches carved from rock.</p>
+            <p><i class="fa-solid fa-clock"></i> 2-3 hours &nbsp; <i class="fa-solid fa-dollar-sign"></i> Included in ticket</p>
+        </div>
+    </div>
+
+    <!-- CARD 3 -->
+    <div class="attraction-card">
+        <img src="images/Asheton.jfif" alt="Asheton Maryam Monastery" class="attraction-image">
+        <div class="attraction-info">
+            <h3><i class="fa-solid fa-mountain"></i> Asheton Maryam Monastery</h3>
+            <p>Mountain monastery with panoramic views.</p>
+            <p><i class="fa-solid fa-clock"></i> 3-4 hours (with hike) &nbsp; <i class="fa-solid fa-dollar-sign"></i> $10</p>
+        </div>
+    </div>
+
+</div>
+<!-- LOCAL CULTURAL TIPS SECTION -->
+<div class="local-tips-section">
+
+    <!-- HEADER -->
+    <div class="local-tips-header">
+        <i class="fa-solid fa-handshake-angle"></i>
+        <h2>Local Cultural Tips</h2>
+    </div>
+
+    <!-- GRID OF CARDS -->
+    <div class="local-tips-grid">
+
+        <!-- CARD 1 -->
+        <div class="tip-card">
+            <i class="fa-solid fa-shirt"></i>
+            <div class="tip-info">
+                <h3>Dress Modestly</h3>
+                <p>Cover shoulders and knees when visiting religious sites.</p>
+            </div>
+        </div>
+
+        <!-- CARD 2 -->
+        <div class="tip-card">
+            <i class="fa-solid fa-camera"></i>
+            <div class="tip-info">
+                <h3>Photography Rules</h3>
+                <p>Ask permission before photographing people or inside churches.</p>
+            </div>
+        </div>
+
+        <!-- CARD 3 -->
+        <div class="tip-card">
+            <i class="fa-solid fa-praying-hands"></i>
+            <div class="tip-info">
+                <h3>Respect Prayer Times</h3>
+                <p>Be quiet and respectful during religious ceremonies.</p>
+            </div>
+        </div>
+
+        <!-- CARD 4 -->
+        <div class="tip-card">
+            <i class="fa-solid fa-utensils"></i>
+            <div class="tip-info">
+                <h3>Try Local Cuisine</h3>
+                <p>Experience traditional injera and coffee ceremonies.</p>
+            </div>
+        </div>
+
+        <!-- CARD 5 -->
+        <div class="tip-card">
+            <i class="fa-solid fa-person-chalkboard"></i>
+            <div class="tip-info">
+                <h3>Hire Local Guides</h3>
+                <p>Support the local economy and learn authentic history.</p>
+            </div>
+        </div>
+
+        <!-- CARD 6 -->
+        <div class="tip-card">
+            <i class="fa-solid fa-shoe-prints"></i>
+            <div class="tip-info">
+                <h3>Remove Shoes</h3>
+                <p>Always remove shoes before entering churches.</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!-- LOCATION & MAP SECTION -->
+<div class="location-map-section">
+
+    <!-- HEADER -->
+    <div class="location-map-header">
+        <i class="fa-solid fa-location-dot"></i>
+        <h2>Location & Map</h2>
+    </div>
+
+    <!-- CARD -->
+    <div class="location-map-card">
+
+        <!-- DISTANCE INFO -->
+        <div class="distance-info">
+            <i class="fa-solid fa-road"></i>
+            <div class="distance-text">
+                <h3>Distance from Addis Ababa:</h3>
+                <p>642 km (8-10 hours by road)</p>
+            </div>
+        </div>
+
+        <!-- MAP -->
+        <div class="map-container">
+            <!-- Replace this iframe with real interactive map later -->
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3873.3760430222763!2d39.0265820152672!3d12.031990091935451!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTLCsDAxJzAzLjciTiAzOcKwMDEnMTYuOCJF!5e0!3m2!1sen!2set!4v1690000000000!5m2!1sen!2set" 
+                width="100%" 
+                height="300" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy">
+            </iframe>
+        </div>
+
+    </div>
+</div>
+<!-- VIDEO GALLERY SECTION -->
+<div class="video-gallery-section">
+
+    <!-- HEADER -->
+    <div class="video-gallery-header">
+        <i class="fa-solid fa-video"></i>
+        <h2>Video Gallery</h2>
+    </div>
+
+    <!-- VIDEO PREVIEW -->
+    <div class="video-preview-card">
+        <!-- Replace the src with your YouTube embed link -->
+       <iframe width="100%" height="315" src="https://www.youtube.com/embed/zE5Qd26R9ek?si=36TkWwRoTa0xNrZv"
+               title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; 
+               gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" 
+               allowfullscreen></iframe>
+        <p>Experience Lalibela</p>
+    </div>
+
+</div>
+    </div>
+<!-- ==============right side================== -->
+<div class="right-side">
+    <div class="rating-card">
+
+    <div class="rating-top">
+        <i class="fa-solid fa-star"></i>
+        <span class="rating-number">4.8</span>
+    </div>
+
+    <p class="reviews">284 reviews</p>
+
+    <button class="book-btn">Book Now</button>
+
+     </div>
+
+
+     <!-- Estimated Travel Cost Card -->
+    <div class="travel-cost-card">
+        <div class="travel-header">
+            <i class="fas fa-dollar-sign " style="color: rgb(253, 220, 29);"></i>
+            <h3>Estimated Travel Cost</h3>
+        </div>
+
+        <!-- Plan cards -->
+        <div class="plans">
+            <div class="plan">
+                <div class="plan-top">
+                <h4>Budget</h4>
+                <p class="price">$150-$200</p>
+                </div>
+                <p class="plan-desc">Budget accommodation, local transport, basic meals</p>
+            </div>
+                
+            <div class="plan">
+                <div class="plan-top">
+                <h4>Standard</h4>
+                <p class="price">$250-$350</p>
+                </div>
+                <p class="plan-desc">Mid-range hotels, guided tours, restaurant meals</p>
+            </div>
+            <div class="plan">
+                <div class="plan-top">
+                <h4>Luxury    </h4>
+                <p class="price"> $500-$800</p>
+                </div>
+                <p class="plan-desc">Luxury lodges, private guides, premium experiences</p>
+            </div>
+        </div>
+
+        <p class="note">* Prices per day per person</p>
+    </div>
+
+
+    <div class="quick-info-card">
+
+    <div class="quick-header">
+        <i class="fa-solid fa-circle-info"></i>
+        <h3>Quick Info</h3>
+    </div>
+
+    <div class="info-item">
+        <i class="fa-solid fa-location-dot"></i>
+        <div>
+            <h4>Location</h4>
+            <p>Amhara Region</p>
+        </div>
+    </div>
+
+    <div class="info-item">
+        <i class="fa-solid fa-calendar"></i>
+        <div>
+            <h4>Best Time</h4>
+            <p>October to March</p>
+        </div>
+    </div>
+
+    <div class="info-item">
+        <i class="fa-solid fa-hotel"></i>
+        <div>
+            <h4>Accommodation</h4>
+            <p>Hotels & Lodges Available</p>
+        </div>
+    </div>
+
+</div>
+</div>
+
+
+
+</section>
+   
+
+    <script>
+        // Favorite toggle
+         function toggleActive(el) {
+            el.classList.toggle('active');
+            // For heart, toggle filled/outline
+            if(el.id === 'favorite') {
+                el.classList.toggle('fa-regular');
+                el.classList.toggle('fa-solid');
+            }
+        }
+
+
+
+
+        // for the mini gallery under the big image
+ 
+function changeImage(el, newSrc) {
+    const mainImg = document.querySelector(".main-img");
+
+    // Fade out
+    mainImg.classList.add("fade");
+
+    setTimeout(() => {
+        mainImg.src = newSrc;
+
+        // Fade in
+        mainImg.classList.remove("fade");
+    }, 200);
+
+    // Active border
+    document.querySelectorAll(".gallery-item").forEach(item => {
+        item.classList.remove("active");
+    });
+
+    el.classList.add("active");
+}
+
+/* MODAL */
+function openModal() {
+    const modal = document.getElementById("imageModal");
+    const modalImg = document.getElementById("modalImg");
+
+    modal.style.display = "flex";
+    modalImg.src = document.querySelector(".main-img").src;
+}
+
+function closeModal() {
+    document.getElementById("imageModal").style.display = "none";
+}
+
+
+    </script>
+    <div id="imageModal" class="modal" onclick="closeModal()">
+    <img id="modalImg">
+</div>
+</body>
+</html>

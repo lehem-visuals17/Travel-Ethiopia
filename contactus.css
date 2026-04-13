@@ -1,0 +1,179 @@
+/* Container and Layout */
+.contact-section {
+  background-color: #fcfcfc;
+  padding-bottom: 80px;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Solid Orange Header */
+.contact-header {
+  background:  linear-gradient(90deg, #ecbb51 0%, #f19c46 50%, #e66231 100%);; /* Replaced Green */
+  color: white;
+  padding: 60px 0 100px 0;
+}
+
+.contact-header h1 {
+  font-size: 3rem;
+  margin: 0;
+}
+
+/* Grid Layout for Cards */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 30px;
+  margin-top: 60px; /* Overlap effect */
+}
+
+/* Card Styling */
+.contact-form-card, .contact-info-card {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid #eee;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+/* Form Styling */
+.contact-form-card h3 { margin-top: 0; color: #333; }
+
+.form-row {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: none;
+  background: #f4f4f4;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* Orange Gradient Button */
+.gradient-btn {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ff8c00, #ffba08); /* Replaced solid green */
+}
+
+/* Info Side Styling */
+.info-item {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.info-item h4 { margin: 0; font-size: 1rem; color: #333; }
+.info-item p { margin: 5px 0 0 0; color: #777; font-size: 0.9rem; }
+.info-item .icon { font-size: 1.2rem; }
+
+/* Styling for Lucide Icons */
+.contact-icon {
+  width: 20px;
+  height: 20px;
+  color: #ff8c00; /* Matches your theme */
+  stroke-width: 2px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+/* Updated Info Item for Alignment */
+.info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+/* Ensure the button gradient remains consistent */
+.gradient-btn {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  background: linear-gradient(135deg, #ff8c00, #ffba08);
+  transition: opacity 0.2s;
+}
+
+.gradient-btn:active {
+  opacity: 0.9;
+}
+
+/* 1. Card Hover: Subtle lift and stronger shadow */
+.contact-form-card, 
+.contact-info-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.contact-form-card:hover, 
+.contact-info-card:hover {
+  transform: translateY(-5px); /* Gentle lift effect */
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+/* 2. Input & Textarea Hover/Focus: Border change */
+input, textarea {
+  border: 1px solid transparent; /* Prepare for border transition */
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+input:hover, textarea:hover {
+  background-color: #ededed;
+}
+
+input:focus, textarea:focus {
+  outline: none;
+  background-color: #ffffff;
+  border-color: #ff8c00; /* Orange border on click */
+  box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.1); /* Subtle orange glow */
+}
+
+/* 3. Gradient Button Hover: Brighten and Scale */
+.gradient-btn {
+  transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gradient-btn:hover {
+  filter: brightness(1.1); /* Makes the gradient pop */
+  transform: scale(1.01); /* Very slight grow */
+  box-shadow: 0 5px 15px rgba(255, 140, 0, 0.3);
+}
+
+.gradient-btn:active {
+  transform: scale(0.98); /* "Push" effect when clicked */
+}
+
+/* 4. Info Item Hover: Icon color shift */
+.info-item {
+  cursor: default;
+  transition: background-color 0.2s ease;
+  border-radius: 6px;
+}
+
+.info-item:hover .contact-icon {
+  transform: scale(1.15);
+  color: #ffba08; /* Shifts to the lighter orange from the gradient */
+}
+
+.contact-icon {
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+
