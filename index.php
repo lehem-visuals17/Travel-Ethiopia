@@ -33,7 +33,7 @@
   <!-- ✅ Added ID here -->
   <ul class="menu" id="menu-list">
     <div class="menu-close" id="menu-close">&times;</div>
-    <li><a class="underline-text" href="welcome.html#Home">Home</a></li>
+    <li><a class="underline-text" href="index.php#Home">Home</a></li>
     <li><a class="underline-text" href="index.html#Destinations">Destinations</a></li>
     <li><a class="underline-text" href="trip.html#trip">Trip Planner</a></li>
     <li><a class="underline-text" href="booking.html#Bookings">Bookings</a></li>
@@ -1364,65 +1364,64 @@ Food Tours</span>
   </div>
 </footer>
 
-<!-- The Modal Overlay -->
 <div id="auth-modal" class="modal">
   <div class="modal-content">
     <span class="close-btn">&times;</span>
 
     <!-- LOGIN FORM -->
-     <form id="login-form" action="login.php" method="POST">
-      <div id="login-form">
+    <form id="login-form" action="login.php" method="POST">
       <h2>Sign In</h2>
-      <input type="text" placeholder="Username" required>
-      <input type="password" placeholder="Password" required>
+      <input type="text" name="username" placeholder="Username" required>
+      <input type="password" name="password" placeholder="Password" required>
       <button type="submit" class="btn">Login</button>
       <p>New here? <a href="#" id="go-to-signup">Create an account</a></p>
-    </div>
-     </form>
-    
+    </form>
 
-    <!-- SIGN UP FORM (Hidden by default) -->
-     <form id="signup-form" action="login.php" method="post" style="display: none;">
-      <div id="signup-form" style="display:none;">
+    <!-- SIGN UP FORM -->
+    <form id="signup-form" action="register.php" method="POST" style="display: none;">
       <h2>Sign Up</h2>
-      <input type="text" placeholder="Full Name" required>
-      <input type="email" placeholder="Email" required>
-      <input type="tel" placeholder="Phone Number" required>
-      <input type="password" placeholder="Password" required>
-      <input type="password" placeholder="Confirm Password" required>
-      <button type="submit" class="btn">Register</button>
+      <input type="text" name="fullname" placeholder="Full Name" required>
+      <input type="text" name="username" id="signup-username" placeholder="Username" required>
+      <div id="username-msg" style="font-size: 12px; margin-top: -10px; margin-bottom: 10px;"></div>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="tel" name="phone" placeholder="Phone Number" required>
+      <input type="password" name="password" placeholder="Password" required>
+      <input type="password" name="confirm_password" placeholder="Confirm Password" required>
+      <button type="submit" id="signup-btn" class="btn">Register</button>
       <p>Already have an account? <a href="#" id="go-to-login">Sign In</a></p>
-    </div>
-     </form>
-    
+    </form>
   </div>
 </div>
 
 
-<script>lucide.createIcons();</script>
-
 
 <script>lucide.createIcons();</script>
 
 
+<script>lucide.createIcons();</script>
 
-<script>
-const modal = document.getElementById("auth-modal");
+
+
+<script>const modal = document.getElementById("auth-modal");
 const loginPill = document.querySelector(".login-pill");
 const closeBtn = document.querySelector(".close-btn");
 const loginForm = document.getElementById("login-form");
 const signupForm = document.getElementById("signup-form");
+
+// New elements for username validation
+const usernameInput = signupForm.querySelector('input[name="username"]');
+const signupBtn = signupForm.querySelector('button[type="submit"]');
 
 // Open/Close logic
 loginPill.onclick = () => modal.style.display = "block";
 closeBtn.onclick = () => modal.style.display = "none";
 window.onclick = (event) => { if (event.target == modal) modal.style.display = "none"; }
 
-// Toggle between forms (Fixed the "Empty" issue by ensuring display: block)
+// Toggle between forms
 document.getElementById("go-to-signup").onclick = (e) => {
   e.preventDefault();
   loginForm.style.display = "none";
-  signupForm.style.display = "flex";
+  signupForm.style.display = "flex"; // Matches your flex layout
 }
 
 document.getElementById("go-to-login").onclick = (e) => {
@@ -1432,23 +1431,76 @@ document.getElementById("go-to-login").onclick = (e) => {
 }
 
 /** 
+ * UNIQUE USERNAME CHECK (Database)
+ **/
+usernameInput.addEventListener('blur', async () => {
+  const username = usernameInput.value.trim();
+  if (username.length < 3) return;
+
+  try {
+    const response = await fetch('check_username.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `username=${encodeURIComponent(username)}`
+    });
+    
+    const result = await response.json();
+    if (result.exists) {
+      alert("This username is already taken. Please choose another.");
+      usernameInput.style.borderColor = "red";
+      signupBtn.disabled = true;
+    } else {
+      usernameInput.style.borderColor = "green";
+      signupBtn.disabled = false;
+    }
+  } catch (error) {
+    console.error("Error checking username:", error);
+  }
+});
+
+/** 
  * VALIDATION LOGIC 
  **/
 
-// 1. Validate Sign Up before sending to PHP
 signupForm.onsubmit = (e) => {
+  const fullname = signupForm.querySelector('input[name="fullname"]').value;
+  const username = signupForm.querySelector('input[name="username"]').value;
+  const email = signupForm.querySelector('input[name="email"]').value;
+  const phone = signupForm.querySelector('input[name="phone"]').value;
   const pass = signupForm.querySelector('input[name="password"]').value;
-  const confirmPass = signupForm.querySelectorAll('input[type="password"]')[1].value;
+  const confirmPass = signupForm.querySelector('input[name="confirm_password"]').value;
 
+  // 1. Phone Validation (10 digits, starts with 09 or 07)
+  const phoneRegex = /^(09|07)\d{8}$/;
+  if (!phoneRegex.test(phone)) {
+    e.preventDefault();
+    alert("Phone number must be 10 digits and start with 09 or 07.");
+    return false;
+  }
+
+  // 2. Gmail Validation
+  if (!email.toLowerCase().endsWith("@gmail.com")) {
+    e.preventDefault();
+    alert("Please use a valid @gmail.com address.");
+    return false;
+  }
+
+  // 3. Password Complexity (Min 5 chars + 1 number)
+  const passRegex = /^(?=.*\d).{5,}$/;
+  if (!passRegex.test(pass)) {
+    e.preventDefault();
+    alert("Password must be at least 5 characters long and include at least one number.");
+    return false;
+  }
+
+  // 4. Password Match
   if (pass !== confirmPass) {
-    e.preventDefault(); // Stop form from sending to PHP
+    e.preventDefault();
     alert("Passwords do not match!");
     return false;
   }
-  // If passwords match, the form will automatically submit to auth.php
-};
+}
 
-// 2. Validate Login (Optional, usually handled by PHP)
 loginForm.onsubmit = (e) => {
   const user = loginForm.querySelector('input[name="username"]').value;
   const pass = loginForm.querySelector('input[name="password"]').value;

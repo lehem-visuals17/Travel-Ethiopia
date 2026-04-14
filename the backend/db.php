@@ -1,12 +1,12 @@
 <?php
-$host = "localhost";
-$user = "root";
-$password = "";
-$database = "travel_db";
+// Database connection details
+$conn = new mysqli("localhost", "root", "password", "your_db_name");
 
-$conn = mysqli_connect($host, $user, $password, $database);
+$username = $_POST['username'] ?? '';
+$stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
+$stmt->bind_param("s", $username);
+$stmt->execute();
+$result = $stmt->get_result();
 
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
-}
+echo json_encode(['exists' => $result->num_rows > 0]);
 ?>
