@@ -8,6 +8,7 @@
   <title>Discover Ethiopia</title>
    <link href="https://googleapis.com" rel="stylesheet">
   <link rel="stylesheet" href="https://cloudflare.com">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
   <link rel="stylesheet" href="welcome.css">
   <link rel="stylesheet" href="cards.css">
@@ -34,7 +35,7 @@
   <ul class="menu" id="menu-list">
     <div class="menu-close" id="menu-close">&times;</div>
     <li><a class="underline-text" href="index.php#Home">Home</a></li>
-    <li><a class="underline-text" href="index.html#Destinations">Destinations</a></li>
+    <li><a class="underline-text" href="destination.php">Destinations</a></li>
     <li><a class="underline-text" href="trip.html#trip">Trip Planner</a></li>
     <li><a class="underline-text" href="booking.html#Bookings">Bookings</a></li>
     <li><a class="underline-text" href="packages.html#packages">Packages</a></li>
@@ -45,7 +46,9 @@
     <li><a class="underline-text" href="contactus.html#Contact">Contact</a></li>
    
     <div class="header-actions">
-     <i class="fa-solid fa-user search-icon"></i>
+     <a href="profile.php">
+            <i class="fa-solid fa-user"></i>
+        </a>
   <div class="login-pill">
     <i class="fa-regular fa-circle-user"></i>
    <span>  <?php 
@@ -1378,7 +1381,7 @@ Food Tours</span>
     </form>
 
     <!-- SIGN UP FORM -->
-    <form id="signup-form" action="register.php" method="POST" style="display: none;">
+    <form id="signup-form" action="login.php" method="POST" style="display: none;">
       <h2>Sign Up</h2>
       <input type="text" name="fullname" placeholder="Full Name" required>
       <input type="text" name="username" id="signup-username" placeholder="Username" required>

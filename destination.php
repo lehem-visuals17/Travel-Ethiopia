@@ -1,3 +1,9 @@
+<?php
+include 'config/db.php';
+
+$sql = "SELECT * FROM destinations";
+$result = mysqli_query($conn, $sql);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -174,35 +180,52 @@
     <div class="cards-container">
 
         <!-- CARD 1 -->
-        <div class="card">
-            <div class="card-slider">
-                <img src="images/simien1.jpg" >
-                <img src="images/simien2.jpg" >
-                <img src="images/simienlll3.jpg>
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWBgAT_B7DS4w-XVxgIvoO4onoATTDrQZwDQ&s" alt="">
-                
-                
-                <div class="image-text">
-                    <h3>Simien Mountains</h3>
-                    <p>Amhara Region</p>
-                </div>
-                <div class="rating"><i class="fas fa-star" style="color: rgb(255, 208, 0);"></i> 4.8</div>
-            </div>
-            <div class="card-inner">
-                <div class="card-content">
-                    <p class="desc">Dramatic mountain landscapes with unique wildlife</p>
-                    <div class="tags">
-                        <button>UNESCO Site</button>
-                        <button>Wildlife</button>
-                    </div>
-                    <div class="card-footer">
-                        <span class="price"><i class="fas fa-dollar-sign"></i>150-250/day</span>
-                        <span class="reviews">284 reviews</span>
-                    </div>
-                    <a href="simien mountains.html" class="details-btn">View Details</a> 
-                </div>
-            </div>
+       <?php while($row = mysqli_fetch_assoc($result)) { ?>
+<div class="card">
+    <div class="card-slider">
+        <img src="images/<?php echo $row['image1']; ?>">
+        <img src="images/<?php echo $row['image2']; ?>">
+        <img src="images/<?php echo $row['image3']; ?>">
+        <img src="<?php echo $row['image4']; ?>">
+
+        <div class="image-text">
+            <h3><?php echo $row['name']; ?></h3>
+            <p><?php echo $row['region']; ?></p>
         </div>
+
+        <div class="rating">
+            <i class="fas fa-star" style="color: rgb(255, 208, 0);"></i>
+            <?php echo $row['rating']; ?>
+        </div>
+    </div>
+
+    <div class="card-inner">
+        <div class="card-content">
+            <p class="desc"><?php echo $row['short_description']; ?></p>
+
+            <div class="tags">
+                <button><?php echo $row['tag1']; ?></button>
+                <button><?php echo $row['tag2']; ?></button>
+            </div>
+
+            <div class="card-footer">
+                <span class="price">
+                    <i class="fas fa-dollar-sign"></i>
+                    <?php echo $row['price_range']; ?>/day
+                </span>
+
+                <span class="reviews">
+                    <?php echo $row['reviews']; ?> reviews
+                </span>
+            </div>
+
+            <a href="destination-details.php?id=<?php echo $row['id']; ?>" class="details-btn">
+                View Details
+            </a>
+        </div>
+    </div>
+</div>
+<?php } ?>
 
         <!-- CARD 2 -->
         <div class="card">

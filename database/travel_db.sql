@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 13, 2026 at 08:39 PM
+-- Generation Time: Apr 16, 2026 at 09:46 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -63,15 +63,24 @@ CREATE TABLE `bookings` (
 CREATE TABLE `destinations` (
   `id` int(11) NOT NULL,
   `name` varchar(100) DEFAULT NULL,
+  `tagline` varchar(255) DEFAULT NULL,
   `region` varchar(100) DEFAULT NULL,
   `type` enum('adventure','cultural','religious','historical','nature') DEFAULT NULL,
   `description` text DEFAULT NULL,
   `best_time` varchar(100) DEFAULT NULL,
   `weather_info` varchar(255) DEFAULT NULL,
   `average_cost` decimal(10,2) DEFAULT NULL,
+  `budget_cost` varchar(50) DEFAULT NULL,
+  `standard_cost` varchar(50) DEFAULT NULL,
+  `luxury_cost` varchar(50) DEFAULT NULL,
+  `accommodation` varchar(255) DEFAULT NULL,
   `rating` decimal(3,2) DEFAULT 0.00,
+  `reviews` int(11) DEFAULT 0,
   `map_location` text DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL
+  `image` varchar(255) DEFAULT NULL,
+  `image2` varchar(255) DEFAULT NULL,
+  `image3` varchar(255) DEFAULT NULL,
+  `image4` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -201,6 +210,13 @@ CREATE TABLE `users` (
   `role` enum('admin','customer') DEFAULT 'customer',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `fullname`, `username`, `email`, `password`, `phone`, `role`, `created_at`) VALUES
+(1, 'Bete', 'bet', 'betelhembelayneh58@gmail.com', '$2y$10$eFOSNp6m4Dhzhzaqbb1ZDOkB.YKC2Qy26xyOnA3Xc5gqsHdBKXW7q', '0956264326', 'customer', '2026-04-16 17:33:12');
 
 --
 -- Indexes for dumped tables
@@ -353,7 +369,7 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
