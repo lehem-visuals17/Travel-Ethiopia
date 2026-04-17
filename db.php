@@ -1,9 +1,13 @@
 <?php
-// Database connection details
-$conn = new mysqli("localhost", "root", "password", "your_db_name");
+$host = "localhost";
+$user = "root";
+$password = "";
+$database = "travel_db";
 
-if (!$conn) {
-    die("Connection failed: " . mysqli_connect_error());
+$conn = new mysqli($host, $user, $password, $database);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
 $username = $_POST['username'] ?? '';
