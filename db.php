@@ -2,6 +2,10 @@
 // Database connection details
 $conn = new mysqli("localhost", "root", "password", "your_db_name");
 
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
 $username = $_POST['username'] ?? '';
 $stmt = $conn->prepare("SELECT id FROM users WHERE username = ?");
 $stmt->bind_param("s", $username);
