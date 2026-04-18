@@ -286,7 +286,11 @@ h1{
 }
 .status-pill.pending { background: #fff3e0; color: #ff9800; }
 .status-pill.confirmed { background: #e8f5e9; color: #4caf50; }
-
+.user-management-container{
+    margin-left: 239px;
+    margin-right: 20px;
+    margin-top: 120px;
+}
 .user-avatar-small {
     width: 35px; height: 35px;
     background: #f57c00; color: white;
@@ -347,5 +351,106 @@ h1{
     font-size: 0.9rem;
     color: #666;
 }
+.back-link {
+    text-decoration: none;
+    color: #666;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 15px;
+    transition: color 0.3s ease;
+}
+
+.back-link:hover {
+    color: #ff9800; /* Changes to orange on hover */
+}
+.form-card {
+    background: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+/* Removes the default browser blue outline and adds the orange border */
+.form-group input:focus, 
+.form-group select:focus {
+    outline: none;
+    border: 2px solid #ff9800; /* Orange border */
+    background-color: #fff;    /* Optional: brightens background on focus */
+    box-shadow: 0 0 5px rgba(255, 152, 0, 0.3); /* Optional: adds a soft orange glow */
+}
+
+/* Smooth transition for the border color change */
+.form-group input, 
+.form-group select {
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    border: 2px solid #ddd; /* Base border */
+}
+
+.form-group input, .form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f9f9f9;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.btn-create {
+    background:linear-gradient(90deg, #eeb833 0%, #d9452b 100%);;
+   color: white;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.btn-create:hover {
+    background-color: #333;
+    transform: translateY(-1px); /* Slight lift effect */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+
+.btn-cancel {
+    background-color: #f5f5f5;
+    color: #666;
+    padding: 12px 28px;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-block;
+}
+
+.btn-cancel:hover {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+/* --- Extra: Input Base Styling --- */
+.form-group input, .form-group select {
+    border: 2px solid #eee;
+    transition: all 0.3s ease;
+}
+
 
 

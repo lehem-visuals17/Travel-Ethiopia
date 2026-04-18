@@ -1,9 +1,18 @@
 <?php
 // Database connection
 $conn = new mysqli("localhost", "root","","travel_db");
+$pageTitle = "Users";
+$query = "
+SELECT 
+    u.*,
+    COUNT(b.id) AS bookings_count,
+    COALESCE(SUM(b.total_price),0) AS total_spent
+FROM users u
+LEFT JOIN bookings b ON u.id = b.user_id
+GROUP BY u.id
+ORDER BY u.id DESC
+";
 
-// Fetch all users
-$query = "SELECT * FROM users ORDER BY id DESC";
 $result = $conn->query($query);
 $user_count = $result->num_rows;
 ?>
@@ -17,10 +26,12 @@ $user_count = $result->num_rows;
 
     <!-- Connect your CSS file here -->
     <link rel="stylesheet" href="users.css">
-    <?php include('includes/dashboard.php'); ?>
+    <?php include 
+    
+    "layout.php"; ?>
 
     <!-- If you are using Font Awesome, it goes here too -->
-    <link rel="stylesheet" href="https://cloudflare.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
    
@@ -63,18 +74,18 @@ $user_count = $result->num_rows;
                 <tbody>
                     <?php while($row = $result->fetch_assoc()): ?>
                     <tr>
-                        <td><strong><?php echo $row['name']; ?></strong></td>
+                        <td><strong><?php echo $row['fullname']; ?></strong></td>
                         <td><?php echo $row['email']; ?></td>
                         <td><?php echo $row['phone']; ?></td>
                         <td>
                             <select class="role-select">
-                                <option <?php if($row['role'] == 'Customer') echo 'selected'; ?>>Customer</option>
-                                <option <?php if($row['role'] == 'Admin') echo 'selected'; ?>>Admin</option>
-                            </select>
+        <option value="customer" <?php if($row['role']=='customer') echo 'selected'; ?>>Customer</option>
+        <option value="admin" <?php if($row['role']=='admin') echo 'selected'; ?>>Admin</option>
+    </select>
                         </td>
-                        <td><span class="status-pill active"><?php echo $row['status']; ?></span></td>
-                        <td><?php echo $row['bookings_count']; ?></td>
-                        <td>$<?php echo number_format($row['total_spent']); ?></td>
+                        <td><span class="status-pill active">Active</span></td>
+<td><?php echo $row['bookings_count']; ?></td>
+<td>$<?php echo number_format($row['total_spent'],2); ?></td>
                         <td><?php echo date('m/d/y', strtotime($row['created_at'])); ?></td>
                     </tr>
                     <?php endwhile; ?>
