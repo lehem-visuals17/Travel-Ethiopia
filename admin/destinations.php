@@ -10,7 +10,7 @@ $result = $conn->query($query);
 <head>
     <meta charset="UTF-8">
     <title>Ethiopian Destinations</title>
-    <link rel="stylesheet" href="https://cloudflare.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="modal.css">
     <?php include "layout.php"; ?>
 </head>
@@ -51,9 +51,16 @@ $result = $conn->query($query);
                 </div>
 
                 <div class="card-footer">
-                    <button class="btn-edit-small"><i class="fa-regular fa-pen-to-square"></i> Edit</button>
-                    <button class="btn-delete-small"><i class="fa-regular fa-trash-can"></i> Delete</button>
-                </div>
+    <a href="edit_destination.php?id=<?php echo $row['id']; ?>" class="btn-edit-small">
+        <i class="fa-regular fa-pen-to-square"></i> Edit
+    </a>
+
+    <a href="delete_destination.php?id=<?php echo $row['id']; ?>"
+       class="btn-delete-small"
+       onclick="return confirm('Are you sure you want to delete this destination?');">
+        <i class="fa-regular fa-trash-can"></i> Delete
+    </a>
+</div>
             </div>
         </div>
         <?php endwhile; ?>

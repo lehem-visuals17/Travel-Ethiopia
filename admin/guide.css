@@ -1,0 +1,105 @@
+/* Container Grid */
+.guide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    margin-left: 245px;
+}
+
+/* Main Card */
+.guide-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    border: 1px solid #eee;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+/* Header Section (Image & Name) */
+.guide-img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    float: left;
+    margin-right: 15px;
+}
+
+.guide-card h3 {
+    margin: 10px 0 5px 0;
+    font-size: 1.4rem;
+}
+
+.guide-rating {
+    color: #444;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Labels and Text */
+.guide-card p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+}
+
+.guide-card strong {
+    display: block;
+    color: #888;
+    font-weight: 400;
+    margin-top: 15px;
+    font-size: 0.85rem;
+}
+
+/* The "Pill" Tags */
+.tag {
+    display: inline-block;
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-right: 5px;
+    margin-top: 8px;
+    font-size: 0.85rem;
+}
+
+/* Years Highlight */
+.guide-card p:last-of-type {
+    color: #f39c12;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* Action Buttons */
+.guide-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.guide-actions a {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: 500;
+    border: 1px solid #eee;
+}
+
+.guide-actions a:first-child { /* Edit Button */
+    color: #333;
+    background: #fff;
+}
+
+.guide-actions a:last-child { /* Delete Button */
+    color: #d9534f;
+    background: #fff;
+}
+
+.guide-actions a:hover {
+    background: #f0f0f0;
+}

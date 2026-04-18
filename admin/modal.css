@@ -13,12 +13,15 @@
     margin-left: 239px;
     margin-right: 20px;
 }
-
+.btn-primary{
+    text-decoration: none;
+}
 .dest-header h1 { font-size: 1.8rem; color: #1a1a1a; margin-bottom: 5px; }
 .dest-header p { color: #888; font-size: 0.95rem; }
 
 /* The Grid */
 .dest-grid {
+    margin-left: 239px;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 30px;
@@ -47,8 +50,11 @@
 
 .card-img-area img {
     width: 100%;
-    height: 100%;
+    height: 220px;
     object-fit: cover;
+    object-fit: cover;
+    border-radius: 12px 12px 0 0;
+    display: block;
 }
 
 .type-badge {
@@ -126,6 +132,7 @@
 }
 
 .btn-edit-small, .btn-delete-small {
+    text-decoration: none;
     flex: 1;
     padding: 10px;
     border-radius: 10px;
@@ -244,3 +251,13 @@
     cursor: pointer; transition: 0.3s;
 }
 .btn-secondary:hover { background: #e5e5e5; }
+
+.guide-img{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    object-fit:cover;
+}
+.guide-grid{
+    margin-left: 250px;
+}
