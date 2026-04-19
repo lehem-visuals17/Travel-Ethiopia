@@ -1,0 +1,208 @@
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #fcfcfc;
+    margin: 0;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.dest-header {
+  margin-top: 90px;
+  margin-left: 110px;
+    width: 90%;
+    max-width: 1100px;
+    margin-bottom: 20px;
+    text-align: left;
+}
+.booking-stats{
+  margin-left: 110px;
+     display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    width: 100%;
+    max-width: 1100px;
+    margin-bottom: 40px;
+}
+.stat-box i { 
+    font-size: 17px; /* Reduced from 35px to match the image scale */
+}
+.stat-box{
+   background: #fff;
+    border: 1px solid #eee;
+    border-radius: 15px;
+    padding: 20px 25px;
+    display: flex;
+    justify-content: space-between; /* Pushes text left and icon right */
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02);
+}
+.stat-content { text-align: left; }
+.stat-content p {
+    margin: 0;
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.stat-content h3 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.stat-box i { font-size: 35px; }
+.stat-box.total i { color: #f39c12; }
+.stat-box.pending i { color: #f39c12; }
+.stat-box.pending h3 { color: #f39c12; } /* Orange numbers for pending */
+.stat-box.confirmed i { color: #27ae60; }
+.stat-box.confirmed h3 { color: #27ae60; }.stat-box.cancelled { border-bottom: 4px solid #e74c3c; }
+.container {
+   margin-left: 110px;
+   background: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid #eee;
+    width: 100%;
+    max-width: 1100px;}
+
+.container h2 {
+ 
+    font-size: 18px;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th {
+    text-align: left;
+    padding: 15px 10px;
+    color: #111;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+td {
+    padding: 20px 10px;
+    border-bottom: 1px solid #f8f8f8;
+    font-size: 15px;
+    color: #333;
+}
+
+tbody tr { transition: background-color 0.2s; }
+tbody tr:hover {
+    background-color: #fbfbfb; /* Subtle grey hover */
+}
+
+.price-cell {
+    color: #f39c12;
+    font-weight: 600;
+}
+
+/* Status Badges Styling */
+.status-badge {
+     padding: 5px 15px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.status-confirmed { background: #dcfce7; color: #16a34a; }
+.status-pending { background: #fef3c7; color: #d97706; }
+.status-cancelled { background: #ffebee; color: #e74c3c; }
+
+/* Buttons */
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+.btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #fff;
+    transition: transform 0.2s;
+}
+
+.btn:hover { transform: scale(1.1); }
+.approve { background: #2ecc71; }
+.reject { background: #e74c3c; }
+
+/* Custom Scroll UI */
+.custom-scroll {
+    background: #333;
+    height: 14px;
+    border-radius: 10px;
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    position: relative;
+}
+
+.scroll-thumb {
+    width: 30%;
+    height: 6px;
+    background: #888;
+    border-radius: 10px;
+    margin: 0 auto;
+}
+.scroll-bar { flex: 1; height: 2px; background: #444; margin: 0 10px; }.scroll-arrow { color: #fff; font-size: 10px; cursor: pointer; }
+.actions{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+}
+
+.btn{
+    width:34px;
+    height:34px;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-decoration:none;
+    color:#fff;
+    font-size:14px;
+}
+
+.approve{
+    background:#16a34a;
+}
+
+.reject{
+    background:#dc2626;
+}
+
+.status-badge{
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:13px;
+    font-weight:600;
+}
+
+.status-pending{
+    background:#fef3c7;
+    color:#92400e;
+}
+
+.status-confirmed{
+    background:#dcfce7;
+    color:#166534;
+}
+
+.status-cancelled{
+    background:#fee2e2;
+    color:#991b1b;
+}

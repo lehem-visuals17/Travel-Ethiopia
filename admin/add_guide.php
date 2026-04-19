@@ -14,7 +14,7 @@ if(isset($_POST['add_guide'])){
 
 if(!empty($_FILES['image']['name'])){
     $image = time() . "_" . basename($_FILES['image']['name']);
-    $target = "..admin/uploads/" . $image;
+    $target = "../uploads/" . $image;
 
     move_uploaded_file($_FILES['image']['tmp_name'], $target);
 }

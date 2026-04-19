@@ -87,6 +87,7 @@ $active_users = $conn->query("
 <head>
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="style.css">
+    
 </head>
 <body>
 
