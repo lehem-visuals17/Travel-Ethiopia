@@ -54,6 +54,7 @@ $result = $conn->query($sql);
 <meta charset="UTF-8">
 <title>Booking Management</title>
 <link rel="stylesheet" href="booking.css">
+<link rel="stylesheet" href="modal.css">
  
 <?php include "layout.php"; ?>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">

@@ -170,8 +170,8 @@ $active_users = $conn->query("
                 </div>
             </div>
         </div>
-        </div>
-<div class=list-column>
+       
+
         <div class="list-card">
             <div class="card-title"><i class="fa-solid fa-box-archive"></i> Most Booked Package</div>
             <div class="item-detail">

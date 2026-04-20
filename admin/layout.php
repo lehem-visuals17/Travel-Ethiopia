@@ -53,12 +53,12 @@ $current_page = basename($_SERVER['PHP_SELF']);
      <li class="<?php echo ($current_page == 'experience.php') ? 'active' : ''; ?>">
         <a href="experience.php">Experience</a>
     </li>
-     <li class="<?php echo ($current_page == 'blog.php') ? 'active' : ''; ?>">
-    <a href="blog.php">
-        
-        Blog
-    </a>
-</li>
+    <li class="<?php echo ($current_page == 'blog.php') ? 'active' : ''; ?>">
+    <a href="blog.php">Blog</a>
+    </li>
+    <li class="<?php echo ($current_page == 'deals.php') ? 'active' : ''; ?>">
+    <a href="deals.php">Deals</a>
+    </li>
      
     <!-- Repeat for the rest of your links... -->
 </ul>

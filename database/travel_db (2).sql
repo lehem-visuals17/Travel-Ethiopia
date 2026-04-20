@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 16, 2026 at 09:46 PM
+-- Generation Time: Apr 20, 2026 at 11:49 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -83,6 +83,13 @@ CREATE TABLE `destinations` (
   `image4` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `destinations`
+--
+
+INSERT INTO `destinations` (`id`, `name`, `tagline`, `region`, `type`, `description`, `best_time`, `weather_info`, `average_cost`, `budget_cost`, `standard_cost`, `luxury_cost`, `accommodation`, `rating`, `reviews`, `map_location`, `image`, `image2`, `image3`, `image4`) VALUES
+(2, 'lalibela', 'hey', 'Southern', 'adventure', 'hey you, just come and visit. i have too many to do more than explaining to u', 'october', 'dry', NULL, '500', '650', '1000', NULL, 0.00, 0, NULL, '1776544011_adventure.jpg', NULL, NULL, NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -93,11 +100,17 @@ CREATE TABLE `experiences` (
   `id` int(11) NOT NULL,
   `name` varchar(150) DEFAULT NULL,
   `type` varchar(100) DEFAULT NULL,
+  `category` varchar(50) DEFAULT NULL,
   `location` varchar(150) DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
   `duration` varchar(50) DEFAULT NULL,
   `description` text DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL
+  `image` varchar(255) DEFAULT NULL,
+  `difficulty` enum('Easy','Moderate','Challenging') DEFAULT 'Easy',
+  `status` enum('Active','Inactive') DEFAULT 'Active',
+  `capacity` int(11) DEFAULT 0,
+  `is_featured` tinyint(1) DEFAULT 0,
+  `availability_status` varchar(50) DEFAULT 'Available'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -113,8 +126,16 @@ CREATE TABLE `guides` (
   `phone` varchar(20) DEFAULT NULL,
   `language` varchar(50) DEFAULT NULL,
   `experience_years` int(11) DEFAULT NULL,
-  `rating` decimal(3,2) DEFAULT NULL
+  `rating` decimal(3,2) DEFAULT NULL,
+  `image` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `guides`
+--
+
+INSERT INTO `guides` (`id`, `destination_id`, `name`, `phone`, `language`, `experience_years`, `rating`, `image`) VALUES
+(1, 2, 'avi', '0989878978', 'amharic', 2, 0.00, '1776544383_Apply a mystical Eth.png');
 
 -- --------------------------------------------------------
 
@@ -131,8 +152,20 @@ CREATE TABLE `packages` (
   `duration` varchar(50) DEFAULT NULL,
   `includes` text DEFAULT NULL,
   `rating` decimal(3,2) DEFAULT NULL,
-  `image` varchar(255) DEFAULT NULL
+  `image` varchar(255) DEFAULT NULL,
+  `max_people` int(11) DEFAULT 1,
+  `featured` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `packages`
+--
+
+INSERT INTO `packages` (`id`, `title`, `type`, `description`, `price`, `duration`, `includes`, `rating`, `image`, `max_people`, `featured`) VALUES
+(1, 'honey moon package', 'honeymoon', 'enjoy your honey moon with us', 12000.00, '7days/6nights', 'hotel,guide', 4.00, '1776624696_1776544011_adventure.jpg', 2, 1),
+(2, 'family time', 'family', 'live the moment with your family', 3000.00, '4days/3 nights', 'hotel,transport,meals', 4.80, '1776625170_adventure.jpg', 8, 1),
+(3, 'luxury time', 'luxury', 'good time', 5000.00, '3 days/2 nights', 'hotel,transport,meals,guide', 5.00, '1776625241_1776544011_adventure.jpg', 3, 0),
+(4, 'hihi', 'budget', 'hihi hihi', 2000.00, '10 days', 'hotel', 4.30, '1776625296_1776544011_adventure.jpg', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -216,7 +249,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `fullname`, `username`, `email`, `password`, `phone`, `role`, `created_at`) VALUES
-(1, 'Bete', 'bet', 'betelhembelayneh58@gmail.com', '$2y$10$eFOSNp6m4Dhzhzaqbb1ZDOkB.YKC2Qy26xyOnA3Xc5gqsHdBKXW7q', '0956264326', 'customer', '2026-04-16 17:33:12');
+(1, 'Bete', 'bet', 'betelhembelayneh58@gmail.com', '$2y$10$eFOSNp6m4Dhzhzaqbb1ZDOkB.YKC2Qy26xyOnA3Xc5gqsHdBKXW7q', '0956264326', 'customer', '2026-04-16 17:33:12'),
+(2, 'Betelhem', 'lehem', 'betelhem.belayneh21@gmail.com', '$2y$10$eHCCqgWHnIy0018HgEyLqu8qOIufAomfcLZzHYfhmx8IY6OztweaK', '0956264326', 'customer', '2026-04-17 20:57:28'),
+(3, 'avi', 'avi32@gmail.com', 'avi32@gmail.com', '$2y$10$eAVHrWZJcJ6wY4iuJAwUW.mAPtndBkid.EhSoFaFnv6729j5HIPge', '0924322824', 'customer', '2026-04-18 10:52:17'),
+(4, 'tigi', 'tigi@gmail.com', 'tigi@gmail.com', '$2y$10$opPTJbOORUzymjQ3KP0QBeqN4bvm0XpSIvCBiM9jRreygK9TfQ09.', '0956264326', 'customer', '2026-04-18 11:24:46');
 
 --
 -- Indexes for dumped tables
@@ -321,7 +357,7 @@ ALTER TABLE `bookings`
 -- AUTO_INCREMENT for table `destinations`
 --
 ALTER TABLE `destinations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `experiences`
@@ -333,13 +369,13 @@ ALTER TABLE `experiences`
 -- AUTO_INCREMENT for table `guides`
 --
 ALTER TABLE `guides`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `packages`
 --
 ALTER TABLE `packages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `package_destinations`
@@ -369,7 +405,7 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
