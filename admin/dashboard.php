@@ -1,4 +1,12 @@
 <?php
+
+session_start();
+
+if(!isset($_SESSION['user_id']) || $_SESSION['role'] != 'admin'){
+    header("Location: ../index.php");
+    exit();
+}
+
 include "../db.php";
 
 $pageTitle = "Dashboard";
@@ -59,8 +67,8 @@ $recent_bookings = $conn->query("
 
 /* New users */
 $new_users = $conn->query("
-    SELECT fullname, email, role, created_at
-    FROM users
+    SELECT id, fullname, email, role, created_at
+FROM users
     ORDER BY created_at DESC
     LIMIT 5
 ");
@@ -157,68 +165,127 @@ $active_users = $conn->query("
         </div>
     </div>
 
-    <div class="secondary-grid">
-        <div class=info-column>
-        <div class="info-card">
-            <div class="card-title"><i class="fa-solid fa-compass"></i> Most Popular Destination</div>
-            <div class="item-detail">
-                <img src="../uploads/<?php echo $popular_dest['image']; ?>" class="thumb">
-                <div class="item-text">
-                    <h3><?php echo $popular_dest['name']; ?></h3>
-                    <p><?php echo $popular_dest['region']; ?></p>
-                    <span class="rating">⭐ <?php echo $popular_dest['rating']; ?></span>
-                </div>
-            </div>
-        </div>
-       
+<div class="secondary-grid">
 
-        <div class="list-card">
-            <div class="card-title"><i class="fa-solid fa-box-archive"></i> Most Booked Package</div>
-            <div class="item-detail">
-                <img src="../uploads/<?php echo $top_package['image']; ?>" class="thumb">
-                <div class="item-text">
-                    <h3><?php echo $top_package['title']; ?></h3>
-                    <p><?php echo $top_package['duration']; ?></p>
-                    <span class="price">$<?php echo number_format($top_package['price']); ?></span>
-                </div>
-            </div>
+    <!-- Most Popular -->
+    <div class="info-card">
+        <div class="card-title">
+            <i class="fa-solid fa-location-dot"></i> Most Popular Destination
         </div>
 
-
-        <div class="list-card">
-            <div class="card-title"><i class="fa-solid fa-calendar-day"></i> Recent Bookings</div>
-            <?php while($row = $recent_bookings->fetch_assoc()): ?>
-            <div class="list-item">
-                <div>
-                    <strong><?php echo $row['user_name']; ?></strong><br>
-                    <small><?php echo $row['package_name']; ?></small><br>
-                    <small class="date"><?php echo date('n/j/Y', strtotime($row['created_at'])); ?></small>
-                </div>
-                <div class="status-col">
-                    <span class="price-small">$<?php echo number_format($row['total_price']); ?></span>
-                    <span class="status-pill <?php echo $row['status']; ?>"><?php echo $row['status']; ?></span>
-                </div>
+        <div class="item-detail">
+            <img src="../uploads/<?php echo htmlspecialchars($popular_dest['image']); ?>" class="thumb">
+            <div class="item-text">
+                <h3><?php echo $popular_dest['name']; ?></h3>
+                <p><?php echo $popular_dest['region']; ?></p>
+                <span class="rating">⭐ <?php echo $popular_dest['rating']; ?></span><br>
+                <small><?php echo $popular_dest['total_bookings']; ?> bookings</small>
             </div>
-            <?php endwhile; ?>
-        </div></div>
-
-        <div class="list-card">
-            <div class="card-title"><i class="fa-solid fa-user-plus"></i> New User Registrations</div>
-            <?php while($user = $new_users->fetch_assoc()): ?>
-            <div class="list-item">
-                <div class="user-avatar-small"><?php echo strtoupper(substr($user['fullname'], 0, 1)); ?></div>
-                <div class="user-meta">
-                    <strong><?php echo $user['fullname']; ?></strong><br>
-                    <small><?php echo $user['email']; ?></small>
-                </div>
-                <div class="user-badge-col">
-                    <span class="role-badge"><?php echo $user['role']; ?></span>
-                    <small><?php echo date('n/j/Y', strtotime($user['created_at'])); ?></small>
-                </div>
-            </div>
-            <?php endwhile; ?>
         </div>
     </div>
+
+    <!-- Most booked package -->
+    <div class="info-card">
+        <div class="card-title">
+            <i class="fa-solid fa-box"></i> Most Booked Package
+        </div>
+
+        <div class="item-detail">
+            <img src="../uploads/<?php echo htmlspecialchars($top_package['image']); ?>" class="thumb">
+            <div class="item-text">
+                <h3><?php echo $top_package['title']; ?></h3>
+                <p><?php echo $top_package['duration']; ?></p>
+                <span class="price">$<?php echo number_format($top_package['price']); ?></span><br>
+                <small><?php echo $top_package['total_sales']; ?> bookings</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent bookings -->
+    <div class="info-card">
+        <div class="card-title">
+            <i class="fa-solid fa-calendar-check"></i> Recent Bookings
+        </div>
+
+        <?php while($row = $recent_bookings->fetch_assoc()): ?>
+        <div class="list-item">
+            <div>
+                <strong><?php echo $row['user_name']; ?></strong><br>
+                <small><?php echo $row['package_name']; ?></small>
+            </div>
+            <div>
+                <span class="price-small">$<?php echo number_format($row['total_price']); ?></span><br>
+                <span class="status-pill <?php echo $row['status']; ?>">
+                    <?php echo ucfirst($row['status']); ?>
+                </span>
+            </div>
+        </div>
+        <?php endwhile; ?>
+
+    </div>
+
+</div>
+
+<div class="users-section">
+    <div class="card-title">
+        <i class="fa-solid fa-users"></i> User Management
+    </div>
+
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <?php while($user = $new_users->fetch_assoc()): ?>
+            <tr>
+                <td><?php echo $user['fullname']; ?></td>
+                <td><?php echo $user['email']; ?></td>
+                <td>
+    <span class="role-badge role-<?php echo strtolower($user['role']); ?>">
+        <?php echo ucfirst($user['role']); ?>
+    </span>
+</td>
+                <td><?php echo date("n/j/Y", strtotime($user['created_at'])); ?></td>
+                <td>
+    <span class="status-badge status-<?php echo strtolower($user['status'] ?? 'active'); ?>">
+        <?php echo ucfirst($user['status'] ?? 'active'); ?>
+    </span>
+</td>
+                <td class="action-icons">
+    <a href="edit_user.php?id=<?php echo $user['id']; ?>" class="btn-edit" title="Edit">
+        <i class="fa fa-pen"></i>
+    </a>
+
+    <a href="reset_password.php?id=<?php echo $user['id']; ?>" class="btn-password" title="Reset Password">
+        <i class="fa fa-key"></i>
+    </a>
+
+    <a href="change_role.php?id=<?php echo $user['id']; ?>" class="btn-role" title="Change Role">
+        <i class="fa fa-user-shield"></i>
+    </a>
+
+    <a href="toggle_user.php?id=<?php echo $user['id']; ?>" class="btn-status" title="Suspend/Activate">
+        <i class="fa fa-user-lock"></i>
+    </a>
+
+    <a href="delete_user.php?id=<?php echo $user['id']; ?>" class="btn-delete"
+       onclick="return confirm('Delete this user?')" title="Delete">
+        <i class="fa fa-trash"></i>
+    </a>
+</td>
+            </tr>
+            <?php endwhile; ?>
+        </tbody>
+    </table>
+</div>
 
     <div class="activity-summary-card">
         <div class="summary-header">
@@ -248,7 +315,7 @@ $active_users = $conn->query("
             </div>
         </div>
     </div>
-</div>
+
 
 </body>
 </html>

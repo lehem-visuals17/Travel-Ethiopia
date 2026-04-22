@@ -1,0 +1,133 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    margin: 40px;
+}
+
+.container {
+    max-width: 1000px;
+    margin: auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    margin-top: 110px;
+    margin-left: 240px;
+}
+
+.header h1 { margin: 0; font-size: 24px; color: #222; }
+.header p { margin: 5px 0 0; color: #777; font-size: 14px; }
+
+.btn-new {
+    background-color: #ff8c00;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.blog-card {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    display: flex;
+    padding: 20px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.card-left img {
+    width: 150px;
+    height: 100px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.card-center {
+    flex-grow: 1;
+    padding: 0 25px;
+}
+
+.card-center h2 { font-size: 18px; margin: 0; }
+.card-center .summary { color: #888; font-size: 14px; margin: 8px 0; }
+
+.meta-row { display: flex; align-items: center; gap: 15px; margin-bottom: 10px; }
+.tag-category { font-weight: 500; font-size: 13px; color: #444; }
+.tag-status { background: #e6f7ef; color: #28a745; padding: 3px 10px; border-radius: 4px; font-size: 12px; }
+.meta-text { font-size: 13px; color: #999; }
+
+.published-date { font-size: 13px; color: #aaa; margin: 0; }
+
+.card-right { display: flex; gap: 10px; }
+.btn-action {
+    text-decoration: none;
+    border: 1px solid #e0e0e0;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #444;
+}
+
+.btn-delete { color: #dc3545; }
+.btn-action i { margin-right: 5px; }
+
+/* Modal Background */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5); /* Dim background */
+}
+
+/* Modal Box */
+.modal-content {
+    background-color: #fff;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 12px;
+    width: 50%;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.close-btn { font-size: 28px; cursor: pointer; color: #aaa; }
+
+/* Form Elements */
+.form-group { margin-bottom: 15px; }
+.form-row { display: flex; gap: 15px; }
+.form-row .form-group { flex: 1; }
+
+label { display: block; font-size: 14px; margin-bottom: 5px; font-weight: bold; }
+input, textarea, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box; /* Critical for padding */
+}
+
+.btn-save {
+    background-color: #ff8c00;
+    color: white;
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+}
+

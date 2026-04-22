@@ -52,30 +52,37 @@ if (isset($_POST['username']) && !isset($_POST['fullname'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    // Search for user by username
-    $stmt = $conn->prepare("SELECT id, username, password, role FROM users WHERE username = ?");
+    $stmt = $conn->prepare("SELECT id, username, password, role FROM users WHERE username=?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
+
     $result = $stmt->get_result();
 
     if ($user = $result->fetch_assoc()) {
-        // User exists, now verify password hash
+
         if (password_verify($password, $user['password'])) {
-            // SUCCESS: Setup session and redirect to booking page
+
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['role'] = $user['role'];
 
-            header("Location: booking.html"); // Leads to booking.html as requested
+            // redirect by role
+            if ($user['role'] == 'admin') {
+                header("Location: admin/dashboard.php");
+            } else {
+                header("Location: booking.html");
+            }
+
             exit();
+
         } else {
-            // WRONG PASSWORD
-            echo "<script>alert('Incorrect password! Please try again.'); window.history.back();</script>";
+            echo "<script>alert('Incorrect password!'); window.history.back();</script>";
         }
+
     } else {
-        // USERNAME NOT FOUND
-        echo "<script>alert('No account found with this username. Please sign up!'); window.history.back();</script>";
+        echo "<script>alert('No account found!'); window.history.back();</script>";
     }
+
     $stmt->close();
 }
 

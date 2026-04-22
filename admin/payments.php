@@ -87,8 +87,14 @@ $result = $conn->query("SELECT p.*, u.fullname FROM payments p LEFT JOIN users u
                     <td style="font-weight: bold; color: <?php echo ($row['status']=='paid') ? '#22a35a' : '#d48a00'; ?>">
                         $<?php echo number_format($row['amount']); ?>
                     </td>
-                    <td><span class="method-badge" style="background:#e0d4ff; color:#6f42c1;"><?php echo $row['method']; ?></span></td>
-                    <td><span class="type-badge" style="border: 1px solid #ddd;"><?php echo ucfirst($row['payment_type']); ?></span></td>
+                    <!-- Change the method line to this -->
+<td>
+    <span class="method-badge badge-<?php echo strtolower($row['method']); ?>">
+        <?php echo $row['method']; ?>
+    </span>
+</td>
+
+<td><span class="type-badge" style="border: 1px solid #ddd;"><?php echo ucfirst($row['payment_type']); ?></span></td>
                     <td><?php echo date("n/j/Y", strtotime($row['created_at'])); ?></td>
                     <td>
                         <span class="status-badge status-<?php echo $row['status']; ?>">
