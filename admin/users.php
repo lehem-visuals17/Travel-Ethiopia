@@ -1,7 +1,8 @@
 <?php
-// Database connection
 $conn = new mysqli("localhost", "root","","travel_db");
+
 $pageTitle = "Users";
+
 $query = "
 SELECT 
     u.*,
@@ -18,131 +19,154 @@ $user_count = $result->num_rows;
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Users</title>
 
-    <!-- Connect your CSS file here -->
     <link rel="stylesheet" href="users.css">
-    <?php include 
-    
-    "layout.php"; ?>
-
-    <!-- If you are using Font Awesome, it goes here too -->
+    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <?php include "layout.php"; ?>
 </head>
+
 <body>
-   
 
 <div class="user-management-container">
+
     <div class="page-header">
         <div>
             <h1>User Management</h1>
-            <p>Manage all users and their permissions</p>
+            <p>Manage users and permissions</p>
         </div>
-        <!-- The Add User Button -->
-        <button class="btn-add-user" onclick="openAddModal()">
-    <i class="fa-solid fa-user-plus"></i> Add User
-</button>
-    </div>
 
-    <div class="search-section">
-        <div class="search-wrapper">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" placeholder="Search users by name or email...">
-        </div>
+        <button class="btn-add-user" onclick="openAddModal()">
+            <i class="fa-solid fa-user-plus"></i> Add User
+        </button>
     </div>
 
     <div class="table-card">
-    <h3>All Users (<?php echo $user_count; ?>)</h3>
 
-    <div class="table-responsive">
-        <table>
-            <thead>
-                <tr>
-                    <th>Full Name</th>
-                    <th>Username</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>Role</th>
-                    <th>Bookings</th>
-                    <th>Total Spent</th>
-                    <th>Created</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
+        <h3>All Users (<?php echo $user_count; ?>)</h3>
 
-            <tbody>
-                <?php while($row = $result->fetch_assoc()): ?>
-                <tr>
-                    <td><?php echo htmlspecialchars($row['fullname']); ?></td>
-                    <td><?php echo htmlspecialchars($row['username']); ?></td>
-                    <td><?php echo htmlspecialchars($row['email']); ?></td>
-                    <td><?php echo htmlspecialchars($row['phone']); ?></td>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Full Name</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Bookings</th>
+                        <th>Total Spent</th>
+                        <th>Created</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
 
-                    <td>
-                        <span class="role-badge <?php echo $row['role']; ?>">
-                            <?php echo ucfirst($row['role']); ?>
-                        </span>
-                    </td>
+                <tbody>
+                    <?php while($row = $result->fetch_assoc()): ?>
+                    <tr>
 
-                    <td><?php echo $row['bookings_count']; ?></td>
+                        <td><?php echo htmlspecialchars($row['fullname']); ?></td>
+                        <td><?php echo htmlspecialchars($row['username']); ?></td>
+                        <td><?php echo htmlspecialchars($row['email']); ?></td>
+                        <td><?php echo htmlspecialchars($row['phone'] ?? ''); ?></td>
 
-                    <td>$<?php echo number_format($row['total_spent'], 2); ?></td>
+                        <td>
+                            <span class="role-badge role-<?php echo strtolower($row['role']); ?>">
+                                <?php echo ucfirst($row['role']); ?>
+                            </span>
+                        </td>
 
-                    <td><?php echo date('m/d/Y', strtotime($row['created_at'])); ?></td>
+                        <td>
+                            <span class="status-badge status-<?php echo strtolower($row['status'] ?? 'active'); ?>">
+                                <?php echo ucfirst($row['status'] ?? 'active'); ?>
+                            </span>
+                        </td>
 
-                    <td class="action-buttons">
-                        <button class="btn-edit" onclick='openEditModal(
-                            <?php echo $row["id"]; ?>,
-                            "<?php echo addslashes($row["fullname"]); ?>",
-                            "<?php echo addslashes($row["username"]); ?>",
-                            "<?php echo addslashes($row["email"]); ?>",
-                            "<?php echo addslashes($row["phone"]); ?>",
-                            "<?php echo $row["role"]; ?>"
-                        )'>
-                            Edit
-                        </button>
+                        <td><?php echo $row['bookings_count']; ?></td>
+                        <td>$<?php echo number_format($row['total_spent'], 2); ?></td>
+                        <td><?php echo date('m/d/Y', strtotime($row['created_at'])); ?></td>
 
-                        <a class="btn-delete"
-                           href="delete_user.php?id=<?php echo $row['id']; ?>"
-                           onclick="return confirm('Delete this user?')">
-                           Delete
-                        </a>
-                    </td>
-                </tr>
-                <?php endwhile; ?>
-            </tbody>
+                        <!-- FULL DASHBOARD ACTION BUTTONS -->
+                        <td class="action-icons">
 
-        </table>
+                            <!-- EDIT -->
+                            <a href="#"
+                               class="btn-edit"
+                               onclick="openEditModal(
+                                   '<?php echo $row['id']; ?>',
+                                   '<?php echo htmlspecialchars($row['fullname'], ENT_QUOTES); ?>',
+                                   '<?php echo htmlspecialchars($row['username'], ENT_QUOTES); ?>',
+                                   '<?php echo htmlspecialchars($row['email'], ENT_QUOTES); ?>',
+                                   '<?php echo htmlspecialchars($row['phone'] ?? '', ENT_QUOTES); ?>',
+                                   '<?php echo $row['role']; ?>',
+                                   '<?php echo $row['status'] ?? 'active'; ?>'
+                               )">
+                                <i class="fa fa-pen"></i>
+                            </a>
+
+                            <!-- RESET PASSWORD -->
+                            <a href="reset_password.php?id=<?php echo $row['id']; ?>" class="btn-password">
+                                <i class="fa fa-key"></i>
+                            </a>
+
+                            <!-- CHANGE ROLE -->
+                            <a href="change_role.php?id=<?php echo $row['id']; ?>" class="btn-role">
+                                <i class="fa fa-user-shield"></i>
+                            </a>
+
+                            <!-- TOGGLE STATUS -->
+                            <a href="toggle_user.php?id=<?php echo $row['id']; ?>" class="btn-status">
+                                <i class="fa fa-user-lock"></i>
+                            </a>
+
+                            <!-- DELETE -->
+                            <a href="delete_user.php?id=<?php echo $row['id']; ?>"
+                               class="btn-delete"
+                               onclick="return confirm('Delete this user?')">
+                                <i class="fa fa-trash"></i>
+                            </a>
+
+                        </td>
+
+                    </tr>
+                    <?php endwhile; ?>
+                </tbody>
+
+            </table>
+        </div>
     </div>
 </div>
-</div>
 
+<!-- MODAL -->
 <div id="userModal" class="modal">
     <div class="modal-content">
+
         <span class="close" onclick="closeModal()">&times;</span>
 
         <h2 id="modalTitle">Add User</h2>
 
         <form action="save_user.php" method="POST">
+
             <input type="hidden" name="id" id="user_id">
 
             <div class="form-group">
                 <label>Full Name</label>
-                <input type="text" name="fullname" id="fullname" required>
+                <input type="text" name="fullname" id="fullname">
             </div>
 
             <div class="form-group">
                 <label>Username</label>
-                <input type="text" name="username" id="username" required>
+                <input type="text" name="username" id="username">
             </div>
 
             <div class="form-group">
                 <label>Email</label>
-                <input type="email" name="email" id="email" required>
+                <input type="email" name="email" id="email">
             </div>
 
             <div class="form-group">
@@ -163,46 +187,58 @@ $user_count = $result->num_rows;
                 </select>
             </div>
 
+            <div class="form-group" id="statusGroup" style="display:none;">
+                <label>Status</label>
+                <select name="status" id="status">
+                    <option value="active">Active</option>
+                    <option value="suspended">Suspended</option>
+                </select>
+            </div>
+
             <button type="submit" class="btn-create">Save User</button>
+
         </form>
     </div>
 </div>
 
 <script>
-function openAddModal() {
+function openAddModal(){
     document.getElementById("modalTitle").innerText = "Add User";
-    document.getElementById("user_id").value = "";
-    document.getElementById("fullname").value = "";
-    document.getElementById("email").value = "";
-    document.getElementById("phone").value = "";
-    document.getElementById("password").value = "";
-    document.getElementById("role").value = "customer";
+
+    user_id.value = "";
+    fullname.value = "";
+    username.value = "";
+    email.value = "";
+    phone.value = "";
+    password.value = "";
+    role.value = "customer";
+    status.value = "active";
 
     document.querySelector(".password-group").style.display = "block";
-    document.getElementById("userModal").style.display = "block";
+    document.getElementById("statusGroup").style.display = "none";
+
+    userModal.style.display = "block";
 }
 
-function openEditModal(id, fullname, username, email, phone, role) {
+function openEditModal(id, name, uname, email, phone, role, status){
     document.getElementById("modalTitle").innerText = "Edit User";
-    document.getElementById("user_id").value = id;
-    document.getElementById("fullname").value = fullname;
-    document.getElementById("username").value = username;
-    document.getElementById("email").value = email;
-    document.getElementById("phone").value = phone;
-    document.getElementById("role").value = role;
+
+    user_id.value = id;
+    fullname.value = name;
+    username.value = uname;
+    email.value = email;
+    phone.value = phone;
+    role.value = role;
+    status.value = status;
 
     document.querySelector(".password-group").style.display = "none";
-    document.getElementById("userModal").style.display = "block";
+    document.getElementById("statusGroup").style.display = "block";
+
+    userModal.style.display = "block";
 }
 
-function closeModal() {
-    document.getElementById("userModal").style.display = "none";
-}
-
-window.onclick = function(e) {
-    if (e.target == document.getElementById("userModal")) {
-        closeModal();
-    }
+function closeModal(){
+    userModal.style.display = "none";
 }
 </script>
 

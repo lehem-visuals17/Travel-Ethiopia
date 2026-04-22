@@ -1,33 +1,60 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "travel_db");
+include "../db.php";
 
-$id = $_POST['id'];
-$fullname = $_POST['fullname'];
-$username = $_POST['username'];
-$email = $_POST['email'];
-$phone = $_POST['phone'];
-$role = $_POST['role'];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-if ($id == "") {
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $id = $_POST['id'] ?? "";
 
-    $stmt = $conn->prepare("
-        INSERT INTO users (fullname, username, email, password, phone, role)
-        VALUES (?, ?, ?, ?, ?, ?)
-    ");
-    $stmt->bind_param("ssssss", $fullname, $username, $email, $password, $phone, $role);
+    $fullname = $_POST['fullname'];
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $role = $_POST['role'];
 
-} else {
-    $stmt = $conn->prepare("
-        UPDATE users
-        SET fullname=?, username=?, email=?, phone=?, role=?
-        WHERE id=?
-    ");
-    $stmt->bind_param("sssssi", $fullname, $username, $email, $phone, $role, $id);
+    if ($id == "") {
+
+        // ADD USER
+        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+
+        $stmt = $conn->prepare("
+            INSERT INTO users (fullname, username, email, password, phone, role, status)
+            VALUES (?, ?, ?, ?, ?, ?, 'active')
+        ");
+
+        $stmt->bind_param("ssssss",
+            $fullname,
+            $username,
+            $email,
+            $password,
+            $phone,
+            $role
+        );
+
+    } else {
+
+        // UPDATE USER
+        $status = $_POST['status'];
+
+        $stmt = $conn->prepare("
+            UPDATE users 
+            SET fullname=?, username=?, email=?, phone=?, role=?, status=?
+            WHERE id=?
+        ");
+
+        $stmt->bind_param("ssssssi",
+            $fullname,
+            $username,
+            $email,
+            $phone,
+            $role,
+            $status,
+            $id
+        );
+    }
+
+    $stmt->execute();
+
+    header("Location: users_list.php");
+    exit();
 }
-
-$stmt->execute();
-
-header("Location: user.php");
-exit();
 ?>

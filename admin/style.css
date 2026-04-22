@@ -232,6 +232,12 @@ h1{
     font-size: 0.9rem;
     margin-bottom: 15px;
 }
+.table-scroll{
+    overflow-x:auto;
+}
+.user-table{
+    min-width:700px;
+}
 
 .icon-box {
     width: 35px;

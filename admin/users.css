@@ -135,3 +135,9 @@ td {
     background:#e8f4fd;
     color:#3498db;
 }
+.table-scroll{
+    overflow-x:auto;
+}
+.user-table{
+    min-width:700px;
+}
