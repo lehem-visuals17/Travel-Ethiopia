@@ -110,8 +110,11 @@ $user_count = $result->num_rows;
                             </a>
 
                             <!-- RESET PASSWORD -->
-                            <a href="reset_password.php?id=<?php echo $row['id']; ?>" class="btn-password">
-                                <i class="fa fa-key"></i>
+                            <a href="#"
+   class="btn-password"
+   onclick="openPasswordModal(<?php echo $row['id']; ?>)">
+    <i class="fa fa-key"></i>
+</a>
                             </a>
 
                             <!-- CHANGE ROLE -->
@@ -201,40 +204,82 @@ $user_count = $result->num_rows;
     </div>
 </div>
 
+<!-- CHANGE PASSWORD MODAL -->
+<div id="passwordModal" class="modal">
+    <div class="modal-content">
+
+        <span class="close" onclick="closePasswordModal()">&times;</span>
+
+        <h2>Change Password</h2>
+
+        <form action="change_password.php" method="POST">
+
+            <input type="hidden" name="user_id" id="pass_user_id">
+
+            <div class="form-group">
+                <label>Old Password</label>
+                <input type="password" name="old_password" required>
+            </div>
+
+            <div class="form-group">
+                <label>New Password</label>
+                <input type="password" name="new_password" required>
+            </div>
+
+            <div class="form-group">
+                <label>Confirm New Password</label>
+                <input type="password" name="confirm_password" required>
+            </div>
+
+            <button type="submit" class="btn-create">Update Password</button>
+
+        </form>
+    </div>
+</div>
+
 <script>
+    function openPasswordModal(id){
+    document.getElementById("pass_user_id").value = id;
+    document.getElementById("passwordModal").style.display = "block";
+}
+
+function closePasswordModal(){
+    document.getElementById("passwordModal").style.display = "none";
+}
+
 function openAddModal(){
     document.getElementById("modalTitle").innerText = "Add User";
 
-    user_id.value = "";
-    fullname.value = "";
-    username.value = "";
-    email.value = "";
-    phone.value = "";
-    password.value = "";
-    role.value = "customer";
-    status.value = "active";
+    document.getElementById("user_id").value = "";
+    document.getElementById("fullname").value = "";
+    document.getElementById("username").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("phone").value = "";
+    document.getElementById("password").value = "";
+    document.getElementById("role").value = "customer";
+    document.getElementById("status").value = "active";
 
     document.querySelector(".password-group").style.display = "block";
     document.getElementById("statusGroup").style.display = "none";
 
-    userModal.style.display = "block";
+    document.getElementById("userModal").style.display = "block";
 }
 
-function openEditModal(id, name, uname, email, phone, role, status){
+function openEditModal(id, name, uname, userEmail, userPhone, userRole, userStatus){
     document.getElementById("modalTitle").innerText = "Edit User";
 
-    user_id.value = id;
-    fullname.value = name;
-    username.value = uname;
-    email.value = email;
-    phone.value = phone;
-    role.value = role;
-    status.value = status;
+    document.getElementById("user_id").value = id;
+    document.getElementById("fullname").value = name;
+    document.getElementById("username").value = uname;
+    document.getElementById("email").value = userEmail;
+    document.getElementById("phone").value = userPhone;
+    document.getElementById("role").value = userRole;
+    document.getElementById("status").value = userStatus;
 
     document.querySelector(".password-group").style.display = "none";
     document.getElementById("statusGroup").style.display = "block";
 
-    userModal.style.display = "block";
+    document.getElementById("userModal").style.display = "block";
 }
 
 function closeModal(){

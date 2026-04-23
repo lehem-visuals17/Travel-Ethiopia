@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $stmt->execute();
 
-    header("Location: users_list.php");
-    exit();
+    header("Location: users.php");
+exit();
 }
 ?>
