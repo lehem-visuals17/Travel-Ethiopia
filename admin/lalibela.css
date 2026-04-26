@@ -1,0 +1,1087 @@
+* {
+    box-sizing: border-box;
+}
+body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f8f8f8;
+            color: #333;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Back button */
+        .back-btn {
+    position: fixed;
+    top: 20px;       /* top-left instead of bottom-right */
+    left: 20px;
+
+    background: transparent;
+    color: rgb(143, 127, 3);
+    padding: 10px 14px;
+    border-radius: 25px;
+
+    font-size: 14px;
+    
+    text-decoration: none;
+
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: 0.3s;
+    z-index: 1000;
+}
+
+/* Hover effect */
+.back-btn:hover {
+    background: #e68900;
+    transform: translateY(-2px);
+}
+
+        /* Image header section */
+        .image-container {
+    position: relative;
+    width: 96%;              /* creates space on left & right */
+    max-width: 1100px;       /* keeps it clean on large screens */
+    height: 400px;
+    margin: 15px auto;       /* centers it horizontally */
+    overflow: hidden;
+    border-radius: 22px;
+     box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+     background: #000;
+}
+
+.main-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+     transition: opacity 0.4s ease;
+     transition: transform 0.3s ease;
+}  
+
+.main-img.fade {
+    opacity: 0;
+}
+.image-container:hover .main-img {
+    transform: scale(1.05);
+}
+       .top-icons span {
+            font-size: 28px;
+            color: white;
+            cursor: pointer;
+            text-shadow: 0 0 5px rgba(0,0,0,0.7);
+            transition: color 0.3s;
+        }
+        /* Top-right icons */
+        .top-icons {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            gap: 15px;
+        }
+
+        .top-icons span {
+            font-size: 28px;
+            color: white;
+            cursor: pointer;
+            text-shadow: 0 0 5px rgba(0,0,0,0.7);
+            transition: color 0.3s;
+        }
+        .top-icons span.active {
+            color: red;
+        }
+
+        /* Bottom-left overlay text */
+        .text-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+           
+            padding: 15px 20px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+
+        .text-overlay .location {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .text-overlay .place-name {
+            margin: 0;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .text-overlay .tagline {
+            margin: 5px 0 0;
+            font-size: 16px;
+        }
+
+       
+        /* Details button like main page */
+        .details-btn {
+            margin: 20px auto;
+            display: block;
+            width: 90%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            background: linear-gradient(135deg, #FFD54F, #FF9800, #FF3D00);
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .details-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .text-overlay {
+                max-width: 90%;
+                padding: 10px 12px;
+            }
+
+            .text-overlay .place-name {
+                font-size: 22px;
+            }
+
+            .text-overlay .tagline {
+                font-size: 14px;
+            }
+
+            .top-icons span {
+                font-size: 20px;
+            }
+        }
+
+
+        /* css for the mini images under the big image */
+        /* GALLERY SECTION */
+.gallery-section {
+    margin-top: 20px;
+}
+
+/* CONTAINER */
+.gallery-container {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* INDIVIDUAL CARD */
+.gallery-item {
+    width: 100px;
+    height: 80px;
+    border-radius: 10px;
+    padding: 2px; /* for gradient border */
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+/* INNER IMAGE WRAPPER */
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+}
+
+/* HOVER EFFECT (zoom out feel) */
+.gallery-item:hover {
+    transform: scale(0.95);
+}
+
+/* ACTIVE (clicked) GRADIENT BORDER */
+.gallery-item.active {
+    background: linear-gradient(135deg, #FFD54F, #FF9800, #FF3D00);
+}
+
+/* Make inactive ones look clean */
+.gallery-item:not(.active) {
+    background: transparent;
+}
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal img {
+    max-width: 90%;
+    max-height: 90%;
+    border-radius: 10px;
+}
+
+
+/* overview css */
+/* MAIN LAYOUT */
+.details-section {
+    display: flex;
+    gap: 30px;
+    max-width: 1200px;
+    margin: 30px auto;
+    align-items: flex-start;
+}
+
+/* LEFT SIDE */
+.left-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    min-width: 0;
+}
+
+/* RIGHT SIDE */
+.right-side {
+   
+    flex: 0 0 320px;
+    max-width: 350px;
+    min-width: 280px;
+
+    position: sticky;
+    top: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.overview {
+    
+    width: 100%;
+}
+
+/* HEADER */
+.overview-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+/* ICON */
+.overview-header i {
+    font-size: 22px;
+    color: #FF9800;
+}
+
+/* TITLE */
+.overview-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* TEXT */
+.overview p {
+    line-height: 1.7;
+    color: #444;
+}
+/* OVERVIEW CARD */
+.overview-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+
+    /* subtle shadow for depth */
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+
+    /* optional soft border */
+    border: 1px solid #eee;
+     border-left: 5px solid #FF9800;
+}
+
+/* TEXT INSIDE CARD */
+.overview-card p {
+    line-height: 1.7;
+    color: #444;
+}
+
+/* high lights===== */
+/* HIGHLIGHTS */
+.highlights-title {
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+/* GRID */
+.highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+/* CARD */
+.highlight-card {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 14px;
+    border-radius: 12px;
+
+    background: #f6f4e3;
+    border-left: 1.5px solid #afa34c;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+
+
+    transition: 0.3s;
+}
+
+/* HOVER */
+.highlight-card:hover {
+    transform: translateY(-3px);
+}
+
+/* ICON */
+.highlight-card i {
+    color: #afa34c;
+}
+
+
+/* BEST TIME SECTION */
+.best-time-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* HEADER */
+.best-time-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.best-time-header i {
+    font-size: 22px;
+    color: #FF9800;
+}
+
+.best-time-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* MAIN CARD */
+.best-time-card {
+    background: #f6f4e3; /* light theme color */
+    border-left: 5.5px solid #afa34c;
+    border-radius: 14px;
+    padding: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.75);
+}
+
+.best-time-card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.best-time-card p {
+    font-size: 14px;
+    color: #444;
+}
+
+/* SUB-CARDS GRID */
+.sub-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    margin-top: 16px;
+}
+
+/* SUB-CARD */
+.sub-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* SUB-CARD HEADER */
+.sub-card-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.left-tag {
+    color: #afa34c;
+}
+
+.right-tag {
+    color: #4caf50; /* green for Excellent, adjust as needed */
+}
+
+/* SUB-CARD TEXT */
+.sub-card p {
+    font-size: 13px;
+    color: #444;
+    line-height: 1.5;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+    .sub-cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+
+/* WEATHER SECTION */
+.weather-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* HEADER */
+.weather-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.weather-header i {
+    font-size: 22px;
+    color: #03a9f4; /* cloud icon blue */
+}
+
+.weather-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* WEATHER GRID */
+.weather-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+/* WEATHER CARD */
+.weather-card {
+    background: #fff; /* white as requested */
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+/* ICONS */
+.weather-icon {
+    font-size: 28px;
+   /* yellow sun */
+}
+/* Sunny month */
+.weather-icon.sunny {
+    color: #FFC107; /* yellow sun */
+}
+
+/* Rainy month */
+.weather-icon.rainy {
+    color: #2196F3; /* blue cloud */
+}
+
+/* CARD HEADINGS */
+.weather-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* TEMPERATURE */
+.weather-card p i {
+    margin-right: 6px;
+    color: #FF5722; /* thermometer color */
+}
+
+/* TEXT */
+.weather-card p {
+    font-size: 14px;
+    color: #444;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+    .weather-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .weather-grid {
+        grid-template-columns: 1fr;
+    }
+}
+/* TOP ATTRACTIONS SECTION */
+.top-attractions-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* HEADER */
+.top-attractions-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.top-attractions-header i {
+    font-size: 22px;
+    color: #FF9800; /* highlight color for icon */
+}
+
+.top-attractions-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+
+
+
+/* ATTRACTION CARD */
+.attraction-card {
+    display: flex;
+    gap: 10px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 10px;
+    background: #fff;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.55);
+    transition: border 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    align-items: stretch;
+}
+
+/* HOVER / CLICK EFFECT */
+.attraction-card:hover,
+.attraction-card:active {
+    border: 2px solid #FF9800;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.12);
+}
+
+/* IMAGE */
+.attraction-image {
+    width: 120px;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+
+/* INFO */
+.attraction-info {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+/* CARD HEADINGS */
+.attraction-info h3 {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* CARD PARAGRAPHS */
+.attraction-info p {
+    font-size: 14px;
+    color: #444;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* ICONS */
+.attraction-info i {
+    
+    color: #FF9800;
+}
+/* HEADER ICON (Top Attractions section header) */
+.top-attractions-header i {
+    font-size: 26px; /* previously 22px, slightly bigger */
+}
+
+/* Icons inside headings (church/mountain) */
+.attraction-info h3 i {
+    font-size: 30px; /* previously default, slightly bigger */
+}
+
+/* Icons inside paragraphs (clock/dollar) */
+.attraction-info p i {
+    font-size: 16px; /* slightly bigger for visibility */
+}
+
+/* RESPONSIVE */
+@media (max-width: 700px) {
+    .attraction-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .attraction-image {
+        width: 100%;
+        height: 180px;
+    }
+}
+
+/* LOCAL TIPS SECTION */
+.local-tips-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* HEADER */
+.local-tips-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.local-tips-header i {
+    font-size: 26px;
+    background: linear-gradient(45deg, #ff6ec4, #7873f5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.local-tips-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* GRID */
+.local-tips-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+/* CARD */
+.tip-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    background: #f7f0ff; /* light background matching gradient */
+    border-radius: 12px;
+    border-left: 2px solid #7977ac;
+    padding: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.tip-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.12);
+}
+
+/* ICON */
+.tip-card i {
+    font-size: 28px;
+    background: linear-gradient(45deg, #ff6ec4, #7873f5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    flex-shrink: 0;
+}
+
+/* INFO */
+.tip-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.tip-info h3 {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.tip-info p {
+    font-size: 13px;
+    color: #444;
+}
+/* LOCATION & MAP SECTION */
+.location-map-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* HEADER */
+.location-map-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.location-map-header i {
+    font-size: 26px;
+    color: #FF9800; /* former cool color */
+}
+
+.location-map-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* CARD */
+.location-map-card {
+    background: #fff8f0; /* light color matching icon color */
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* DISTANCE INFO */
+.distance-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.distance-info i {
+    font-size: 22px;
+    color: #FF9800; /* icon color */
+}
+
+.distance-text h3 {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.distance-text p {
+    font-size: 13px;
+    color: #444;
+    margin: 2px 0 0 0;
+}
+
+/* MAP */
+.map-container {
+    width: 100%;
+    height: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+}
+/* VIDEO GALLERY SECTION */
+.video-gallery-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* HEADER */
+.video-gallery-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.video-gallery-header i {
+    font-size: 26px;
+    color: #FF9800; /* former cool color */
+}
+
+.video-gallery-header h2 {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+/* VIDEO PREVIEW CARD */
+.video-preview-card {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: #fff8f0; /* light background matching icon color */
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    align-items: center;
+}
+
+/* VIDEO */
+.video-preview-card video {
+    width: 100%;
+    max-width: 600px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+/* VIDEO CAPTION */
+.video-preview-card p {
+    font-size: 14px;
+    font-weight: 500;
+    color: #444;
+    margin: 0;
+}
+
+
+
+
+
+
+/* /right side the rating card */
+/* RIGHT SIDE */
+
+/* CARD */
+.rating-card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 15px;
+    border-color:5px solid #444;
+
+    /* shadow only (no border) */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+     width: 100%; /* fits right-side container */
+    /* keep it from growing too wide */
+    align-self: flex-start;
+}
+
+/* STAR + NUMBER */
+.rating-top {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+   
+}
+
+/* STAR ICON */
+.rating-top i {
+    color: #FFD54F;
+    font-size: 28px;
+}
+
+/* RATING NUMBER */
+.rating-number {
+    font-size: 38px;
+    font-weight: 600;
+}
+
+/* REVIEWS TEXT */
+.reviews {
+    color: #777;
+    font-size: 16px;
+    margin: 8px 0 15px;
+}
+
+/* BUTTON */
+.book-btn {
+    width: 100%;
+    padding: 10px 0;
+    border: none;
+    border-radius: 8px;
+
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+
+    background: linear-gradient(135deg, #FFD54F, #FF9800, #FF3D00);
+}
+
+/* HOVER EFFECT */
+.book-btn:hover {
+    opacity: 0.9;
+}
+
+/* estimated cost css */
+/* Travel Cost Card */
+.travel-cost-card {
+    background: #fff;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.25); /* slightly darker than rating card */
+    margin-top: 20px;
+    width: 100%;
+   
+}
+
+/* Header with icon */
+.travel-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.travel-header i {
+    color: #afa34c; /* green dollar icon */
+    font-size: 22px;
+}
+
+.travel-header h3 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* Plans container */
+.plans {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 3px;
+}
+
+/* Individual plan card */
+.plan {
+    background: #f9f9f9;
+    padding: 12px 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+/* Top row inside each plan */
+.plan-top {
+    display: flex;
+    justify-content: space-between; /* 🔥 pushes left & right */
+    align-items: center;
+}
+
+/* Title */
+.plan-top h4 {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Price on the right */
+.plan-top .price {
+    font-size: 25px;
+    font-weight: 600;
+    color:#dec507;
+}
+.plan .price {
+    margin: 0; /* just in case */
+}
+
+.plan-desc {
+    margin: 5px 0 0 0; /* control spacing manually */
+}
+
+.plan .plan-desc {
+    font-size: 11px;
+    color: #555;
+    line-height: 1.5;
+}
+
+/* Note at the bottom */
+.note {
+    font-size: 12px;
+    color: #888;
+    margin-top: 2px;
+}
+
+
+/*================= quick info css ======================================*/
+/* QUICK INFO CARD */
+.quick-info-card {
+    background: rgba(175, 163, 76, 0.22);
+    padding: 20px;
+    border-radius: 15px;
+     border-left: 3.5px solid #afa34c;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.75);
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* HEADER */
+.quick-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.quick-header i {
+    color: #2196F3;
+    font-size: 20px;
+}
+
+.quick-header h3 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* EACH INFO ROW */
+.info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+/* ICON */
+.info-item i {
+    color: #afa34c;
+    font-size: 18px;
+    margin-top: 3px;
+}
+
+/* TEXT */
+.info-item h4 {
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.info-item p {
+    margin: 2px 0 0;
+    font-size: 14px;
+    color: #555;
+}
+@media (max-width: 768px) {
+    .details-section {
+        flex-direction: column; /* stack */
+    }
+
+    .right-side {
+        position: static; /* ❗ remove sticky */
+        width: 100%;
+        max-width: 100%;
+        margin-top: 20px;
+    }
+}

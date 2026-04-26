@@ -1,93 +1,52 @@
 <?php
-$conn = new mysqli("localhost","root","","travel_db");
-$pageTitle = "packages";
+$conn = new mysqli("localhost", "root", "", "travel_db");
+$pageTitle = "Packages";
 $result = $conn->query("SELECT * FROM packages ORDER BY id DESC");
 ?>
 
-
-<doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <link rel="stylesheet" href="package.css">
-    <link rel="stylesheet" href="modal.css">
+    <!-- Using the Public Package CSS for the Admin cards -->
+    <link rel="stylesheet" href="package.css"> 
     <?php include "layout.php"; ?>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <style>
+        /* Admin-specific layout adjustments */
+        .admin-controls { display: flex; justify-content: space-between; padding: 20px 40px; margin-top: 130px; }
+        .package-grid { margin-top: 20px; } /* Override margin for admin */
+        .admin-actions { padding: 15px; display: flex; gap: 10px; background: #f4f4f4; border-top: 1px solid #ddd; }
+        .btn-edit { background: #4CAF50; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; }
+        .btn-delete { background: #f44336; color: white; padding: 8px 15px; border-radius: 5px; text-decoration: none; }
+    </style>
 </head>
 <body>
-    <div class="dest-header">
-        <div>
-            <h1>Tour packages</h1>
-            <p>Manage travel packages and deals</p>
-        </div>
-        <!-- In destinations.php -->
-<a href="add_package.php" class="btn-primary">
-    <i class="fa-solid fa-plus"></i> Create Package
-</a>
-</div>
-  <div class="package-grid">
-<?php while($row = $result->fetch_assoc()): ?>
-    <div class="package-card">
-
-        <div class="package-image">
-            <img src="../uploads/<?php echo $row['image']; ?>">
-
-            <?php if($row['featured']==1): ?>
-<span class="featured-badge">
-    <i class="fa-solid fa-star"></i> Featured
-</span>
-<?php endif; ?>
-
-            <span class="type-badge">
-                <?php echo ucfirst($row['type']); ?>
-            </span>
-        </div>
-
-        <div class="package-content">
-            <h3><?php echo $row['title']; ?></h3>
-
-            <p class="desc">
-                <?php echo $row['description']; ?>
-            </p>
-
-            <div class="package-meta">
-                <span><i class="fa-regular fa-clock"></i> <?php echo $row['duration']; ?></span>
-                <span><i class="fa-solid fa-users"></i> Max <?php echo $row['max_people']; ?></span>
-            </div>
-
-            <div class="price">
-                $<?php echo number_format($row['price']); ?>
-                <small>per person</small>
-            </div>
-
-            <hr class="package-line">
-
-<div class="featured-row">
-    <span>Featured</span>
-
-    <label class="switch">
-        <input type="checkbox" <?php if($row['featured']==1) echo "checked"; ?> disabled>
-        <span class="slider"></span>
-    </label>
-</div>
-
-          
-             <div class="package-actions">
-             <a href="edit_packages.php?id=<?php echo $row['id']; ?>" class="btn-edit-small">
-        <i class="fa-regular fa-pen-to-square"></i> Edit
-    </a>
-    <a href="delete_package.php?id=<?php echo $row['id']; ?>"
-       class="btn-delete-small"
-       onclick="return confirm('Are you sure you want to delete this package?');">
-        <i class="fa-regular fa-trash-can"></i> Delete
-    </a>
-        </div>
-        </div>
-
+    <div class="admin-controls">
+        <h1>Manage Tour Packages</h1>
+        <a href="add_package.php" class="login-pill" style="text-decoration:none;">+ Create New</a>
     </div>
-<?php endwhile; ?>
-</div>
 
-</body></html>
+    <section class="packages">
+        <div class="package-grid">
+            <?php while($row = $result->fetch_assoc()): ?>
+                <div class="card">
+                    <div class="fade-slider" style="height:180px;">
+                        <img src="../uploads/<?php echo $row['image']; ?>" class="fade-img">
+                    </div>
+                    <div class="card-content">
+                        <h3><?php echo $row['title']; ?></h3>
+                        <div class="budget">$<?php echo number_format($row['price']); ?></div>
+                        
+                        <div class="admin-actions">
+                            <a href="edit_packages.php?id=<?php echo $row['id']; ?>" class="btn-edit"><i class="fa-solid fa-pen"></i></a>
+                            <a href="delete_package.php?id=<?php echo $row['id']; ?>" class="btn-delete" onclick="return confirm('Delete this?')"><i class="fa-solid fa-trash"></i></a>
+                        </div>
+                    </div>
+                </div>
+            <?php endwhile; ?>
+        </div>
+    </section>
+</body>
+</html>

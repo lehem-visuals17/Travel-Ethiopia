@@ -1,4 +1,16 @@
-<?php session_start(); ?>
+<?php
+session_start();
+include 'db.php';
+
+$sql = "SELECT * FROM destinations ORDER BY id DESC LIMIT 4";
+$result = $conn->query($sql);
+
+$destinations = [];
+while($row = $result->fetch_assoc()){
+    $destinations[] = $row;
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +50,7 @@
     <li><a class="underline-text" href="destination.php">Destinations</a></li>
     <li><a class="underline-text" href="trip.html#trip">Trip Planner</a></li>
     <li><a class="underline-text" href="booking.html#Bookings">Bookings</a></li>
-    <li><a class="underline-text" href="packages.html#packages">Packages</a></li>
+    <li><a class="underline-text" href="packages.php#packages">Packages</a></li>
     <li><a class="underline-text" href="experience.html#Experience">Experience</a></li>
     <li><a class="underline-text" href="blog.html#Blog">Blog</a></li>
     <li><a class="underline-text" href="deals.html#Deals">Deals</a></li>
@@ -227,128 +239,51 @@ var swiper = new Swiper(".mySwiper", {
 
 
 
+<?php
+// Include DB if not already included at the top of index.php
+include 'db.php';
+
+// Fetch only 4 destinations for the home page (or remove LIMIT to show all)
+$sql = "SELECT * FROM destinations ORDER BY id DESC LIMIT 4";
+$result = mysqli_query($conn, $sql);
+?>
+
 <section class="cards-container">
-  
-<div  class="card">
-    <div class="image-container">
-       
-        <img src="images\lalibela2.jpg" alt="Lalibela" class="hero-img">
-        <div class="rating-badge">
-            <span>★</span> 4.9
+    <?php while($row = mysqli_fetch_assoc($result)): ?>
+    <div class="card">
+        <div class="image-container">
+            <!-- Fetching image from admin/uploads/ -->
+            <img src="admin/uploads/<?php echo $row['image']; ?>" alt="<?php echo htmlspecialchars($row['name']); ?>" class="hero-img">
+            
+            <div class="rating-badge">
+                <span>★</span> <?php echo $row['rating']; ?>
+            </div>
+            
+            <div class="title-overlay"><?php echo htmlspecialchars($row['name']); ?></div>
         </div>
-        <div class="title-overlay">Lalibela</div>
+
+        <div class="content">
+            <p class="description">
+                <?php echo htmlspecialchars($row['tagline']); ?>
+            </p>
+
+            <div class="info-row">
+                <i class="fa-solid fa-dollar-sign"></i>
+                $<?php echo $row['budget_cost']; ?> - $<?php echo $row['luxury_cost']; ?>/day
+            </div>
+
+            <div class="info-row">
+                <i class="fa-solid fa-calendar-days"></i>
+                Best: <?php echo htmlspecialchars($row['best_time']); ?>
+            </div>
+
+            <!-- Link to Admin View with source=home flag -->
+            <a href="admin/view_destination.php?id=<?php echo $row['id']; ?>&source=home" style="text-decoration:none;">
+                <button class="btn">Explore Destination</button>
+            </a>
+        </div>
     </div>
-
-    <div class="content">
-        <p class="description">
-           Ancient rock-hewn churches carved from solid stone, a UNESCO World Heritage site
-          </p>
-
-        <div class="info-row">
-            <i data-lucide="dollar-sign" class="lucide-icon" size="10"></i>
-            $150-250/day
-        </div>
-
-        <div class="info-row">
-            <i data-lucide="calendar-days" class="lucide-icon" size="10"></i>
-            Best: October - March
-        </div>
-        <a href="lalibela.html" style="text-decoration:none;">
-          <button class="btn">Explore Destination</button>
-        </a>
-
-        
-    </div>
-</div>
- <div class="card">
-    <div class="image-container">
-        <!-- Placeholder for the savanna sunset image -->
-        <img src="images\gonder1.jpg" alt="Gondar Savanna" class="hero-img">
-        <div class="rating-badge">
-            <span>★</span> 4.7
-        </div>
-        <div class="title-overlay">Gondar</div>
-    </div>
-
-    <div class="content">
-        <p class="description">
-           Medieval castles and churches known as the "Camelot of Africa"
-
-          </p>
-
-        <div class="info-row">
-            <i data-lucide="dollar-sign" class="lucide-icon" size="10"></i>
-            $120-200/day
-        </div>
-
-        <div class="info-row">
-            <i data-lucide="calendar-days" class="lucide-icon" size="10"></i>
-            Best: October - May
-        </div>
-
-        <button class="btn">Explore Destination</button>
-    </div>
-</div>
-
- <div class="card">
-    <div class="image-container">
-        <!-- Placeholder for the savanna sunset image -->
-        <img src="images\axum1.jpg" alt="Gondar Savanna" class="hero-img">
-        <div class="rating-badge">
-            <span>★</span> 4.8
-        </div>
-        <div class="title-overlay">Axum</div>
-    </div>
-
-    <div class="content">
-        <p class="description">
-          Ancient capital with towering obelisks and archaeological treasures
-        </p>
-
-        <div class="info-row">
-            <i data-lucide="dollar-sign" class="lucide-icon" size="10"></i>
-            $100-180/day
-        </div>
-
-        <div class="info-row">
-            <i data-lucide="calendar-days" class="lucide-icon" size="10"></i>
-            Best: September - May
-        </div>
-
-        <button class="btn">Explore Destination</button>
-    </div>
-</div>
-
-  <div class="card">
-    <div class="image-container">
-        <!-- Placeholder for the savanna sunset image -->
-        <img src="images\wenchi.jpg" alt="Wenchi" class="hero-img">
-        <div class="rating-badge">
-            <span>★</span> 4.6
-        </div>
-        <div class="title-overlay">Omo Valley</div>
-    </div>
-
-    <div class="content">
-        <p class="description">
-           Stunning crater lake surrounded by lush forests and natural hot springs
-          </p>
-
-        <div class="info-row">
-            <i data-lucide="dollar-sign" class="lucide-icon" size="10"></i>
-            $80-150/day
-        </div>
-
-        <div class="info-row">
-            <i data-lucide="calendar-days" class="lucide-icon" size="10"></i>
-            Best: Year-round
-        </div>
-        <a href="omo valley.html" style="text-decoration:none;">
-          <button class="btn">Explore Destination</button>
-        </a>
-
-    </div>
-</div>
+    <?php endwhile; ?>
 </section>
 
 <section class="travel-categories">

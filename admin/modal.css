@@ -123,6 +123,100 @@
     border-top: 1px dashed #ddd;
     padding-top: 5px;
 }
+.btn-view-small{
+    background:#3498db;
+    color:white;
+    padding:8px 14px;
+    border-radius:8px;
+    text-decoration:none;
+    font-size:13px;
+    font-weight:600;
+    transition:0.3s;
+}
+/* larger modal for full destination form */
+.large-modal{
+    max-width: 900px;
+    width: 95%;
+    max-height: 92vh;
+    overflow-y: auto;
+}
+
+/* section titles inside form */
+.modal-form h3{
+    margin: 20px 0 12px;
+    font-size: 18px;
+    color: #333;
+    border-left: 4px solid #ff9800;
+    padding-left: 10px;
+}
+
+/* textarea bigger */
+.modal-form textarea{
+    width: 100%;
+    min-height: 110px;
+    resize: vertical;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    outline: none;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    transition: 0.3s;
+}
+
+.modal-form textarea:focus{
+    border-color: #ff9800;
+    box-shadow: 0 0 8px rgba(255,152,0,0.15);
+}
+
+/* file input styling */
+.modal-form input[type="file"]{
+    width: 100%;
+    padding: 10px;
+    border: 1px dashed #ccc;
+    border-radius: 10px;
+    background: #fafafa;
+    cursor: pointer;
+}
+
+.modal-form input[type="file"]:hover{
+    border-color: #ff9800;
+}
+
+/* 3 inputs in one row for prices */
+.input-row input{
+    flex: 1;
+}
+
+/* make rows responsive */
+@media(max-width:768px){
+    .input-row{
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .large-modal{
+        width: 98%;
+        max-height: 95vh;
+    }
+}
+
+/* smooth scrollbar */
+.large-modal::-webkit-scrollbar{
+    width: 8px;
+}
+
+.large-modal::-webkit-scrollbar-thumb{
+    background: #ccc;
+    border-radius: 20px;
+}
+
+.large-modal::-webkit-scrollbar-thumb:hover{
+    background: #999;
+}
+.btn-view-small:hover{
+    background:#217dbb;
+}
 
 /* Buttons */
 .card-footer {

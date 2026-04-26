@@ -23,6 +23,10 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <hr style="height: 0.5px; background-color: #ccc; border: none; width: 150px;">
 
     <ul class="sidebar-menu">
+    <a href="../index.php" class="btn-primary">
+            <i class="fa-solid fa-arrow-left"></i>to home
+        </a>
+
     <li class="<?php echo ($current_page == 'dashboard.php') ? 'active' : ''; ?>">
         <a href="dashboard.php">Dashboard</a>
     </li>

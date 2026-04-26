@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 20, 2026 at 11:49 PM
+-- Generation Time: Apr 23, 2026 at 06:11 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -30,11 +30,23 @@ SET time_zone = "+00:00";
 CREATE TABLE `blog_posts` (
   `id` int(11) NOT NULL,
   `title` varchar(200) DEFAULT NULL,
+  `slug` varchar(200) DEFAULT NULL,
   `category` varchar(100) DEFAULT NULL,
+  `summary` varchar(500) DEFAULT NULL,
   `content` text DEFAULT NULL,
+  `author_name` varchar(100) DEFAULT 'Admin User',
+  `status` varchar(50) DEFAULT 'published',
+  `views_count` int(11) DEFAULT 0,
   `image` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `blog_posts`
+--
+
+INSERT INTO `blog_posts` (`id`, `title`, `slug`, `category`, `summary`, `content`, `author_name`, `status`, `views_count`, `image`, `created_at`) VALUES
+(1, 'ethiopian festivals', 'ethiopian-festivals', 'events', 'happy epiphany ', 'lomi bwerewr', 'bete', 'draft', 0, 'uploads/blog/1776796647_begena.copilot.png', '2026-04-21 18:37:27');
 
 -- --------------------------------------------------------
 
@@ -67,8 +79,14 @@ CREATE TABLE `destinations` (
   `region` varchar(100) DEFAULT NULL,
   `type` enum('adventure','cultural','religious','historical','nature') DEFAULT NULL,
   `description` text DEFAULT NULL,
+  `highlights` text DEFAULT NULL,
   `best_time` varchar(100) DEFAULT NULL,
-  `weather_info` varchar(255) DEFAULT NULL,
+  `dry_season` varchar(255) DEFAULT NULL,
+  `rainy_season` varchar(255) DEFAULT NULL,
+  `spring_weather` varchar(100) DEFAULT NULL,
+  `summer_weather` varchar(100) DEFAULT NULL,
+  `autumn_weather` varchar(100) DEFAULT NULL,
+  `winter_weather` varchar(100) DEFAULT NULL,
   `average_cost` decimal(10,2) DEFAULT NULL,
   `budget_cost` varchar(50) DEFAULT NULL,
   `standard_cost` varchar(50) DEFAULT NULL,
@@ -76,7 +94,11 @@ CREATE TABLE `destinations` (
   `accommodation` varchar(255) DEFAULT NULL,
   `rating` decimal(3,2) DEFAULT 0.00,
   `reviews` int(11) DEFAULT 0,
+  `top_attractions` text DEFAULT NULL,
+  `cultural_tips` text DEFAULT NULL,
+  `distance_info` varchar(255) DEFAULT NULL,
   `map_location` text DEFAULT NULL,
+  `video_url` varchar(255) DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
   `image2` varchar(255) DEFAULT NULL,
   `image3` varchar(255) DEFAULT NULL,
@@ -87,8 +109,8 @@ CREATE TABLE `destinations` (
 -- Dumping data for table `destinations`
 --
 
-INSERT INTO `destinations` (`id`, `name`, `tagline`, `region`, `type`, `description`, `best_time`, `weather_info`, `average_cost`, `budget_cost`, `standard_cost`, `luxury_cost`, `accommodation`, `rating`, `reviews`, `map_location`, `image`, `image2`, `image3`, `image4`) VALUES
-(2, 'lalibela', 'hey', 'Southern', 'adventure', 'hey you, just come and visit. i have too many to do more than explaining to u', 'october', 'dry', NULL, '500', '650', '1000', NULL, 0.00, 0, NULL, '1776544011_adventure.jpg', NULL, NULL, NULL);
+INSERT INTO `destinations` (`id`, `name`, `tagline`, `region`, `type`, `description`, `highlights`, `best_time`, `dry_season`, `rainy_season`, `spring_weather`, `summer_weather`, `autumn_weather`, `winter_weather`, `average_cost`, `budget_cost`, `standard_cost`, `luxury_cost`, `accommodation`, `rating`, `reviews`, `top_attractions`, `cultural_tips`, `distance_info`, `map_location`, `video_url`, `image`, `image2`, `image3`, `image4`) VALUES
+(2, 'lalibela', 'hey', 'Southern', 'adventure', 'hey you, just come and visit. i have too many to do more than explaining to u', NULL, 'october', NULL, NULL, NULL, NULL, NULL, NULL, NULL, '500', '650', '1000', NULL, 0.00, 0, NULL, NULL, NULL, NULL, NULL, '1776544011_adventure.jpg', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -111,6 +133,30 @@ CREATE TABLE `experiences` (
   `capacity` int(11) DEFAULT 0,
   `is_featured` tinyint(1) DEFAULT 0,
   `availability_status` varchar(50) DEFAULT 'Available'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `experiences`
+--
+
+INSERT INTO `experiences` (`id`, `name`, `type`, `category`, `location`, `price`, `duration`, `description`, `image`, `difficulty`, `status`, `capacity`, `is_featured`, `availability_status`) VALUES
+(1, 'mm', NULL, 'asas', 'fds', 1212.00, NULL, 'fssdfssAs', '1776544011_adventure.jpg', 'Easy', 'Active', 11, 0, 'Available'),
+(2, 'bb', NULL, 'Nature', NULL, 6565.00, NULL, 'jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj', 'default.jpg', 'Moderate', 'Active', 7, 0, 'Available');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `experience_bookings`
+--
+
+CREATE TABLE `experience_bookings` (
+  `id` int(11) NOT NULL,
+  `experience_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `people_count` int(11) DEFAULT 1,
+  `total_price` decimal(10,2) DEFAULT 0.00,
+  `status` enum('pending','confirmed','cancelled') DEFAULT 'pending',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -241,18 +287,20 @@ CREATE TABLE `users` (
   `password` varchar(255) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
   `role` enum('admin','customer') DEFAULT 'customer',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `status` enum('active','suspended') DEFAULT 'active'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `fullname`, `username`, `email`, `password`, `phone`, `role`, `created_at`) VALUES
-(1, 'Bete', 'bet', 'betelhembelayneh58@gmail.com', '$2y$10$eFOSNp6m4Dhzhzaqbb1ZDOkB.YKC2Qy26xyOnA3Xc5gqsHdBKXW7q', '0956264326', 'customer', '2026-04-16 17:33:12'),
-(2, 'Betelhem', 'lehem', 'betelhem.belayneh21@gmail.com', '$2y$10$eHCCqgWHnIy0018HgEyLqu8qOIufAomfcLZzHYfhmx8IY6OztweaK', '0956264326', 'customer', '2026-04-17 20:57:28'),
-(3, 'avi', 'avi32@gmail.com', 'avi32@gmail.com', '$2y$10$eAVHrWZJcJ6wY4iuJAwUW.mAPtndBkid.EhSoFaFnv6729j5HIPge', '0924322824', 'customer', '2026-04-18 10:52:17'),
-(4, 'tigi', 'tigi@gmail.com', 'tigi@gmail.com', '$2y$10$opPTJbOORUzymjQ3KP0QBeqN4bvm0XpSIvCBiM9jRreygK9TfQ09.', '0956264326', 'customer', '2026-04-18 11:24:46');
+INSERT INTO `users` (`id`, `fullname`, `username`, `email`, `password`, `phone`, `role`, `created_at`, `status`) VALUES
+(1, 'Bete', 'admin', 'betelhembelayneh58@gmail.com', '$2y$10$jgXebJ3QUHACE.jo.Npo6eW/1HeuufaVpFdEAo73dcJx5TeAvM7we', '0956264326', 'admin', '2026-04-16 17:33:12', 'active'),
+(2, 'Betelhem', 'lehem', 'betelhem.belayneh21@gmail.com', '$2y$10$Zcs/0jWRpYGhihfX1C3RTuVgytPu3qGeLAdgyD0RwwBh663EPsDyK', '0956264326', 'customer', '2026-04-17 20:57:28', 'active'),
+(3, 'avi', 'avi32@gmail.com', 'avi32@gmail.com', '$2y$10$eAVHrWZJcJ6wY4iuJAwUW.mAPtndBkid.EhSoFaFnv6729j5HIPge', '0924322824', 'customer', '2026-04-18 10:52:17', 'active'),
+(4, 'tigst belayneh', 'tigi@gmail.com', 'tigi@gmail.com', '$2y$10$movLGzMaiB9SPrnoSlQgxOD0OtWJZn1BSZBffQ8YBNTuhwygXtB5.', '0956264326', 'customer', '2026-04-18 11:24:46', 'active'),
+(11, 'Bete', 'betora_ad', 'betelhem.belayneh58@gmail.com', '$2y$10$OdlTUXRWz5tSKPrqRLALJegHmga9DAx319LuXpwA2Sq0PRoPPqxvO', '0956264326', 'admin', '2026-04-23 08:15:45', 'active');
 
 --
 -- Indexes for dumped tables
@@ -283,6 +331,12 @@ ALTER TABLE `destinations`
 -- Indexes for table `experiences`
 --
 ALTER TABLE `experiences`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `experience_bookings`
+--
+ALTER TABLE `experience_bookings`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -345,7 +399,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `blog_posts`
 --
 ALTER TABLE `blog_posts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `bookings`
@@ -363,6 +417,12 @@ ALTER TABLE `destinations`
 -- AUTO_INCREMENT for table `experiences`
 --
 ALTER TABLE `experiences`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `experience_bookings`
+--
+ALTER TABLE `experience_bookings`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -405,7 +465,7 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
