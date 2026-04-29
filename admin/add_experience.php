@@ -1,57 +1,49 @@
 <?php
 $conn = new mysqli("localhost", "root", "", "travel_db");
+if ($conn->connect_error) { die("Connection failed: " . $conn->connect_error); }
 
 if (isset($_POST['submit'])) {
-    // 1. Collect form data
     $name = $_POST['name'];
     $category = $_POST['category'];
-    $price = $_POST['price'];
     $location = $_POST['location'];
+    $map_link = $_POST['map_link'];
+    $price = floatval($_POST['price']); 
+    $duration = $_POST['duration'];
+    $schedule = $_POST['schedule'];
+    $languages = $_POST['languages'];
+    $capacity = intval($_POST['capacity']);
     $difficulty = $_POST['difficulty'];
-    $capacity = $_POST['capacity'];
+    $status = $_POST['status'];
+    $is_featured = intval($_POST['is_featured']);
     $description = $_POST['description'];
-    
-    // 2. Handle Image Upload
-    $imageName = $_FILES['image']['name'];
-    $targetDir = "uploads/";
-    $targetFile = $targetDir . basename($imageName);
+    $whats_included = $_POST['whats_included'];
+    $not_included = $_POST['not_included'];
+    $itinerary = $_POST['itinerary'];
+    $gallery = $_POST['gallery'];
+    $rating = floatval($_POST['rating']);
 
-    if (!empty($imageName)) {
-        move_uploaded_file($_FILES['image']['tmp_name'], $targetFile);
-    } else {
-        $imageName = "default.jpg"; // Fallback if no image uploaded
+    // Handle Image Upload
+    $image_name = $_FILES['image']['name'];
+    $target_file = "uploads/" . basename($image_name);
+
+    if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
+        
+        $stmt = $conn->prepare("INSERT INTO experiences (name, category, location, map_link, price, duration, schedule, languages, capacity, difficulty, status, is_featured, description, whats_included, not_included, itinerary, image, gallery, rating) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        
+        $stmt->bind_param("ssssdsssisssssssssd", 
+            $name, $category, $location, $map_link, $price, $duration, $schedule, $languages, $capacity, 
+            $difficulty, $status, $is_featured, $description, $whats_included, 
+            $not_included, $itinerary, $image_name, $gallery, $rating
+        );
+
+        if ($stmt->execute()) {
+            header("Location: experience.php?success=1");
+            exit();
+        } else {
+            echo "SQL Error: " . $stmt->error;
+        }
+        $stmt->close();
     }
-
-    // 3. Insert into Database
-  $status = $_POST['status'];
-$is_featured = isset($_POST['is_featured']) ? 1 : 0;
-
-$sql = "INSERT INTO experiences 
-(name, category, capacity, difficulty, status, price, is_featured, location, description, image)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-$stmt = $conn->prepare($sql);
-$stmt->bind_param(
-    "ssissdisss",
-    $name,
-    $category,
-    $capacity,
-    $difficulty,
-    $status,
-    $price,
-    $is_featured,
-    $location,
-    $description,
-    $imageName
-);
-    if ($stmt->execute()) {
-        // Redirect back to the table page with success
-        header("Location: experience.php?status=success");
-    } else {
-        echo "Error: " . $conn->error;
-    }
-    
-    $stmt->close();
-    $conn->close();
 }
+$conn->close();
 ?>

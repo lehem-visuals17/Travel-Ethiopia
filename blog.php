@@ -32,14 +32,14 @@
 
     <ul class="menu" id="menu-list">
       <div class="menu-close" id="menu-close">&times;</div>
-   <li><a class="underline-text" href="welcome.html#Home">Home</a></li>
-    <li><a class="underline-text" href="index.html#Destinations">Destinations</a></li>
+   <li><a class="underline-text" href="index.php#Home">Home</a></li>
+    <li><a class="underline-text" href="destination.php">Destinations</a></li>
     <li><a class="underline-text" href="trip.html#trip">Trip Planner</a></li>
     <li><a class="underline-text" href="booking.html#Bookings">Bookings</a></li>
-    <li><a class="underline-text" href="packages.html#packages">Packages</a></li>
-    <li><a class="underline-text" href="experience.html#Experience">Experience</a></li>
-      <li><a class="underline-text" href="blog.html#Blog">Blog</a></li>
-      <li><a class="underline-text" href="deals.html#Deals">Deals</a></li>
+    <li><a class="underline-text" href="packages.php#packages">Packages</a></li>
+    <li><a class="underline-text" href="experience.php#Experience">Experience</a></li>
+      <li><a class="underline-text" href="blog.php#Blog">Blog</a></li>
+      <li><a class="underline-text" href="deals.php#Deals">Deals</a></li>
       <li><a class="underline-text" href="aboutus.html#About-Us">About Us</a></li>
       <li><a class="underline-text" href="contactus.html#Contact">Contact</a></li>
       
@@ -63,112 +63,66 @@
     <p>Travel tips, inspiration, and destination guides</p>
   </div>
 </section>
+<?php
+// 1. Establish Database Connection
+$conn = new mysqli("localhost", "root", "", "travel_db");
+if ($conn->connect_error) { die("Connection failed: " . $conn->connect_error); }
+
+// 2. Fetch only published posts from latest to oldest
+$sql = "SELECT * FROM blog_posts WHERE status = 'published' ORDER BY id DESC";
+$result = $conn->query($sql);
+?>
 
 <!-- Blog Section -->
 <section class="blog-grid-section">
   <div class="container">
     <div class="blog-grid">
 
-        <!-- Card 4 -->
-      <div class="blog-card">
-        <img src="https://media.gettyimages.com/id/2255864062/photo/washington-dc-maria-jose-and-her-friends-lyndsi-burcham-and-blake-jones-use-the-spongy-injera.jpg?s=612x612&w=0&k=20&c=26_bzuFLNaYKsLS-A0QTkBDdOHK9RfR2PyD2K3bPPbY=" alt="Food">
-        <div class="card-content">
-          <span class="category">Food & Dining</span>
-          <h3>Ethiopian Cuisine: A Food Lover's Guide</h3>
-          <p class="meta">Aisha Mohammed • 9 min read</p>
-          <p class="description">Dive into the rich flavors of Ethiopian cuisine, from injera to doro wat and everything in between.</p>
-          <a href="#" class="read-more" onclick="event.preventDefault(); openArticle('https://media.gettyimages.com/id/1225370668/photo/injera-flatbread-with-meat-addis-ababa-ethiopia-africa.jpg?s=612x612&w=0&k=20&c=l4yoi7S1PF2NQ0xK95-LRYsE2JqiQywigq4lNkRcqU4=', 'Ethiopian Cuisine Guide', '<h3>Injera & Wat</h3><p>Injera is a sourdough flatbread topped with various spicy stews called Wats.</p><h3>Gursha (ጉርሻ)</h3><p>The practice of feeding a guest a choice morsel of food is a sign of respect and love.</p>')">Read More <span class="arrow">→</span></a>
-
-
-
-        </div>
-      </div>
+    <?php if ($result->num_rows > 0): ?>
+      <?php while($row = $result->fetch_assoc()): 
+        
+        // Split the stored image URL string into an array for the JS slider
+        $image_string = $row['slider_images'] ?? '';
+        if (!empty($image_string)) {
+            $images_array = array_map('trim', explode(',', $image_string));
+        } else {
+            // Fallback to cover image if no slider images are provided
+            $images_array = [$row['cover_image']];
+        }
+        
+        // Convert to safe JSON for the JavaScript inline onclick event
+        $js_images_json = htmlspecialchars(json_encode($images_array), ENT_QUOTES, 'UTF-8');
+        $clean_title = htmlspecialchars($row['title'], ENT_QUOTES);
+        
+        // Content might contain HTML tags or quotes, let's keep it safe
+        $clean_content = htmlspecialchars($row['content'], ENT_QUOTES);
+      ?>
       
-
-       <!-- Card 5 -->
+      <!-- Dynamic Database Card -->
       <div class="blog-card">
-        <img src="https://media.gettyimages.com/id/485214523/photo/dallol-surreal-landscape-danakil-ethiopia.jpg?s=612x612&w=0&k=20&c=GYUNnyUwfzsqy2_KebYzeyHDFB8AIyQSiMLIs9Ef3LQ=" alt="Danakil">
+        <img src="<?php echo htmlspecialchars($row['cover_image']); ?>" alt="<?php echo $clean_title; ?>">
         <div class="card-content">
-          <span class="category">Adventure Travel</span>
-          <h3>Danakil Depression: Journey to Earth's Hottest Place</h3>
-          <p class="meta">Roberto Sanchez • 12 min read</p>
-          <p class="description">What it's really like to visit one of the most extreme environments on the planet.</p>
-          <a href="#" class="read-more" onclick="event.preventDefault(); openArticle('https://media.gettyimages.com/id/988140122/photo/lava-in-caldera-danakil-depression-ethiopia.jpg?s=612x612&w=0&k=20&c=cwOkJx6Jt-78hXWIlAXcJFua5T47lxc9bbyBUn4f2kQ=', 'The Danakil Depression', '<h3>An Alien Planet</h3><p>The hydrothermal fields of Dallol feature neon-yellow salt formations. It is the hottest place on Earth.</p><h3>Erta Ale(ኤርታሌ)</h3><p>Witness the permanent lava lake glowing in the dark.</p>')">Read More <span class="arrow">→</span></a>
-
-
-
+          <span class="category"><?php echo htmlspecialchars($row['category']); ?></span>
+          <h3><?php echo htmlspecialchars($row['title']); ?></h3>
+          <p class="meta"><?php echo htmlspecialchars($row['author_name']); ?> • <?php echo htmlspecialchars($row['read_time']); ?></p>
+          <p class="description"><?php echo htmlspecialchars($row['summary']); ?></p>
+          
+          <!-- Dynamic Click Trigger passing JSON array and strings -->
+          <a href="#" class="read-more" onclick="event.preventDefault(); openArticle(<?php echo $js_images_json; ?>, '<?php echo $clean_title; ?>', '<?php echo $clean_content; ?>')">
+            Read More <span class="arrow">→</span>
+          </a>
         </div>
       </div>
 
-
-      
-      <!-- Card 6 -->
-      <div class="blog-card">
-        <img src="https://media.gettyimages.com/id/619643870/photo/hungry-african-children-asking-for-food-africa.jpg?s=612x612&w=0&k=20&c=HuSbhCK-BNFVSQsVfSa63gehixkKAfRak2HmQYw7mhY=" alt="Culture">
-        <div class="card-content">
-          <span class="category">Cultural Guide</span>
-          <h3>Understanding Ethiopian Culture and Customs</h3>
-          <p class="meta">Yohannes Tadesse • 7 min read</p>
-          <p class="description">Essential cultural insights to help you navigate and appreciate Ethiopian traditions and customs.</p>
-          <a href="#" class="read-more" onclick="event.preventDefault(); openArticle('https://media.gettyimages.com/id/459029779/photo/culturally-sensitive-travel-in-ethiopia.jpg?s=612x612&w=0&k=20&c=zSrPHHwGUe5z6qXtQaqG0nQQ3SJ3vLoU7bYEfMdgRe0=', 'Culture and Customs', '<h3>Traditions</h3><p>Respect for elders is paramount. Greetings include multiple handshakes or shoulder bumps.</p><h3>Religion</h3><p>Always dress modestly and remove shoes before entering holy sites.</p>')">Read More <span class="arrow">→</span></a>
-
-
-
-        </div>
-      </div>
-
-
-      <!-- Card 1 -->
-      <div class="blog-card">
-        <img src="https://media.gettyimages.com/id/627478730/photo/addis-ababa-at-nightfall.jpg?s=612x612&w=0&k=20&c=e-g-BQhupMyLsuLcdSGjNRr5zVaWkPp6L2Onghn_Yug=" alt="Ethiopia">
-        <div class="card-content">
-          <span class="category">Destination Guides</span>
-          <h3>Best Places to Visit in Ethiopia in 2026</h3>
-          <p class="meta">Sarah Johnson • 8 min read</p>
-          <p class="description">Discover the top destinations in Ethiopia for 2026, from ancient rock-hewn churches to dramatic mountain landscapes.</p>
-      <a href="#" class="read-more" onclick="event.preventDefault(); openArticle(['https://media.gettyimages.com/id/544381526/photo/king-fasilidas-established-his-capital-at-gondar-circa-1635-before-it-became-a-thriving.jpg?s=612x612&w=0&k=20&c=JaLDCIUhyxRqdSqOg478BtfxyYAD9JjoAVf14maD5PI=', 'https://media.gettyimages.com/id/147237333/photo/saint-george-feast-at-lalibela.jpg?s=612x612&w=0&k=20&c=iTYgGdogEr080w_HNNOv8cfX7m4Ku_CKNa2kJVcM31k='], 'Best Places to Visit in Ethiopia in 2026', '<h3>Lalibela: The New Jerusalem</h3><p>Designated as a UNESCO World Heritage site, these 11 rock-hewn churches were carved in the 12th century as a New Jerusalem.</p><h3>Gonder: The Camelot of Africa</h3><p>Visit the royal enclosure containing the fairy-tale castles of the Ethiopian Emperors.</p>')">Read More <span class="arrow">→</span></a>
-
-
-
-
-        </div>
-      </div>
-
-      <!-- Card 4 (Note: Reordered to match your 2x3 layout request) -->
-      <div class="blog-card">
-        <img src="https://media.gettyimages.com/id/952778956/photo/hiking-in-simien-mountains.jpg?s=612x612&w=0&k=20&c=OmjyzwzFjQWlDam-nGfuVmbXMIwqXO7O9PEQZ2h6kxk=" alt="Mountains">
-        <div class="card-content">
-          <span class="category">Adventure Travel</span>
-          <h3>Trekking the Simien Mountains: What You Need to Know</h3>
-          <p class="meta">Emma Wilson • 10 min read</p>
-          <p class="description">Everything you need to prepare for an unforgettable trek through the Simien Mountains National Park.</p>
-          <a href="#" class="read-more" onclick="event.preventDefault(); openArticle('https://media.gettyimages.com/id/956944726/photo/landscape-in-the-simien-mountains-national-park-view-from-peak-imet-gogo-over-the-highlands.jpg?s=612x612&w=0&k=20&c=Iz1ak3BNjn_UxYX92Nta6cSl2AKfG-Jo0EtsIejabDk=', 'Trekking the Simien Mountains', '<h3>The Roof of Africa</h3><p>Home to the Gelada Baboon and Walia Ibex. These rugged peaks offer the best trekking in Africa.</p><h3>Preparation</h3><p>Prepare for high altitudes and sharp temperature drops at night.</p>')">Read More <span class="arrow">→</span></a>
-
-
-
-        </div>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="blog-card">
-        <img src="https://media.gettyimages.com/id/1289100760/photo/ethiopian-coffee-ceremony.jpg?s=612x612&w=0&k=20&c=imQYSGfMQMWC_0s52WP8AndnYTs_stKx6e9Y_zHCjqM=" alt="Coffee">
-        <div class="card-content">
-          <span class="category">Travel Tips</span>
-          <h3>Complete Guide to Ethiopian Coffee Culture</h3>
-          <p class="meta">Michael Chen • 6 min read</p>
-          <p class="description">Learn everything about Ethiopian coffee ceremonies, the birthplace of coffee, and where to find the best brews.</p>
-         <a href="#" class="read-more" onclick="event.preventDefault(); openArticle('https://unsplash.com', 'Ethiopian Coffee Culture', '<h3>The Ceremony</h3><p>Coffee is a sign of friendship. The ceremony involves three rounds: Abol, Tona, and Baraka.</p><h3>The Etiquette</h3><p>Never refuse a cup if offered; it is a gesture of peace and hospitality.</p>')">Read More <span class="arrow">→</span></a>
-
-
-
-        </div>
-      </div>
-
-
+      <?php endwhile; ?>
+    <?php else: ?>
+      <p style="grid-column: 1 / -1; text-align: center; color: #666;">No articles found. Check back later!</p>
+    <?php endif; ?>
 
     </div>
   </div>
 </section>
+
 
 <!-- PLACE THE MODAL OUTSIDE HERE -->
 <div id="articleModal" class="modal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.8);">
@@ -234,7 +188,7 @@ function openArticle(imgInput, title, content) {
         ${imageSection}
         <div class="article-container">
             <h2 class="article-title">${title}</h2>
-            <div class="article-content">${content}</div>
+            <div class="article-content">${content.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#039;/g, "'")}</div>
         </div>`;
     
     // 5. SHOW MODAL: Use "block" to allow proper scrolling

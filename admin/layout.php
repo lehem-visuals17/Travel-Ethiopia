@@ -61,7 +61,7 @@ $current_page = basename($_SERVER['PHP_SELF']);
     <a href="blog.php">Blog</a>
     </li>
     <li class="<?php echo ($current_page == 'deals.php') ? 'active' : ''; ?>">
-    <a href="deals.php">Deals</a>
+    <a href="admin_deals.php">Deals</a>
     </li>
      
     <!-- Repeat for the rest of your links... -->

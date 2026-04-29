@@ -51,9 +51,9 @@ while($row = $result->fetch_assoc()){
     <li><a class="underline-text" href="trip.html#trip">Trip Planner</a></li>
     <li><a class="underline-text" href="booking.html#Bookings">Bookings</a></li>
     <li><a class="underline-text" href="packages.php#packages">Packages</a></li>
-    <li><a class="underline-text" href="experience.html#Experience">Experience</a></li>
-    <li><a class="underline-text" href="blog.html#Blog">Blog</a></li>
-    <li><a class="underline-text" href="deals.html#Deals">Deals</a></li>
+    <li><a class="underline-text" href="experience.php#Experience">Experience</a></li>
+    <li><a class="underline-text" href="blog.php#Blog">Blog</a></li>
+    <li><a class="underline-text" href="deals.php#Deals">Deals</a></li>
     <li><a class="underline-text" href="aboutus.html#About-Us">About Us</a></li>
     <li><a class="underline-text" href="contactus.html#Contact">Contact</a></li>
    

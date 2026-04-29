@@ -1,64 +1,62 @@
 <?php
 $conn = new mysqli("localhost", "root", "", "travel_db");
+if ($conn->connect_error) { die("Connection failed: " . $conn->connect_error); }
 
 $id = intval($_GET['id']);
 
 if(isset($_POST['update'])){
-
     $name = $_POST['name'];
     $category = $_POST['category'];
-    $price = $_POST['price'];
     $location = $_POST['location'];
+    
+    // Cast to exact numbers
+    $price = floatval($_POST['price']); 
+    $capacity = intval($_POST['capacity']);
+    $is_featured = intval($_POST['is_featured']);
+    
+    $duration = $_POST['duration'];
+    $schedule = $_POST['schedule'];
     $difficulty = $_POST['difficulty'];
-    $capacity = $_POST['capacity'];
-    $description = $_POST['description'];
     $status = $_POST['status'];
-    $is_featured = $_POST['is_featured'];
+    $description = $_POST['description'];
+    $whats_included = $_POST['whats_included'];
+    $not_included = $_POST['not_included'];
+    $itinerary = $_POST['itinerary'];
 
+    // Handle Image Upload
     $image = $_POST['old_image'];
-
     if(!empty($_FILES['image']['name'])){
         $image = time() . "_" . basename($_FILES['image']['name']);
         move_uploaded_file($_FILES['image']['tmp_name'], "uploads/" . $image);
     }
 
     $sql = "UPDATE experiences SET
-            name=?,
-            category=?,
-            price=?,
-            location=?,
-            difficulty=?,
-            capacity=?,
-            description=?,
-            image=?,
-            status=?,
-            is_featured=?
+            name=?, category=?, location=?, price=?, duration=?, schedule=?, 
+            capacity=?, difficulty=?, status=?, is_featured=?, description=?, 
+            whats_included=?, not_included=?, itinerary=?, image=?
             WHERE id=?";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param(
-        "ssdssisssii",
-        $name,
-        $category,
-        $price,
-        $location,
-        $difficulty,
-        $capacity,
-        $description,
-        $image,
-        $status,
-        $is_featured,
-        $id
+    
+    // Maps precisely to field types including the ID at the end
+    $stmt->bind_param("sssdssississsssi", 
+        $name, $category, $location, $price, $duration, $schedule, $capacity, 
+        $difficulty, $status, $is_featured, $description, $whats_included, 
+        $not_included, $itinerary, $image, $id
     );
 
-    $stmt->execute();
-
-    header("Location: experience.php");
-    exit();
+    if ($stmt->execute()) {
+        header("Location: experience_management.php?success=1");
+        exit();
+    } else {
+        echo "SQL Error: " . $stmt->error;
+    }
+    $stmt->close();
 }
 
 $result = $conn->query("SELECT * FROM experiences WHERE id=$id");
 $row = $result->fetch_assoc();
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -75,22 +73,21 @@ $row = $result->fetch_assoc();
 
         <div class="modal-header">
             <h2>Edit Experience</h2>
-            <a href="experience.php" class="close-btn">&times;</a>
+            <a href="experience_management.php" class="close-btn">&times;</a>
         </div>
 
         <form method="POST" enctype="multipart/form-data">
-
             <input type="hidden" name="old_image" value="<?php echo $row['image']; ?>">
 
             <div class="form-grid">
 
                 <div class="form-group full-width">
-                    <label>Current Image</label><br>
+                    <label>Current Hero Image</label><br>
                     <img src="uploads/<?php echo $row['image']; ?>" style="width:120px;height:80px;object-fit:cover;border-radius:8px;">
                 </div>
 
                 <div class="form-group full-width">
-                    <label>Change Image</label>
+                    <label>Change Hero Image</label>
                     <input type="file" name="image" accept="image/*">
                 </div>
 
@@ -110,13 +107,28 @@ $row = $result->fetch_assoc();
                 </div>
 
                 <div class="form-group">
-                    <label>Price</label>
-                    <input type="number" step="0.01" name="price" value="<?php echo $row['price']; ?>">
+                    <label>Location</label>
+                    <input type="text" name="location" value="<?php echo htmlspecialchars($row['location']); ?>" required>
                 </div>
 
                 <div class="form-group">
-                    <label>Location</label>
-                    <input type="text" name="location" value="<?php echo htmlspecialchars($row['location']); ?>">
+                    <label>Price ($)</label>
+                    <input type="number" step="0.01" name="price" value="<?php echo $row['price']; ?>" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Duration</label>
+                    <input type="text" name="duration" value="<?php echo htmlspecialchars($row['duration']); ?>" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Schedule</label>
+                    <input type="text" name="schedule" value="<?php echo htmlspecialchars($row['schedule']); ?>" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Group Size / Capacity</label>
+                    <input type="number" name="capacity" min="1" value="<?php echo $row['capacity']; ?>" required>
                 </div>
 
                 <div class="form-group">
@@ -124,13 +136,8 @@ $row = $result->fetch_assoc();
                     <select name="difficulty">
                         <option value="Easy" <?php if($row['difficulty']=="Easy") echo "selected"; ?>>Easy</option>
                         <option value="Moderate" <?php if($row['difficulty']=="Moderate") echo "selected"; ?>>Moderate</option>
-                        <option value="Hard" <?php if($row['difficulty']=="Hard") echo "selected"; ?>>Hard</option>
+                        <option value="Challenging" <?php if($row['difficulty']=="Challenging") echo "selected"; ?>>Challenging</option>
                     </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Availability</label>
-                    <input type="number" name="capacity" value="<?php echo $row['capacity']; ?>">
                 </div>
 
                 <div class="form-group">
@@ -151,7 +158,28 @@ $row = $result->fetch_assoc();
 
                 <div class="form-group full-width">
                     <label>Description</label>
-                    <textarea name="description" rows="4"><?php echo htmlspecialchars($row['description']); ?></textarea>
+                    <textarea name="description" rows="3" required><?php echo htmlspecialchars($row['description']); ?></textarea>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>What's Included (Put each item on a new line)</label>
+                    <textarea name="whats_included" rows="4"><?php echo htmlspecialchars($row['whats_included']); ?></textarea>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Not Included (Put each item on a new line)</label>
+                    <textarea name="not_included" rows="4"><?php echo htmlspecialchars($row['not_included']); ?></textarea>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Itinerary (Type as many steps as you want!)</label>
+                    <textarea name="itinerary" rows="6"><?php echo htmlspecialchars($row['itinerary']); ?></textarea>
+                    <small style="color: #666;">📝 Put each event on a new line and use the pipe "|" to separate the fields.</small>
+                </div>
+
+                <div class="form-group full-width">
+                    <label>Gallery Images (Select multiple files to overwrite or add)</label>
+                    <input type="file" name="gallery_images[]" accept="image/*" multiple>
                 </div>
 
             </div>

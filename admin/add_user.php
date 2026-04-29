@@ -2,50 +2,56 @@
 // Database connection
 $conn = new mysqli("localhost", "root", "", "travel_db");
 $pageTitle = "Users";
-// Check connection
+
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
 $message = "";
 
-// Handle Form Submission
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $fullname = $_POST['fullname'];
     $email    = $_POST['email'];
     $phone    = $_POST['phone'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Secure hashing
+    
+    // Secure hashing
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); 
     $role     = $_POST['role'];
     
-    // Since your DB requires a 'username', we'll use the email as a default
+    // Fallback defaults
     $username = $email; 
+    $status   = 'active';
+    $created_at = date('Y-m-d H:i:s');
 
-    $sql = "INSERT INTO users (fullname, username, email, password, phone, role) 
-            VALUES ('$fullname', '$username', '$email', '$password', '$phone', '$role')";
+    $stmt = $conn->prepare("INSERT INTO users (fullname, username, email, password, phone, role, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssssss", $fullname, $username, $email, $password, $phone, $role, $status, $created_at);
 
-    if ($conn->query($sql) === TRUE) {
-        header("Location: users_list.php"); // Redirect back to your dashboard
+    if ($stmt->execute()) {
+        $stmt->close();
+        $conn->close();
+        
+        // Success redirect back to the table
+        header("Location: users.php"); 
         exit();
     } else {
-        $message = "Error: " . $conn->error;
+        $message = "Error: " . $stmt->error;
+        $stmt->close();
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Add New User</title>
-    <!-- SweetAlert2 for beautiful popups -->
-<script src="https://jsdelivr.net"></script>
-
-    <link rel="stylesheet" href="style.css"> <!-- Reusing your existing CSS -->
-    <link rel="stylesheet" href="https://cloudflare.com">
-    <?php include 
+    <!-- Loaded functional SweetAlert2 tag -->
+    <script src="https://jsdelivr.net"></script>
     
-    "layout.php"; ?>
+    <link rel="stylesheet" href="style.css"> 
+    <!-- Replaced broken cloudflare link with FontAwesome -->
+    <link rel="stylesheet" href="https://cloudflare.com">
+    <?php include "layout.php"; ?>
 </head>
 <body>
 
@@ -57,6 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <div class="form-card">
+        <!-- FIXED ACTION: Post directly to this same file -->
         <form action="add_user.php" method="POST">
             <h3>User Information</h3>
             
@@ -77,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="form-group">
                 <label>Password *</label>
-                <input type="password" name="password" placeholder="Enter password (min. 6 characters)" required>
+                <input type="password" name="password" placeholder="Enter password (min. 6 characters)" required minlength="6">
             </div>
 
             <div class="form-group">
@@ -90,11 +97,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             <div class="form-actions">
                 <button type="submit" class="btn-create">Create User</button>
-                <a href="users_list.php" class="btn-cancel">Cancel</a>
+                <a href="users.php" class="btn-cancel">Cancel</a>
             </div>
         </form>
     </div>
 </div>
+
+<?php if(!empty($message)): ?>
+<script>
+    Swal.fire({
+      icon: 'error',
+      title: 'Submission Failed',
+      text: '<?php echo $message; ?>',
+    })
+</script>
+<?php endif; ?>
 
 </body>
 </html>

@@ -128,9 +128,10 @@ $total_exp = $conn->query("SELECT COUNT(*) as total FROM experiences")->fetch_as
         <i class="fa-regular fa-pen-to-square"></i>
     </a>
 
-    <a href="view_experience.php?id=<?php echo $row['id']; ?>">
-        <i class="fa-regular fa-eye"></i>
-    </a>
+    <a href="../experience_details.php?id=<?php echo $row['id']; ?>">
+    <i class="fa-regular fa-eye"></i>
+</a>
+
 
     <a href="delete_experience.php?id=<?php echo $row['id']; ?>" onclick="return confirm('Delete this experience?')">
         <i class="fa-regular fa-trash-can"></i>
@@ -149,19 +150,23 @@ $total_exp = $conn->query("SELECT COUNT(*) as total FROM experiences")->fetch_as
             <h2>Add New Experience</h2>
             <span class="close-btn">&times;</span>
         </div>
-        <form action="add_experience.php" method="POST" enctype="multipart/form-data">
+       <form action="add_experience.php" method="POST" enctype="multipart/form-data">
     <div class="form-grid">
-
-        <div class="form-group full-width">
-            <label>Image</label>
-            <input type="file" name="image" accept="image/*">
-        </div>
-
+        <!-- Hero Section -->
         <div class="form-group">
             <label>Name</label>
             <input type="text" name="name" required>
         </div>
+        <div class="form-group">
+            <label>Static Rating (e.g. 4.9)</label>
+            <input type="number" step="0.1" min="1" max="5" name="rating" value="5.0">
+        </div>
+        <div class="form-group full-width">
+            <label>Featured Hero Image</label>
+            <input type="file" name="image" accept="image/*" required>
+        </div>
 
+        <!-- Top Info -->
         <div class="form-group">
             <label>Category</label>
             <select name="category">
@@ -171,21 +176,38 @@ $total_exp = $conn->query("SELECT COUNT(*) as total FROM experiences")->fetch_as
                 <option value="Food">Food</option>
             </select>
         </div>
-
         <div class="form-group">
-            <label>Availability</label>
-            <input type="number" name="capacity" min="1">
+            <label>Location Name</label>
+            <input type="text" name="location" placeholder="e.g. Simien Mountains" required>
         </div>
-
+        <div class="form-group">
+            <label>Price ($)</label>
+            <input type="number" step="0.01" name="price" required>
+        </div>
+        <div class="form-group">
+            <label>Duration</label>
+            <input type="text" name="duration" placeholder="e.g. Full day (8 hours)" required>
+        </div>
+        <div class="form-group">
+            <label>Group Size / Capacity</label>
+            <input type="number" name="capacity" min="1" required>
+        </div>
+        <div class="form-group">
+            <label>Schedule</label>
+            <input type="text" name="schedule" placeholder="e.g. Daily, starts at 6:00 AM" required>
+        </div>
+        <div class="form-group">
+            <label>Languages</label>
+            <input type="text" name="languages" placeholder="e.g. English, Amharic" required>
+        </div>
         <div class="form-group">
             <label>Difficulty</label>
             <select name="difficulty">
                 <option value="Easy">Easy</option>
                 <option value="Moderate">Moderate</option>
-                <option value="Hard">Hard</option>
+                <option value="Challenging">Challenging</option>
             </select>
         </div>
-
         <div class="form-group">
             <label>Status</label>
             <select name="status">
@@ -193,35 +215,49 @@ $total_exp = $conn->query("SELECT COUNT(*) as total FROM experiences")->fetch_as
                 <option value="Inactive">Inactive</option>
             </select>
         </div>
-
         <div class="form-group">
-            <label>Price</label>
-            <input type="number" step="0.01" name="price">
-        </div>
-
-        <div class="form-group">
-            <label>
-    <input type="checkbox" name="is_featured" value="1">
-    Featured
-</label>
+            <label>Featured</label>
             <select name="is_featured">
                 <option value="0">No</option>
                 <option value="1">Yes</option>
             </select>
         </div>
 
+        <!-- Details -->
         <div class="form-group full-width">
-            <label>Description</label>
-            <textarea name="description" rows="3"></textarea>
+            <label>About This Experience</label>
+            <textarea name="description" rows="3" required></textarea>
+        </div>
+        <div class="form-group full-width">
+            <label>What's Included (One per line)</label>
+            <textarea name="whats_included" rows="4"></textarea>
+        </div>
+        <div class="form-group full-width">
+            <label>Not Included (One per line)</label>
+            <textarea name="not_included" rows="4"></textarea>
+        </div>
+        <div class="form-group full-width">
+            <label>Itinerary (Format: Time | Title | Detail - One per line)</label>
+            <textarea name="itinerary" rows="6" placeholder="06:00 AM | Departure from Gondar | Pickup from your hotel..."></textarea>
         </div>
 
+        <!-- Media & Map -->
+        <div class="form-group full-width">
+            <label>Gallery Image Links (Paste up to 5 URLs, one per line)</label>
+            <textarea name="gallery" rows="5" placeholder="https://image1.jpg&#10;https://image2.jpg"></textarea>
+        </div>
+        <div class="form-group full-width">
+            <label>Google Maps Embed Link (Src URL only)</label>
+            <input type="text" name="map_link" placeholder="https://google.com?...">
+        </div>
     </div>
-
     <div class="modal-footer">
         <button type="button" class="btn-cancel close-btn">Cancel</button>
         <button type="submit" name="submit" class="btn-save">Save Experience</button>
     </div>
 </form>
+
+
     </div>
 </div>
 
