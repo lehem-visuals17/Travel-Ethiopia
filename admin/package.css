@@ -96,7 +96,7 @@ body {
 }
 
 /* --- Quick Action Strip --- */
-..admin-actions {
+.admin-actions {
     padding: 15px 20px;
     display: flex;
     gap: 15px; /* Added more space between buttons */
