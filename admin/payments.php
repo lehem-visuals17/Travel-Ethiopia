@@ -2,120 +2,98 @@
 $conn = new mysqli("localhost", "root", "", "travel_db");
 $pageTitle = "Payments";
 
-/* Stats Logic */
-$total_revenue = $conn->query("SELECT SUM(amount) total FROM payments WHERE status='paid'")->fetch_assoc()['total'] ?? 0;
-$pending_payments = $conn->query("SELECT SUM(amount) total FROM payments WHERE status='pending'")->fetch_assoc()['total'] ?? 0;
-$total_transactions = $conn->query("SELECT COUNT(*) total FROM payments")->fetch_assoc()['total'];
+$revenue_query = "SELECT SUM(amount) AS total FROM payments WHERE status = 'completed'";
+$revenue_res = $conn->query($revenue_query);
+$total_revenue = number_format($revenue_res->fetch_assoc()['total'] ?? 0);
 
-/* Action Handling */
-if(isset($_GET['action']) && isset($_GET['id'])){
-    $id = intval($_GET['id']);
-    $status = ($_GET['action'] == 'confirm') ? 'paid' : 'failed';
-    $stmt = $conn->prepare("UPDATE payments SET status=? WHERE id=?");
-    $stmt->bind_param("si", $status, $id);
-    $stmt->execute();
-    header("Location: payments.php");
-    exit();
-}
+$pending_query = "SELECT SUM(amount) AS total FROM payments WHERE status = 'pending'";
+$pending_res = $conn->query($pending_query);
+$pending_payments = number_format($pending_res->fetch_assoc()['total'] ?? 0);
 
-$result = $conn->query("SELECT p.*, u.fullname FROM payments p LEFT JOIN users u ON p.user_id = u.id ORDER BY p.id ASC");
+$count_query = "SELECT COUNT(id) AS total FROM payments";
+$count_res = $conn->query($count_query);
+$total_transactions = $count_res->fetch_assoc()['total'] ?? 0;
+
+// 2. Fetch All Payments (Joining with a 'users' table if you have one for names)
+$sql = "SELECT p.*, u.username as customer_name 
+        FROM payments p 
+        LEFT JOIN users u ON p.user_id = u.id 
+        ORDER BY p.created_at DESC";
+
+$result = $conn->query($sql);
 ?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Payments</title>
-    <link rel="stylesheet" href="payment.css">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <?php include "layout.php"; ?>
+     <link rel="stylesheet" href="paymnet.css">
 </head>
 <body>
+    <div class="main-content">
+    <div class="container">
+        <header>
+            <h1>Payment Management</h1>
+            <p>Track and manage all payments</p>
+        </header>
 
-<div class="content payment-page">
-    <div class="payment-header"> <!-- Fixed class name -->
-        <h1>Payment Management</h1>
-        <p>Track and manage all payments</p>
-    </div>
-
-    <div class="payment-stats"> <!-- Fixed class name -->
-        <div class="payment-card">
-            <div>
-                <h4>Total Revenue</h4>
-                <h2 style="color: #22a35a;">$<?php echo number_format($total_revenue); ?></h2>
+        <div class="stats-grid">
+            <div class="card card-green">
+                <div class="card-info"><span>Total Revenue</span><h3>$<?php echo $total_revenue; ?></h3></div>
+                <div class="card-icon">$</div>
             </div>
-            <i class="fa-solid fa-dollar-sign icon" style="color: #22a35a; font-size: 24px;"></i>
+            <div class="card card-orange">
+                <div class="card-info"><span>Pending Payments</span><h3>$<?php echo $pending_payments; ?></h3></div>
+                <div class="card-icon">🔄</div>
+            </div>
+            <div class="card card-orange-light">
+                <div class="card-info"><span>Total Transactions</span><h3><?php echo $total_transactions; ?></h3></div>
+                <div class="card-icon">$</div>
+            </div>
         </div>
 
-        <div class="payment-card">
-            <div>
-                <h4>Pending Payments</h4>
-                <h2 style="color: #d48a00;">$<?php echo number_format($pending_payments); ?></h2>
-            </div>
-            <i class="fa-solid fa-rotate-right icon" style="color: #d48a00; font-size: 24px;"></i>
-        </div>
-
-        <div class="payment-card">
-            <div>
-                <h4>Total Transactions</h4>
-                <h2 style="color: #d48a00;"><?php echo $total_transactions; ?></h2>
-            </div>
-            <i class="fa-solid fa-dollar-sign icon" style="color: #d48a00; font-size: 24px;"></i>
+        <div class="table-container">
+            <h3>All Payments</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Payment ID</th><th>Booking ID</th><th>Customer</th>
+                        <th>Amount</th><th>Method</th><th>Type</th>
+                        <th>Date</th><th>Status</th><th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if ($result->num_rows > 0): ?>
+                        <?php while($row = $result->fetch_assoc()): ?>
+                        <tr>
+                            <td>#<?php echo $row['id']; ?></td>
+                            <td>#<?php echo $row['booking_id']; ?></td>
+                            <td><?php echo htmlspecialchars($row['customer_name'] ?? 'Unknown'); ?></td>
+                            <td class="amt-text">$<?php echo number_format($row['amount'], 2); ?></td>
+                            <td><span class="badge badge-purple"><?php echo $row['method']; ?></span></td>
+                            <td><?php echo ucfirst($row['payment_type']); ?></td>
+                            <td><?php echo date('n/j/Y', strtotime($row['created_at'])); ?></td>
+                            <td><span class="status-pill <?php echo $row['status']; ?>"><?php echo $row['status']; ?></span></td>
+                            <td>
+                                <?php if ($row['status'] == 'pending'): ?>
+                                    <form action="update_status.php" method="POST" style="display:inline;">
+                                        <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                        <button name="action" value="completed" class="btn btn-confirm">✓ Confirm</button>
+                                        <button name="action" value="rejected" class="btn btn-reject">ⓧ Reject</button>
+                                    </form>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                        <?php endwhile; ?>
+                    <?php else: ?>
+                        <tr><td colspan="9">No payments found.</td></tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
         </div>
     </div>
-
-    <div class="payment-table-box"> <!-- Fixed class name -->
-        <h3>All Payments</h3>
-        <table class="payment-table"> <!-- Added class -->
-            <thead>
-                <tr>
-                    <th>Payment ID</th>
-                    <th>Booking ID</th>
-                    <th>Customer</th>
-                    <th>Amount</th>
-                    <th>Method</th>
-                    <th>Type</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-            <?php while($row = $result->fetch_assoc()): ?>
-                <tr>
-                    <td>#<?php echo $row['id']; ?></td>
-                    <td>#<?php echo $row['booking_id']; ?></td>
-                    <td><?php echo $row['fullname']; ?></td>
-                    <td style="font-weight: bold; color: <?php echo ($row['status']=='paid') ? '#22a35a' : '#d48a00'; ?>">
-                        $<?php echo number_format($row['amount']); ?>
-                    </td>
-                    <!-- Change the method line to this -->
-<td>
-    <span class="method-badge badge-<?php echo strtolower($row['method']); ?>">
-        <?php echo $row['method']; ?>
-    </span>
-</td>
-
-<td><span class="type-badge" style="border: 1px solid #ddd;"><?php echo ucfirst($row['payment_type']); ?></span></td>
-                    <td><?php echo date("n/j/Y", strtotime($row['created_at'])); ?></td>
-                    <td>
-                        <span class="status-badge status-<?php echo $row['status']; ?>">
-                            <?php echo ($row['status']=='paid') ? "completed" : $row['status']; ?>
-                        </span>
-                    </td>
-                    <td>
-                        <?php if($row['status']=="pending"): ?>
-                            <a href="?action=confirm&id=<?php echo $row['id']; ?>" class="btn-action btn-confirm">
-                                <i class="fa-regular fa-circle-check"></i> Confirm
-                            </a>
-                            <a href="?action=reject&id=<?php echo $row['id']; ?>" class="btn-action btn-reject">
-                                <i class="fa-regular fa-circle-xmark"></i> Reject
-                            </a>
-                        <?php endif; ?>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
-            </tbody>
-        </table>
-    </div>
-</div>
+                    </div>
 </body>
 </html>

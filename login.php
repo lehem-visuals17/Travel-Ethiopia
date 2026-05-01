@@ -46,7 +46,6 @@ if (isset($_POST['fullname'])) {
     $checkQuery->close();
 }
 
-
 // --- LOGIN LOGIC ---
 if (isset($_POST['username']) && !isset($_POST['fullname'])) {
     $username = $_POST['username'];
@@ -59,18 +58,22 @@ if (isset($_POST['username']) && !isset($_POST['fullname'])) {
     $result = $stmt->get_result();
 
     if ($user = $result->fetch_assoc()) {
-
         if (password_verify($password, $user['password'])) {
 
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['role'] = $user['role'];
 
-            // redirect by role
+            // Updated redirection logic by role
+                        // Redirect by role
             if ($user['role'] == 'admin') {
                 header("Location: admin/dashboard.php");
+            } elseif ($user['role'] == 'tour_guide') {
+                header("Location: guide/profile.php");
+            } elseif ($user['role'] == 'customer') {
+                header("Location: users/profile.php"); // Updated for customer profile
             } else {
-                header("Location: booking.html");
+                header("Location: index.php");
             }
 
             exit();
@@ -78,13 +81,12 @@ if (isset($_POST['username']) && !isset($_POST['fullname'])) {
         } else {
             echo "<script>alert('Incorrect password!'); window.history.back();</script>";
         }
-
     } else {
         echo "<script>alert('No account found!'); window.history.back();</script>";
     }
-
     $stmt->close();
 }
+
 
 
 $conn->close();

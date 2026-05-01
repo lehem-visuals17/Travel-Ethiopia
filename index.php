@@ -1,15 +1,49 @@
 <?php
 session_start();
-include 'db.php';
+include 'db.php'; // Ensure this file defines $conn
 
+// 1. Fetch Destinations
 $sql = "SELECT * FROM destinations ORDER BY id DESC LIMIT 4";
-$result = $conn->query($sql);
-
+$dest_result = $conn->query($sql);
 $destinations = [];
-while($row = $result->fetch_assoc()){
-    $destinations[] = $row;
+if ($dest_result) {
+    while($row = $dest_result->fetch_assoc()){
+        $destinations[] = $row;
+    }
 }
+
+// 2. Fetch Packages (Featured first, then Latest)
+$sql = "SELECT * FROM packages ORDER BY featured DESC, id DESC LIMIT 3";
+$pkg_result = $conn->query($sql);
+
+// Fallback if no packages exist at all
+if ($pkg_result && $pkg_result->num_rows == 0) {
+    $sql = "SELECT * FROM packages ORDER BY id DESC LIMIT 3";
+    $pkg_result = $conn->query($sql);
+}
+
+// 3. Fetch Experiences
+$exp_query = "SELECT * FROM experiences WHERE status = 'Active' ORDER BY is_featured DESC, id DESC LIMIT 4";
+$exp_result = $conn->query($exp_query);
+
+$stats_query = "SELECT AVG(rating) as avg_score, COUNT(id) as total_count FROM reviews";
+$stats_res = $conn->query($stats_query);
+$stats = $stats_res->fetch_assoc();
+$avg_score = number_format($stats['avg_score'] ?? 0, 1);
+$total_reviews = number_format($stats['total_count'] ?? 0);
+
+// 2. Fetch Latest 4 Reviews
+$rev_sql = "SELECT r.*, u.fullname, p.title as package_name 
+            FROM reviews r
+            JOIN users u ON r.user_id = u.id
+            LEFT JOIN packages p ON r.package_id = p.id
+            ORDER BY r.created_at DESC LIMIT 4";
+$rev_result = $conn->query($rev_sql);
+
+$blog_sql = "SELECT * FROM blog_posts WHERE status = 'published' ORDER BY id DESC LIMIT 3";
+$blog_result = $conn->query($blog_sql);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -58,9 +92,7 @@ while($row = $result->fetch_assoc()){
     <li><a class="underline-text" href="contactus.html#Contact">Contact</a></li>
    
     <div class="header-actions">
-     <a href="profile.php">
-            <i class="fa-solid fa-user"></i>
-        </a>
+    
   <div class="login-pill">
     <i class="fa-regular fa-circle-user"></i>
    <span>  <?php 
@@ -332,6 +364,9 @@ $result = mysqli_query($conn, $sql);
 </section>
 
 
+
+
+
 <section class="featured-packages">
   <div class="header">
     <h1>Featured Travel Packages</h1>
@@ -339,461 +374,164 @@ $result = mysqli_query($conn, $sql);
   </div>
 
   <div class="package-grid">
-    <!-- Card 1: Romantic -->
-    <div class="package-card">
-      <div class="image-container">
-        <img src="images\romantic.jpg" alt="Romantic Honeymoon">
-        <span class="badge">Popular</span>
-        <button class="wishlist-btn">❤️</button>
-      </div>
-      <div class="card-content">
-        <h3></h3>Romantic Honeymoon Package</h3>
-       <!-- Inside each .package-card, after the <p> description -->
-<div class="card-details">
-  <!-- Stats Row -->
- <div class="info-bar">
-  <div class="info-item">
-    <i data-lucide="clock" class="icon icon-yellow"></i>
-    <span>7 Days</span>
-  </div>
-  
-  <div class="info-item">
-    <i data-lucide="users" class="icon icon-yellow"></i>
-    <span>2 People</span>
-  </div>
-  
-  <div class="info-item">
-    <i data-lucide="star" class="icon-star"></i>
-    <span class="rating"><strong>4.9 (342)</strong> </span>
-  </div>
-</div>
-
-  <ul class="feature-list">
-  <li class="feature-item">
-    <span class="icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-    </span>
-   Luxury accommodations
-  </li>
-  <li class="feature-item">
-    <span class="icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-    </span>
-   Private guided tours
-  </li>
-  <li class="feature-item">
-    <span class="icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-    </span>
-    Romantic dinners
-  </li>
-  <li class="feature-item">
-    <span class="icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-    </span>
-    Spa treatments
-  </li>
-</ul>
-
-
-  <hr class="divider">
-
-  <!-- Price & Button Row -->
-  <div class="booking-row">
-    <div class="price-block">
-      <span class="label">Starting from</span>
-      <span class="amount">$2,499</span>
-    </div>
-    <a href="packages.html">
-      <button class="book-btn">Book Now</button>
-    </a>
-  </div>
-</div>
-
-<!-- Add this after the .package-grid div -->
-
-
-      </div>
-    </div>
-
-    <!-- Card 2: Family -->
+    <?php if ($result && $result->num_rows > 0): ?>
+      <?php while($row = $result->fetch_assoc()): ?>
         <div class="package-card">
-      <div class="image-container">
-        <img src="images\family-adventure.jpg" alt="Extreme Adventure">
-        <span class="badge">Best Value</span>
-        <button class="wishlist-btn">❤️</button>
-      </div>
-      <div class="card-content">
-        <h3>Family Adventure Vacation</h3>
-         <!-- Inside each .package-card, after the <p> description -->
-<div class="card-details">
-  <!-- Stats Row -->
- <div class="info-bar">
-  <div class="info-item">
-    <i data-lucide="clock" class="icon icon-yellow"></i>
-    <span>10 Days</span>
+          <div class="image-container">
+            <!-- PATH FIX: Pointing to admin/uploads -->
+            <img src="admin/uploads/<?php echo htmlspecialchars($row['image']); ?>" alt="<?php echo htmlspecialchars($row['title']); ?>">
+            
+            <?php if(!empty($row['badge_text'])): ?>
+                <span class="badge"><?php echo htmlspecialchars($row['badge_text']); ?></span>
+            <?php endif; ?>
+            
+            <button class="wishlist-btn">❤️</button>
+          </div>
+
+          <div class="card-content">
+            <h3><?php echo htmlspecialchars($row['title']); ?></h3>
+            
+            <div class="card-details">
+              <div class="info-bar">
+                <div class="info-item">
+                  <i data-lucide="clock" class="icon icon-yellow"></i>
+                  <span><?php echo htmlspecialchars($row['duration']); ?></span>
+                </div>
+                
+                <div class="info-item">
+                  <i data-lucide="users" class="icon icon-yellow"></i>
+                  <span><?php echo htmlspecialchars($row['max_people']); ?> People</span>
+                </div>
+                
+                <div class="info-item">
+                  <i data-lucide="star" class="icon-star"></i>
+                  <span class="rating"><strong><?php echo $row['rating']; ?></strong></span>
+                </div>
+              </div>
+
+              <!-- Feature Checklist -->
+              <ul class="feature-list">
+                <?php 
+                $features = explode(',', $row['includes_list']); 
+                foreach($features as $feature): 
+                  if(trim($feature) != ""):
+                ?>
+                  <li class="feature-item">
+                    <span class="icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                      </svg>
+                    </span>
+                    <?php echo htmlspecialchars(trim($feature)); ?>
+                  </li>
+                <?php 
+                  endif;
+                endforeach; 
+                ?>
+              </ul>
+
+              <hr class="divider">
+
+              <div class="booking-row">
+                <div class="price-block">
+                  <span class="label">Starting from</span>
+                  <span class="amount">$<?php echo number_format($row['price']); ?></span>
+                </div>
+                <!-- Redirecting to your main packages page or a details page -->
+                <a href="packages.php?id=<?php echo $row['id']; ?>">
+                  <button class="book-btn">Book Now</button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      <?php endwhile; ?>
+    <?php else: ?>
+      <p style="text-align:center; width:100%; grid-column: 1/-1;">No packages found in the database.</p>
+    <?php endif; ?>
   </div>
-  
-  <div class="info-item">
-    <i data-lucide="users" class="icon icon-yellow"></i>
-    <span>4-6 People</span>
-  </div>
-  
-  <div class="info-item">
-    <i data-lucide="star" class="icon-star"></i>
-    <span class="rating"><strong>4.8(256)</strong> </span>
-  </div>
-</div>
 
-  <ul class="feature-list">
-  <li class="feature-item">
-    <span class="icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-    </span>
-    Kid-friendly activities
-  </li>
-  <li class="feature-item">
-    <span class="icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-    </span>
-    Cultural experiences
-  </li>
-  <li class="feature-item">
-    <span class="icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-    </span>
-    Wildlife encounters
-  </li>
-  <li class="feature-item">
-    <span class="icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-    </span>
-    Family-style accommodations
-  </li>
-</ul>
-
-
-  <hr class="divider">
-
-  <!-- Price & Button Row -->
-  <div class="booking-row">
-    <div class="price-block">
-      <span class="label">Starting from</span>
-      <span class="amount">$3,299</span>
-    </div>
-    <a href="packages.html">
-      <button class="book-btn">Book Now</button>
-    </a>
-  </div>
-</div>
-
-<!-- Add this after the .package-grid div -->
-
-
-      </div>
-    </div>
-
-    <!-- Card 3: Extreme -->
-    <div class="package-card">
-      <div class="image-container">
-        <img src="images\adventure.jpg" alt="Extreme Adventure">
-        <span class="badge">Adventure</span>
-        <button class="wishlist-btn">❤️</button>
-      </div>
-      <div class="card-content">
-        <h3>Extreme Adventure Tour</h3>
-        <!-- Inside each .package-card, after the <p> description -->
-<div class="card-details">
-  <!-- Stats Row -->
- <div class="info-bar">
-  <div class="info-item">
-    <i data-lucide="clock" class="icon icon-yellow"></i>
-    <span>5 Days</span>
-  </div>
-  
-  <div class="info-item">
-    <i data-lucide="users" class="icon icon-yellow"></i>
-    <span>2-8 People</span>
-  </div>
-  
-  <div class="info-item">
-    <i data-lucide="star" class="icon-star"></i>
-    <span class="rating"><strong>5</strong> </span>
-  </div>
-</div>
-
-  <ul class="feature-list">
-  <li class="feature-item">
-    <span class="icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-    </span>
-   Mountain trekking
-  </li>
-  <li class="feature-item">
-    <span class="icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-    </span>
-  Rock climbing
-  </li>
-  <li class="feature-item">
-    <span class="icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-    </span>
-    Camping under stars
-  </li>
-  <li class="feature-item">
-    <span class="icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-    </span>
-    Professional guides
-  </li>
-</ul>
-
-
-  <hr class="divider">
-
-  <!-- Price & Button Row -->
-  <div class="booking-row">
-    <div class="price-block">
-      <span class="label">Starting from</span>
-      <span class="amount">$1,899</span>
-    </div>
-    <a href="packages.html">
-      <button class="book-btn">Book Now</button>
-    </a>
-  </div>
-</div>
-
-
-
-      </div>
-    </div>
-  </div>
   <div class="view-all-container">
-  <button class="view-all-btn">View All Packages</button>
-</div>
+    <a href="packages.php">
+      <button class="view-all-btn">View All Packages</button>
+    </a>
+  </div>
 </section>
+
+
 
 
 <!-- experience cards -->
 <section class="experience-cards">
-   <div class="header">
+  <div class="header">
     <h1>Local Experiences</h1>
     <p>Immerse yourself in authentic Ethiopian culture and traditions</p>
   </div>
 
   <div class="package-grid">
-        <!-- Card 3: Extreme -->
-    <div class="package-card">
-      <div class="image-container">
-        <img src="images\coffee.jpg" alt="Extreme Adventure">
-        <span class="badge">
-          <i data-lucide="utensils" class="icon-yellow"></i>
+    <?php if ($exp_result && $exp_result->num_rows > 0): ?>
+      <?php while($row = $exp_result->fetch_assoc()): ?>
+        <div class="package-card">
+          <div class="image-container">
+            <!-- Correct path for root index.php -->
+            <img src="admin/uploads/<?php echo htmlspecialchars($row['image']); ?>" alt="<?php echo htmlspecialchars($row['name']); ?>">
+            
+            <span class="badge">
+              <?php 
+                // Mapping categories to Lucide icons dynamically
+                $icon = "map-pin";
+                $cat = strtolower($row['category']);
+                if(strpos($cat, 'food') !== false) $icon = "utensils";
+                elseif(strpos($cat, 'adventure') !== false) $icon = "mountain";
+                elseif(strpos($cat, 'music') !== false) $icon = "music";
+                elseif(strpos($cat, 'culture') !== false) $icon = "binoculars";
+              ?>
+              <i data-lucide="<?php echo $icon; ?>" class="icon-yellow"></i>
+              <?php echo htmlspecialchars($row['category']); ?>
+            </span>
+          </div>
 
-          Food Tours</span>
-        
-      </div>
-      <div class="card-content">
-        <h3>Traditional Coffee Ceremony</h3>
-        <p>Experience the sacred Ethiopian coffee ritual</p>
-        <!-- Inside each .package-card, after the <p> description -->
-<div class="card-details">
-  <!-- Stats Row -->
- <div class="info-bar">
-  <div class="info-item">
-    <i data-lucide="clock" class="icon icon-yellow"></i>
-    <span>2 hours</span>
+          <div class="card-content">
+            <h3><?php echo htmlspecialchars($row['name']); ?></h3>
+            <p><?php echo htmlspecialchars($row['description']); ?></p>
+            
+            <div class="card-details">
+              <div class="info-bar">
+                <div class="info-item">
+                  <i data-lucide="clock" class="icon icon-yellow"></i>
+                  <span><?php echo htmlspecialchars($row['duration']); ?></span>
+                </div>
+
+                <div class="info-item">
+                  <i data-lucide="star" class="icon-star"></i>
+                  <span class="rating">
+                    <strong><?php echo ($row['is_featured'] == 1) ? '4.9' : '4.5'; ?> (<?php echo rand(100, 500); ?>)</strong> 
+                  </span>
+                </div>
+              </div>
+
+              <hr class="divider">
+
+              <div class="booking-row">
+                <div class="price-block">
+                  <span class="label">from</span>
+                  <span class="amount">$<?php echo number_format($row['price']); ?></span>
+                </div>
+                <!-- Link to your experience details page -->
+                <a href="experience_details.php?id=<?php echo $row['id']; ?>">
+                   <button class="book-btn">Book Now</button>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      <?php endwhile; ?>
+    <?php else: ?>
+      <p style="text-align:center; width:100%; grid-column: 1/-1;">No local experiences available yet.</p>
+    <?php endif; ?>
   </div>
-
-  <div class="info-item">
-    <i data-lucide="star" class="icon-star"></i>
-    <span class="rating"><strong>4.9(432)</strong> </span>
-  </div>
-</div>
-
- 
-
-  <hr class="divider">
-
-  <!-- Price & Button Row -->
-  <div class="booking-row">
-    <div class="price-block">
-      <span class="label">from</span>
-      <span class="amount">$45</span>
-    </div>
-    <button class="book-btn">Book Now</button>
-  </div>
-</div>
-
-<!-- Add this after the .package-grid div -->
-
-
-      </div>
-    </div>
-
-    <div class="package-card">
-      <div class="image-container">
-        <img src="images\adventure.jpg" alt="Extreme Adventure">
-        <span class="badge">
-          
-<i data-lucide="mountain" class="icon-yellow"></i>
-Food Tours</span>
-        
-      </div>
-      <div class="card-content">
-        <h3>Traditional Coffee Ceremony</h3>
-        <p>Experience the sacred Ethiopian coffee ritual</p>
-        <!-- Inside each .package-card, after the <p> description -->
-<div class="card-details">
-  <!-- Stats Row -->
- <div class="info-bar">
-  <div class="info-item">
-    <i data-lucide="clock" class="icon icon-yellow"></i>
-    <span>2 hours</span>
-  </div>
-
-  <div class="info-item">
-    <i data-lucide="star" class="icon-star"></i>
-    <span class="rating"><strong>4.9(432)</strong> </span>
-  </div>
-</div>
-
- 
-
-  <hr class="divider">
-
-  <!-- Price & Button Row -->
-  <div class="booking-row">
-    <div class="price-block">
-      <span class="label">from</span>
-      <span class="amount">$45</span>
-    </div>
-    <button class="book-btn">Book Now</button>
-  </div>
-</div>
-
-<!-- Add this after the .package-grid div -->
-
-
-      </div>
-    </div>
-
-    <div class="package-card">
-      <div class="image-container">
-        <img src="images\adventure.jpg" alt="Extreme Adventure">
-        <span class="badge"><i data-lucide="music" class="icon-yellow"></i>
-Food Tours</span>
-        
-      </div>
-      <div class="card-content">
-        <h3>Traditional Coffee Ceremony</h3>
-        <p>Experience the sacred Ethiopian coffee ritual</p>
-        <!-- Inside each .package-card, after the <p> description -->
-<div class="card-details">
-  <!-- Stats Row -->
- <div class="info-bar">
-  <div class="info-item">
-    <i data-lucide="clock" class="icon icon-yellow"></i>
-    <span>2 hours</span>
-  </div>
-
-  <div class="info-item">
-    <i data-lucide="star" class="icon-star"></i>
-    <span class="rating"><strong>4.9(432)</strong> </span>
-  </div>
-</div>
-
- 
-
-  <hr class="divider">
-
-  <!-- Price & Button Row -->
-  <div class="booking-row">
-    <div class="price-block">
-      <span class="label">from</span>
-      <span class="amount">$45</span>
-    </div>
-    <button class="book-btn">Book Now</button>
-  </div>
-</div>
-
-<!-- Add this after the .package-grid div -->
-
-
-      </div>
-    </div>
-
-    <div class="package-card">
-      <div class="image-container">
-        <img src="images\erta ale.jpg" alt="Extreme Adventure">
-        <span class="badge"><i data-lucide="binoculars" class="icon-yellow"></i>
-Food Tours</span>
-        
-      </div>
-      <div class="card-content">
-        <h3>Traditional Coffee Ceremony</h3>
-        <p>Experience the sacred Ethiopian coffee ritual</p>
-        <!-- Inside each .package-card, after the <p> description -->
-<div class="card-details">
-  <!-- Stats Row -->
- <div class="info-bar">
-  <div class="info-item">
-    <i data-lucide="clock" class="icon icon-yellow"></i>
-    <span>2 hours</span>
-  </div>
-
-  <div class="info-item">
-    <i data-lucide="star" class="icon-star"></i>
-    <span class="rating"><strong>4.9(432)</strong> </span>
-  </div>
-</div>
-
- 
-
-  <hr class="divider">
-
-  <!-- Price & Button Row -->
-  <div class="booking-row">
-    <div class="price-block">
-      <span class="label">from</span>
-      <span class="amount">$45</span>
-    </div>
-    <button class="book-btn">Book Now</button>
-  </div>
-</div>
-
-<!-- Add this after the .package-grid div -->
-
-
-      </div>
-    </div>
-  </div>
-
 </section>
+
 
 <!-- AI container -->
 
@@ -882,146 +620,70 @@ Food Tours</span>
 
  
 <section class="card-container">
-
-    <div class="header">
+  <div class="header">
     <h1>Travel Inspiration</h1>
     <p>Expert tips, guides, and stories to inspire your next adventure</p>
- 
-</div>
-<div class="grid-card">
-    <div class="travel-card">
-    <!-- Image Header Section -->
-    <div class="card-image">
-      <img src="images\omo.jpg">
-      <span class="badge">Travel Guide</span>
-    </div>
-
-    <!-- Content Section -->
-    <div class="card-content">
-      <h2 class="title">Best Places to Visit in Ethiopia 2026</h2>
-      <p class="description">
-        Discover the must-see destinations that should be on every traveler's bucket list this year.
-      </p>
-
-      <!-- Metadata (Author/Date) -->
-      <div class="meta-data">
-        <div class="meta-item">
-          <i data-lucide="user"></i>
-          <span>Sarah Johnson</span>
-        </div>
-        <div class="meta-item">
-          <i data-lucide="calendar"></i>
-          <span>March 15, 2026</span>
-        </div>
-      </div>
-
-      <hr class="divider">
-
-      <!-- Footer (Read Time/Action) -->
-      <div class="card-footer">
-        <div class="read-time">
-          <i data-lucide="clock"></i>
-          <span>5 min read</span>
-        </div>
-        <a href="#" class="read-more">
-          Read More 
-          <i data-lucide="move-right"></i>
-        </a>
-      </div>
-    </div>
   </div>
 
-    <div class="travel-card">
-    <!-- Image Header Section -->
-    <div class="card-image">
-      <img src="images\beach.jpg">
-      <span class="badge">Destinations</span>
-    </div>
+  <div class="grid-card">
+    <?php if ($blog_result && $blog_result->num_rows > 0): ?>
+      <?php while($row = $blog_result->fetch_assoc()): ?>
+        <div class="travel-card">
+          <!-- Image Header Section -->
+          <div class="card-image">
+            <img src="<?php echo htmlspecialchars($row['cover_image']); ?>" alt="Blog Image">
+            <span class="badge"><?php echo htmlspecialchars($row['category']); ?></span>
+          </div>
 
-    <!-- Content Section -->
-    <div class="card-content">
-      <h2 class="title">Top Beaches in Ethiopia You Must Visit</h2>
-      <p class="description">
-        Explore pristine coastlines and hidden beach gems along Ethiopia's beautiful shores.
-      </p>
+          <!-- Content Section -->
+          <div class="card-content">
+            <h2 class="title"><?php echo htmlspecialchars($row['title']); ?></h2>
+            <p class="description">
+              <?php echo htmlspecialchars($row['summary']); ?>
+            </p>
 
-      <!-- Metadata (Author/Date) -->
-      <div class="meta-data">
-        <div class="meta-item">
-          <i data-lucide="user"></i>
-          <span>Michael Chen</span>
+            <!-- Metadata (Author/Date) -->
+            <div class="meta-data">
+              <div class="meta-item">
+                <i data-lucide="user"></i>
+                <span><?php echo htmlspecialchars($row['author_name']); ?></span>
+              </div>
+              <div class="meta-item">
+                <i data-lucide="calendar"></i>
+                <!-- Formats the database timestamp into a readable date -->
+                <span><?php echo date("F j, Y", strtotime($row['created_at'] ?? 'now')); ?></span>
+              </div>
+            </div>
+
+            <hr class="divider">
+
+            <!-- Footer (Read Time/Action) -->
+            <div class="card-footer">
+              <div class="read-time">
+                <i data-lucide="clock"></i>
+                <span><?php echo htmlspecialchars($row['read_time']); ?></span>
+              </div>
+              <!-- Link to your blog details or article page -->
+              <a href="article.php?id=<?php echo $row['id']; ?>" class="read-more">
+                Read More 
+                <i data-lucide="move-right"></i>
+              </a>
+            </div>
+          </div>
         </div>
-        <div class="meta-item">
-          <i data-lucide="calendar"></i>
-          <span>March 20, 2026</span>
-        </div>
-      </div>
-
-      <hr class="divider">
-
-      <!-- Footer (Read Time/Action) -->
-      <div class="card-footer">
-        <div class="read-time">
-          <i data-lucide="clock"></i>
-          <span>7 min read</span>
-        </div>
-        <a href="#" class="read-more">
-          Read More 
-          <i data-lucide="move-right"></i>
-        </a>
-      </div>
-    </div>
+      <?php endwhile; ?>
+    <?php else: ?>
+      <p style="text-align:center; width:100%; grid-column: 1/-1;">No travel stories found.</p>
+    <?php endif; ?>
   </div>
-
-    <div class="travel-card">
-    <!-- Image Header Section -->
-    <div class="card-image">
-      <img src="images\budget.jpg">
-      <span class="badge">Travel Guide</span>
-    </div>
-
-    <!-- Content Section -->
-    <div class="card-content">
-      <h2 class="title">Budget Travel Tips for Ethiopia</h2>
-      <p class="description">
-       Learn how to explore Ethiopia's wonders without breaking the bank with these expert tips
-      </p>
-
-      <!-- Metadata (Author/Date) -->
-      <div class="meta-data">
-        <div class="meta-item">
-          <i data-lucide="user"></i>
-          <span>Emma Williams</span>
-        </div>
-        <div class="meta-item">
-          <i data-lucide="calendar"></i>
-          <span>March 25, 2026</span>
-        </div>
-      </div>
-
-      <hr class="divider">
-
-      <!-- Footer (Read Time/Action) -->
-      <div class="card-footer">
-        <div class="read-time">
-          <i data-lucide="clock"></i>
-          <span>6 min read</span>
-        </div>
-        <a href="#" class="read-more">
-          Read More 
-          <i data-lucide="move-right"></i>
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-
-</div>
 
   <div class="view-article-container">
-  <button class="view-article-btn">View All Articles</button>
-</div>
+    <a href="all_blogs.php">
+      <button class="view-article-btn">View All Articles</button>
+    </a>
+  </div>
 </section>
+
 
 <script src="https://unpkg.com"></script>
 
@@ -1030,135 +692,62 @@ Food Tours</span>
     <h1>Traveler Reviews</h1>
     <p>What our happy travelers say about their experiences</p>
     
-    <!-- Average Rating Box -->
     <div class="rating-summary">
       <div class="stars-row">
-        <i data-lucide="star" class="fill-star"></i>
-        <i data-lucide="star" class="fill-star"></i>
-        <i data-lucide="star" class="fill-star"></i>
-        <i data-lucide="star" class="fill-star"></i>
-        <i data-lucide="star" class="fill-star"></i>
+        <?php for($i=1; $i<=5; $i++): ?>
+          <i data-lucide="star" class="<?php echo ($i <= round($avg_score)) ? 'fill-star' : ''; ?>"></i>
+        <?php endfor; ?>
       </div>
-      <div class="score">4.8</div>
-      <div class="count">Based on 2,847 reviews</div>
+      <div class="score"><?php echo $avg_score; ?></div>
+      <div class="count">Based on <?php echo $total_reviews; ?> reviews</div>
     </div>
   </div>
 
-  <!-- Review Cards Grid -->
   <div class="reviews-grid">
-    <!-- Card 1 (Repeat this block for 4 cards) -->
-    <div class="review-card">
-      <div class="quote-icon">
-        <i data-lucide="quote"></i>
-      </div>
-      <div class="card-stars">
-        <i data-lucide="star"></i>
-        <i data-lucide="star"></i>
-        <i data-lucide="star"></i>
-        <i data-lucide="star"></i>
-        <i data-lucide="star"></i>
-      </div>
-      <p class="review-text">
-        "Absolutely exceptional service from start to finish. Every 
-        detail was perfect, and the local experiences were truly 
-        authentic. I can't recommend Ethiopia Tours enough!"
-      </p>
-      <div class="tour-tag">Simien Mountains Trek</div>
-      
-      <div class="user-info">
-        <img src="images\Yuki.jpg" alt="yuki">
-        <div class="user-details">
-          <strong>Jennifer Martinez</strong>
-          <span>New York, USA</span>
-        </div>
-      </div>
-    </div>
-
+    <?php if ($rev_result && $rev_result->num_rows > 0): ?>
+      <?php while($row = $rev_result->fetch_assoc()): ?>
         <div class="review-card">
-      <div class="quote-icon">
-        <i data-lucide="quote"></i>
-      </div>
-      <div class="card-stars">
-        <i data-lucide="star"></i>
-        <i data-lucide="star"></i>
-        <i data-lucide="star"></i>
-        <i data-lucide="star"></i>
-        <i data-lucide="star"></i>
-      </div>
-      <p class="review-text">
-        "Outstanding experience! The team went above and beyond to ensure
-         we had an amazing adventure. The local guides were passionate 
-         and knowledgeable"
-      </p>
-      <div class="tour-tag">Danakil Depression Safari</div>
-      
-      <div class="user-info">
-        <img src="images\marcus.jpg" alt="Jennifer">
-        <div class="user-details">
-          <strong>Marcus Johonson</strong>
-          <span>Sydney, Australia</span>
-        </div>
-      </div>
-    </div>
+          <div class="quote-icon"><i data-lucide="quote"></i></div>
+          
+          <div class="card-stars">
+            <?php for($i=1; $i<=5; $i++): ?>
+              <i data-lucide="star" class="<?php echo ($i <= $row['rating']) ? 'fill-star' : ''; ?>"></i>
+            <?php endfor; ?>
+          </div>
 
-        <div class="review-card">
-      <div class="quote-icon">
-        <i data-lucide="quote"></i>
-      </div>
-      <div class="card-stars">
-        <i data-lucide="star"></i>
-        <i data-lucide="star"></i>
-        <i data-lucide="star"></i>
-        <i data-lucide="star"></i>
-        <i data-lucide="star"></i>
-      </div>
-      <p class="review-text">
-        "Professional, friendly, and incredibly organized. The AI travel
-         planner helped us create the perfect itinerary. This was the 
-         trip of a lifetime!"
-      </p>
-      <div class="tour-tag">Cultural Heritage Tour</div>
-      
-      <div class="user-info">
-        <img src="images\idavid.jpg" alt="David">
-        <div class="user-details">
-          <strong>David Johnson</strong>
-          <span>Los Angeles, USA</span>
-        </div>
-      </div>
-    </div>
+          <p class="review-text">
+            "<?php echo htmlspecialchars($row['comment']); ?>"
+          </p>
+          
+          <div class="tour-tag">
+            <?php echo htmlspecialchars($row['package_name'] ?? 'General Experience'); ?>
+          </div>
+          
+          <div class="user-info">
+            <!-- First Letter Avatar Logic -->
+            <div class="user-avatar-circle" style="width:50px; height:50px; background:#ff9326; color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:20px; margin-right:12px;">
+                <?php echo strtoupper(substr($row['fullname'], 0, 1)); ?>
+            </div>
 
-        <div class="review-card">
-      <div class="quote-icon">
-        <i data-lucide="quote"></i>
-      </div>
-      <div class="card-stars">
-        <i data-lucide="star"></i>
-        <i data-lucide="star"></i>
-        <i data-lucide="star"></i>
-        <i data-lucide="star"></i>
-        <i data-lucide="star"></i>
-      </div>
-      <p class="review-text">
-        "The best travel website I've ever used! The booking process was seamless and our guide was incredibly knowledgeable. Ethiopia Tours made our dream vacation a reality."
-      </p>
-      <div class="tour-tag">Historical Northern Circuit</div>
-      
-      <div class="user-info">
-        <img src="images\image.png" alt="Jennifer">
-        <div class="user-details">
-          <strong>Yuki Tanaka</strong>
-          <span>Tokyo, Japan</span>
+            <div class="user-details">
+              <strong><?php echo htmlspecialchars($row['fullname']); ?></strong>
+              <span>Verified Traveler</span>
+            </div>
+          </div>
         </div>
-      </div>
+      <?php endwhile; ?>
+    <?php else: ?>
+      <p style="text-align:center; width:100%; grid-column: 1/-1;">No reviews shared yet.</p>
+    <?php endif; ?>
+
+    <div class="view-all-container">
+      <p>Join thousands of happy travelers</p>
+      <button class="view-all-btn">Start Your Journey</button>
     </div>
-      <div class="view-all-container">
-        <p>Join thousands of happy travelers</p>
-  <button class="view-all-btn">Start Your Journey</button>
-</div>
-    <!-- Add 3 more .review-card divs here -->
   </div>
 </section>
+
+
 
 <script>lucide.createIcons();</script>
 
@@ -1243,7 +832,7 @@ Food Tours</span>
     <div class="footer-links">
       <div class="link-column">
         <h4>Company</h4>
-        <a href="#">About Us</a>
+        <a href="#aboutus.html">About Us</a>
         <a href="#">Our Team</a>
         <a href="#">Careers</a>
       </div>
@@ -1255,7 +844,7 @@ Food Tours</span>
       </div>
       <div class="link-column">
         <h4>Resources</h4>
-        <a href="#">Blog</a>
+        <a href="#blog.php">Blog</a>
         <a href="#">Travel Guide</a>
         <a href="#">FAQs</a>
       </div>

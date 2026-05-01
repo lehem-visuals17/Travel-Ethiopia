@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 26, 2026 at 09:34 AM
+-- Generation Time: May 01, 2026 at 04:45 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -33,8 +33,11 @@ CREATE TABLE `blog_posts` (
   `slug` varchar(200) DEFAULT NULL,
   `category` varchar(100) DEFAULT NULL,
   `summary` varchar(500) DEFAULT NULL,
+  `cover_image` varchar(255) DEFAULT NULL,
+  `slider_images` text DEFAULT NULL,
   `content` text DEFAULT NULL,
   `author_name` varchar(100) DEFAULT 'Admin User',
+  `read_time` varchar(50) DEFAULT '5 min read',
   `status` varchar(50) DEFAULT 'published',
   `views_count` int(11) DEFAULT 0,
   `image` varchar(255) DEFAULT NULL,
@@ -45,8 +48,8 @@ CREATE TABLE `blog_posts` (
 -- Dumping data for table `blog_posts`
 --
 
-INSERT INTO `blog_posts` (`id`, `title`, `slug`, `category`, `summary`, `content`, `author_name`, `status`, `views_count`, `image`, `created_at`) VALUES
-(1, 'ethiopian festivals', 'ethiopian-festivals', 'events', 'happy epiphany ', 'lomi bwerewr', 'bete', 'draft', 0, 'uploads/blog/1776796647_begena.copilot.png', '2026-04-21 18:37:27');
+INSERT INTO `blog_posts` (`id`, `title`, `slug`, `category`, `summary`, `cover_image`, `slider_images`, `content`, `author_name`, `read_time`, `status`, `views_count`, `image`, `created_at`) VALUES
+(1, 'ethiopian festivals', 'ethiopian-festivals', 'events', 'happy epiphany ', '', '', 'lomi bwerewr', 'bete', '5 min read', 'published', 0, 'uploads/blog/1776796647_begena.copilot.png', '2026-04-21 18:37:27');
 
 -- --------------------------------------------------------
 
@@ -65,6 +68,32 @@ CREATE TABLE `bookings` (
   `total_price` decimal(10,2) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `deals`
+--
+
+CREATE TABLE `deals` (
+  `id` int(11) NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `description` text DEFAULT NULL,
+  `image_url` varchar(255) DEFAULT NULL,
+  `discount_badge` varchar(50) DEFAULT NULL,
+  `deal_note` varchar(100) DEFAULT NULL,
+  `old_price` decimal(10,2) DEFAULT NULL,
+  `new_price` decimal(10,2) DEFAULT NULL,
+  `end_datetime` datetime NOT NULL,
+  `status` varchar(20) DEFAULT 'active'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `deals`
+--
+
+INSERT INTO `deals` (`id`, `title`, `description`, `image_url`, `discount_badge`, `deal_note`, `old_price`, `new_price`, `end_datetime`, `status`) VALUES
+(1, 'Early Bird Lalibela Package', 'Book 3 months in advance and save 25% on our popular Lalibela heritage tour package.', 'https://media.gettyimages.com/id/458259481/photo/saint-george-church.jpg?s=612x612&w=0&k=20&c=ZOM25x5YaxRsPuE2p4vY4XDaY06VFExCzNQ5pwti8wo=', 'Early Booking Discount', '', 1200.00, 900.00, '2026-05-09 21:29:00', 'active');
 
 -- --------------------------------------------------------
 
@@ -147,32 +176,32 @@ CREATE TABLE `destination_tips` (
 CREATE TABLE `experiences` (
   `id` int(11) NOT NULL,
   `name` varchar(150) DEFAULT NULL,
-  `type` varchar(100) DEFAULT NULL,
   `category` varchar(50) DEFAULT NULL,
   `location` varchar(150) DEFAULT NULL,
+  `map_link` text DEFAULT NULL,
   `price` decimal(10,2) DEFAULT NULL,
   `duration` varchar(50) DEFAULT NULL,
   `schedule` varchar(100) DEFAULT 'Daily at 11:00 AM',
+  `languages` varchar(100) DEFAULT 'English',
   `description` text DEFAULT NULL,
   `whats_included` text DEFAULT NULL,
   `not_included` text DEFAULT NULL,
   `itinerary` text DEFAULT NULL,
   `image` varchar(255) DEFAULT NULL,
-  `gallery_images` text DEFAULT NULL,
+  `gallery` text DEFAULT NULL,
   `difficulty` enum('Easy','Moderate','Challenging') DEFAULT 'Easy',
   `status` enum('Active','Inactive') DEFAULT 'Active',
   `capacity` int(11) DEFAULT 0,
-  `is_featured` tinyint(1) DEFAULT 0,
-  `availability_status` varchar(50) DEFAULT 'Available'
+  `rating` decimal(2,1) DEFAULT 5.0,
+  `is_featured` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `experiences`
 --
 
-INSERT INTO `experiences` (`id`, `name`, `type`, `category`, `location`, `price`, `duration`, `schedule`, `description`, `whats_included`, `not_included`, `itinerary`, `image`, `gallery_images`, `difficulty`, `status`, `capacity`, `is_featured`, `availability_status`) VALUES
-(1, 'mm', NULL, 'asas', 'fds', 1212.00, NULL, 'Daily at 11:00 AM', 'fssdfssAs', NULL, NULL, NULL, '1776544011_adventure.jpg', NULL, 'Easy', 'Active', 11, 0, 'Available'),
-(2, 'bb', NULL, 'Nature', NULL, 6565.00, NULL, 'Daily at 11:00 AM', 'jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj', NULL, NULL, NULL, 'default.jpg', NULL, 'Moderate', 'Active', 7, 0, 'Available');
+INSERT INTO `experiences` (`id`, `name`, `category`, `location`, `map_link`, `price`, `duration`, `schedule`, `languages`, `description`, `whats_included`, `not_included`, `itinerary`, `image`, `gallery`, `difficulty`, `status`, `capacity`, `rating`, `is_featured`) VALUES
+(3, 'Mountain Trail Adventure', 'Nature', 'Simien Mountains', '13.30213451777049, 38.29895675058659', 85.00, 'Full day (8 hours)', 'Daily (weather permitting), starts at 6:00 AM', 'English, Amharic', 'Hike through spectacular mountain scenery, encounter Gelada baboons, and enjoy breathtaking views. Perfect for those seeking an unforgettable day trek. Experience the dramatic landscapes of the Simien Mountains, often called the \'Roof of Africa,\' with its jagged peaks, deep valleys, and unique wildlife.', 'Professional guide\r\nPark scout\r\nPark fees\r\nPacked lunch\r\nWater\r\nTransportation from Gondar', 'Personal hiking gear\r\nTravel insurance\r\nAdditional snacks\r\nGratuities', '6:00 AM|Departure from Gondar|\r\nPickup from your hotel in Gondar and drive to Simien Mountains National Park (approximately 2 hours).\r\nPark Entry and Trail Start\r\n8:00 AM\r\nMeet your park scout, complete registration, and begin your hike through stunning mountain terrain.', '-5465140525049962895_121.jpg', 'https://images.unsplash.com/photo-1603475429038-44361bcde123?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080\r\nhttps://images.unsplash.com/photo-1713860052825-4798abffb5b9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080\r\nhttps://images.unsplash.com/photo-1548713466-70b0e7bb7cd2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080\r\nhttps://images.unsplash.com/photo-1643386165206-d1be6dcc76c2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080\r\nhttps://images.unsplash.com/photo-1583003293857-6850a9a6e663?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080', 'Moderate', 'Active', 2, 4.9, 0);
 
 -- --------------------------------------------------------
 
@@ -187,6 +216,21 @@ CREATE TABLE `experience_bookings` (
   `people_count` int(11) DEFAULT 1,
   `total_price` decimal(10,2) DEFAULT 0.00,
   `status` enum('pending','confirmed','cancelled') DEFAULT 'pending',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `favorites`
+--
+
+CREATE TABLE `favorites` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `destination_id` int(11) DEFAULT NULL,
+  `package_id` int(11) DEFAULT NULL,
+  `experience_id` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -228,21 +272,29 @@ CREATE TABLE `packages` (
   `price` decimal(10,2) DEFAULT NULL,
   `duration` varchar(50) DEFAULT NULL,
   `includes` text DEFAULT NULL,
+  `includes_list` text DEFAULT NULL,
   `rating` decimal(3,2) DEFAULT NULL,
+  `reviews_count` int(11) DEFAULT 0,
   `image` varchar(255) DEFAULT NULL,
   `max_people` int(11) DEFAULT 1,
-  `featured` tinyint(1) DEFAULT 0
+  `featured` tinyint(1) DEFAULT 0,
+  `badge_text` varchar(50) DEFAULT NULL,
+  `guide_name` varchar(100) DEFAULT 'To be assigned',
+  `guide_phone` varchar(20) DEFAULT '+251 900 000 000',
+  `hotel_name` varchar(100) DEFAULT 'TBD',
+  `pickup_location` varchar(150) DEFAULT 'Main Airport'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `packages`
 --
 
-INSERT INTO `packages` (`id`, `title`, `type`, `description`, `price`, `duration`, `includes`, `rating`, `image`, `max_people`, `featured`) VALUES
-(1, 'honey moon package', 'honeymoon', 'enjoy your honey moon with us', 12000.00, '7days/6nights', 'hotel,guide', 4.00, '1776624696_1776544011_adventure.jpg', 2, 1),
-(2, 'family time', 'family', 'live the moment with your family', 3000.00, '4days/3 nights', 'hotel,transport,meals', 4.80, '1776625170_adventure.jpg', 8, 1),
-(3, 'luxury time', 'luxury', 'good time', 5000.00, '3 days/2 nights', 'hotel,transport,meals,guide', 5.00, '1776625241_1776544011_adventure.jpg', 3, 0),
-(4, 'hihi', 'budget', 'hihi hihi', 2000.00, '10 days', 'hotel', 4.30, '1776625296_1776544011_adventure.jpg', 0, 1);
+INSERT INTO `packages` (`id`, `title`, `type`, `description`, `price`, `duration`, `includes`, `includes_list`, `rating`, `reviews_count`, `image`, `max_people`, `featured`, `badge_text`, `guide_name`, `guide_phone`, `hotel_name`, `pickup_location`) VALUES
+(1, 'honey moon package', 'honeymoon', 'enjoy your honey moon with us', 12000.00, '7days/6nights', 'hotel,guide', NULL, 4.00, 0, '1776624696_1776544011_adventure.jpg', 2, 1, NULL, 'To be assigned', '+251 900 000 000', 'TBD', 'Main Airport'),
+(2, 'family time', 'family', 'live the moment with your family', 3000.00, '4days/3 nights', 'hotel,transport,meals', NULL, 4.80, 0, '1776625170_adventure.jpg', 8, 1, NULL, 'To be assigned', '+251 900 000 000', 'TBD', 'Main Airport'),
+(3, 'luxury time', 'luxury', 'good time', 5000.00, '3 days/2 nights', 'hotel,transport,meals,guide', '', 5.00, 0, '1776625241_1776544011_adventure.jpg', 3, 1, '', 'To be assigned', '+251 900 000 000', 'TBD', 'Main Airport'),
+(4, 'hih', 'budget', 'hey u', 2000.00, '10 days', 'hotel', 'hohoh,hehe,kksdkljalksjd', 4.30, 44, '-5965188371728942657_120.jpg', 4, 1, 'hehe', 'To be assigned', '+251 900 000 000', 'TBD', 'Main Airport'),
+(5, 'Historic North Ethiopia Tour', 'family', 'Explore Ethiopia\'s ancient Christian heritage and historic treasures. Visit the rock-hewn churches of Lalibela, the castles of Gondar, and the ancient obelisks of Axum.', 1850.00, '10 days', NULL, 'Monolithic and Semi-Monolithic Architecture,\"Monkey Head\" Construction,Ancient Monumental Stelae,Symbolic \"New Jerusalem\" Layout,Medieval European-Style Fortifications', 4.90, 233, '-6017365623010608261_121.jpg', 12, 1, 'cultural tour', 'To be assigned', '+251 900 000 000', 'TBD', 'Main Airport');
 
 -- --------------------------------------------------------
 
@@ -266,10 +318,10 @@ CREATE TABLE `payments` (
   `id` int(11) NOT NULL,
   `booking_id` int(11) DEFAULT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `payment_type` enum('normal','premium') DEFAULT NULL,
+  `payment_type` enum('normal','premium') DEFAULT 'normal',
   `method` enum('cash','bank','mobile','card') DEFAULT NULL,
   `amount` decimal(10,2) DEFAULT NULL,
-  `status` enum('pending','paid','failed') DEFAULT 'pending',
+  `status` enum('pending','completed','failed','rejected') DEFAULT 'pending',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -284,8 +336,11 @@ CREATE TABLE `reviews` (
   `user_id` int(11) DEFAULT NULL,
   `destination_id` int(11) DEFAULT NULL,
   `package_id` int(11) DEFAULT NULL,
+  `guide_id` int(11) DEFAULT NULL,
+  `hotel_id` int(11) DEFAULT NULL,
   `rating` int(11) DEFAULT NULL,
   `comment` text DEFAULT NULL,
+  `status` enum('pending','approved','rejected') DEFAULT 'approved',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -317,21 +372,28 @@ CREATE TABLE `users` (
   `email` varchar(100) DEFAULT NULL,
   `password` varchar(255) DEFAULT NULL,
   `phone` varchar(20) DEFAULT NULL,
-  `role` enum('admin','customer') DEFAULT 'customer',
+  `role` enum('admin','customer','tour_guide') DEFAULT 'customer',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `status` enum('active','suspended') DEFAULT 'active'
+  `status` enum('active','suspended') DEFAULT 'active',
+  `gender` varchar(20) DEFAULT 'Not Specified',
+  `nationality` varchar(50) DEFAULT 'Ethiopian',
+  `profile_pic` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `fullname`, `username`, `email`, `password`, `phone`, `role`, `created_at`, `status`) VALUES
-(1, 'Bete', 'admin', 'betelhembelayneh58@gmail.com', '$2y$10$jgXebJ3QUHACE.jo.Npo6eW/1HeuufaVpFdEAo73dcJx5TeAvM7we', '0956264326', 'admin', '2026-04-16 17:33:12', 'active'),
-(2, 'Betelhem', 'lehem', 'betelhem.belayneh21@gmail.com', '$2y$10$Zcs/0jWRpYGhihfX1C3RTuVgytPu3qGeLAdgyD0RwwBh663EPsDyK', '0956264326', 'customer', '2026-04-17 20:57:28', 'active'),
-(3, 'avi', 'avi32@gmail.com', 'avi32@gmail.com', '$2y$10$eAVHrWZJcJ6wY4iuJAwUW.mAPtndBkid.EhSoFaFnv6729j5HIPge', '0924322824', 'customer', '2026-04-18 10:52:17', 'active'),
-(4, 'tigst belayneh', 'tigi@gmail.com', 'tigi@gmail.com', '$2y$10$movLGzMaiB9SPrnoSlQgxOD0OtWJZn1BSZBffQ8YBNTuhwygXtB5.', '0956264326', 'customer', '2026-04-18 11:24:46', 'active'),
-(11, 'Bete', 'betora_ad', 'betelhem.belayneh58@gmail.com', '$2y$10$OdlTUXRWz5tSKPrqRLALJegHmga9DAx319LuXpwA2Sq0PRoPPqxvO', '0956264326', 'admin', '2026-04-23 08:15:45', 'active');
+INSERT INTO `users` (`id`, `fullname`, `username`, `email`, `password`, `phone`, `role`, `created_at`, `status`, `gender`, `nationality`, `profile_pic`) VALUES
+(1, 'Bete', 'admin', 'betelhembelayneh58@gmail.com', '$2y$10$jgXebJ3QUHACE.jo.Npo6eW/1HeuufaVpFdEAo73dcJx5TeAvM7we', '0956264326', 'admin', '2026-04-16 17:33:12', 'active', 'Not Specified', 'Ethiopian', NULL),
+(2, 'Betelhem', 'lehem', 'betelhem.belayneh21@gmail.com', '$2y$10$WoO7h.9u5EJGo1Yu6JPJvu9sA9J5i45DH59oOJulLJyfV.XBPtUOa', '0956264326', 'customer', '2026-04-17 20:57:28', 'active', 'Not Specified', 'Ethiopian', 'profile_2_1777623983.png'),
+(3, 'avi', 'avi32@gmail.com', 'avi32@gmail.com', '$2y$10$eAVHrWZJcJ6wY4iuJAwUW.mAPtndBkid.EhSoFaFnv6729j5HIPge', '0924322824', 'customer', '2026-04-18 10:52:17', 'active', 'Not Specified', 'Ethiopian', NULL),
+(4, 'tigst belayneh', 'tigi@gmail.com', 'tigi@gmail.com', '$2y$10$movLGzMaiB9SPrnoSlQgxOD0OtWJZn1BSZBffQ8YBNTuhwygXtB5.', '0956264326', 'customer', '2026-04-18 11:24:46', 'active', 'Not Specified', 'Ethiopian', NULL),
+(11, 'Bete', 'betora_ad', 'betelhem.belayneh58@gmail.com', '$2y$10$OdlTUXRWz5tSKPrqRLALJegHmga9DAx319LuXpwA2Sq0PRoPPqxvO', '0956264326', 'admin', '2026-04-23 08:15:45', 'active', 'Not Specified', 'Ethiopian', NULL),
+(12, 'avenezer', 'avijii', '', '$2y$10$ASGgCVTGmLtnanjAScpZZutYi8xEHFbgqKijF4YSIFTpBkjGzHCYi', '', 'customer', '2026-04-28 22:36:00', 'active', 'Not Specified', 'Ethiopian', NULL),
+(13, 'avenezer', 'avenezer3@gmail.com', 'avenezer3@gmail.com', '$2y$10$17Zj5AS1ifqPCmdfuhAV6OYIS3sOGvtcguZCaY2ccFpdo.KU0gCFS', '0910203040', 'customer', '2026-04-29 09:36:42', 'active', 'Not Specified', 'Ethiopian', NULL),
+(14, 'avenezer', 'avenezer33@gmail.com', 'avenezer33@gmail.com', '$2y$10$PXy9Rl0AU3nh4tgkHxBHhOU.e22LLTXCu5hASVH0f2VLIS4B8CK/6', '0940504050', 'customer', '2026-04-29 09:40:23', 'active', 'Not Specified', 'Ethiopian', NULL),
+(15, 'habte', 'habteGiorgis', 'habte@gmail.com', '$2y$10$bfY6ucRDwvX3Nc5HsyAYh.OtPawKiGg.aW5XsKowHIZPDdYZQgJ1q', '0988580336', 'customer', '2026-04-29 05:58:50', 'active', 'Not Specified', 'Ethiopian', NULL);
 
 --
 -- Indexes for dumped tables
@@ -351,6 +413,12 @@ ALTER TABLE `bookings`
   ADD KEY `user_id` (`user_id`),
   ADD KEY `package_id` (`package_id`),
   ADD KEY `destination_id` (`destination_id`);
+
+--
+-- Indexes for table `deals`
+--
+ALTER TABLE `deals`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `destinations`
@@ -382,6 +450,12 @@ ALTER TABLE `experiences`
 -- Indexes for table `experience_bookings`
 --
 ALTER TABLE `experience_bookings`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `favorites`
+--
+ALTER TABLE `favorites`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -453,6 +527,12 @@ ALTER TABLE `bookings`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `deals`
+--
+ALTER TABLE `deals`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `destinations`
 --
 ALTER TABLE `destinations`
@@ -483,6 +563,12 @@ ALTER TABLE `experience_bookings`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `favorites`
+--
+ALTER TABLE `favorites`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `guides`
 --
 ALTER TABLE `guides`
@@ -492,7 +578,7 @@ ALTER TABLE `guides`
 -- AUTO_INCREMENT for table `packages`
 --
 ALTER TABLE `packages`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `package_destinations`
@@ -522,7 +608,7 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Constraints for dumped tables

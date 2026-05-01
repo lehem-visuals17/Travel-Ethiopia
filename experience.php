@@ -47,8 +47,13 @@ $result = $conn->query("SELECT * FROM experiences WHERE status = 'Active' ORDER 
      <i class="fa-solid fa-magnifying-glass search-icon"></i>
   <div class="login-pill">
     <i class="fa-regular fa-circle-user"></i>
-   <span>Login/Sign up</span>
-  
+   <span>  <?php 
+      if (isset($_SESSION['username'])) {
+          echo "Hi, " . htmlspecialchars($_SESSION['username']); 
+      } else {
+          echo "Login/Sign up";
+      }
+    ?></span>
   </div>
   </div>
   </ul>   
@@ -174,5 +179,41 @@ $result = $conn->query("SELECT * FROM experiences WHERE status = 'Active' ORDER 
     </div>
   </div>
 </footer>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. NAVIGATION MENU LOGIC
+  const menuToggle = document.getElementById("mobile-menu-toggle");
+  const menuList = document.getElementById("menu-list");
+  const menuClose = document.getElementById("menu-close");
+  const menuLinks = document.querySelectorAll('.menu li a');
+
+  if (menuToggle && menuList) {
+    menuToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      menuList.classList.toggle("active");
+    });
+
+    if (menuClose) {
+      menuClose.addEventListener("click", () => {
+        menuList.classList.remove("active");
+      });
+    }
+
+    menuLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        menuList.classList.remove("active");
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!menuList.contains(e.target) && !menuToggle.contains(e.target)) {
+        menuList.classList.remove("active");
+      }
+    });
+  } });// <--- Added closing brace for "if (menuToggle && menuList)"
+
+  </script>
+
 </body>
 </html>
