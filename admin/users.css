@@ -135,6 +135,10 @@ td {
     background:#e8f4fd;
     color:#3498db;
 }
+.role-guide { 
+    background-color: #ececfd; /* Light purple */
+    color: #4f46e5;           /* Indigo/Purple text */
+    border: 1px solid #c7d2fe;}
 .table-scroll{
     overflow-x:auto;
 }

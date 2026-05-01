@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // Secure hashing
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT); 
-    $role     = $_POST['role'];
+    $role     = $_POST['role']; // This will now capture 'guide' if selected
     
     // Fallback defaults
     $username = $email; 
@@ -29,8 +29,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($stmt->execute()) {
         $stmt->close();
         $conn->close();
-        
-        // Success redirect back to the table
         header("Location: users.php"); 
         exit();
     } else {
@@ -45,11 +43,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Add New User</title>
-    <!-- Loaded functional SweetAlert2 tag -->
+    <!-- Fixed SweetAlert CDN -->
     <script src="https://jsdelivr.net"></script>
-    
     <link rel="stylesheet" href="style.css"> 
-    <!-- Replaced broken cloudflare link with FontAwesome -->
     <link rel="stylesheet" href="https://cloudflare.com">
     <?php include "layout.php"; ?>
 </head>
@@ -63,7 +59,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <div class="form-card">
-        <!-- FIXED ACTION: Post directly to this same file -->
         <form action="add_user.php" method="POST">
             <h3>User Information</h3>
             
@@ -92,6 +87,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <select name="role">
                     <option value="customer">Customer</option>
                     <option value="admin">Admin</option>
+                    <!-- ADDED NEW ROLE HERE -->
+                    <option value="guide">Tour Guide</option>
                 </select>
             </div>
 
@@ -108,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     Swal.fire({
       icon: 'error',
       title: 'Submission Failed',
-      text: '<?php echo $message; ?>',
+      text: '<?php echo addslashes($message); ?>',
     })
 </script>
 <?php endif; ?>

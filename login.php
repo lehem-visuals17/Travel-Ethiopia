@@ -59,26 +59,22 @@ if (isset($_POST['username']) && !isset($_POST['fullname'])) {
 
     if ($user = $result->fetch_assoc()) {
         if (password_verify($password, $user['password'])) {
+    $_SESSION['user_id'] = $user['id'];
+    $_SESSION['username'] = $user['username'];
+    $_SESSION['role'] = $user['role'];
 
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['role'] = $user['role'];
-
-            // Updated redirection logic by role
-                        // Redirect by role
-            if ($user['role'] == 'admin') {
-                header("Location: admin/dashboard.php");
-            } elseif ($user['role'] == 'tour_guide') {
-                header("Location: guide/profile.php");
-            } elseif ($user['role'] == 'customer') {
-                header("Location: users/profile.php"); // Updated for customer profile
-            } else {
-                header("Location: index.php");
-            }
-
-            exit();
-
-        } else {
+    if ($user['role'] == 'admin') {
+        header("Location: admin/dashboard.php");
+    } elseif ($user['role'] == 'tour_guide') {
+        header("Location: Tour_guide/profile.php"); // Path to guide folder
+    } elseif ($user['role'] == 'customer') {
+        header("Location: users/profile.php");
+    } else {
+        header("Location: index.php");
+    }
+    exit();
+}
+ else {
             echo "<script>alert('Incorrect password!'); window.history.back();</script>";
         }
     } else {

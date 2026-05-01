@@ -141,18 +141,26 @@ $user_count = $result->num_rows;
         <h2 id="modalTitle">Add User</h2>
         <form action="save_user.php" method="POST">
             <input type="hidden" name="id" id="user_id">
-            <div class="form-group"><label>Full Name</label><input type="text" name="fullname" id="fullname"></div>
-            <div class="form-group"><label>Username</label><input type="text" name="username" id="username"></div>
-            <div class="form-group"><label>Email</label><input type="email" name="email" id="email"></div>
-            <div class="form-group"><label>Phone</label><input type="text" name="phone" id="phone"></div>
-            <div class="form-group password-group"><label>Password</label><input type="password" name="password" id="password"></div>
+            
+            <div class="form-group"><label>Full Name</label><input type="text" name="fullname" id="fullname" required></div>
+            <div class="form-group"><label>Username</label><input type="text" name="username" id="username" required></div>
+            <div class="form-group"><label>Email</label><input type="email" name="email" id="email" required></div>
+            <div class="form-group"><label>Phone</label><input type="text" name="phone" id="phone" required></div>
+            
+            <div class="form-group password-group" id="passwordGroup">
+                <label>Password</label>
+                <input type="password" name="password" id="password" placeholder="Leave blank to keep current">
+            </div>
+
             <div class="form-group">
                 <label>Role</label>
                 <select name="role" id="role">
-                    <option value="customer">Customer</option>
-                    <option value="admin">Admin</option>
-                </select>
+        <option value="customer">Customer</option>
+        <option value="admin">Admin</option>
+        <option value="tour_guide">Tour Guide</option> <!-- Corrected value -->
+    </select>
             </div>
+
             <div class="form-group" id="statusGroup" style="display:none;">
                 <label>Status</label>
                 <select name="status" id="status">
@@ -160,10 +168,12 @@ $user_count = $result->num_rows;
                     <option value="suspended">Suspended</option>
                 </select>
             </div>
+            
             <button type="submit" class="btn-create">Save User</button>
         </form>
     </div>
 </div>
+
 
 <!-- CHANGE PASSWORD MODAL -->
 <div id="passwordModal" class="modal">
@@ -217,7 +227,7 @@ function openAddModal(){
     document.getElementById("email").value = "";
     document.getElementById("phone").value = "";
     document.getElementById("password").value = "";
-    document.getElementById("role").value = "customer";
+    document.getElementById('role').value = "user.role";
     document.getElementById("status").value = "active";
     document.querySelector(".password-group").style.display = "block";
     document.getElementById("statusGroup").style.display = "none";
