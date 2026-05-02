@@ -66,7 +66,7 @@ if (isset($_POST['username']) && !isset($_POST['fullname'])) {
     if ($user['role'] == 'admin') {
         header("Location: admin/dashboard.php");
     } elseif ($user['role'] == 'tour_guide') {
-        header("Location: Tour_guide/profile.php"); // Path to guide folder
+        header("Location: Tour_guide/sidebar.php"); // Path to guide folder
     } elseif ($user['role'] == 'customer') {
         header("Location: users/profile.php");
     } else {

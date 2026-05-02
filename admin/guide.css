@@ -103,3 +103,35 @@
 .guide-actions a:hover {
     background: #f0f0f0;
 }
+.availability-tag {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+.status-available {
+    background-color: #28a745;
+    color: white;
+}
+
+.status-booked {
+    background-color: #dc3545;
+    color: white;
+}
+
+.status-none {
+    background-color: #6c757d;
+    color: white;
+    opacity: 0.7;
+}
+
+.guide-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 8px;
+    background: #fff;
+}

@@ -5,7 +5,7 @@ body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: #f8f8f8;
+            background: #d73a3a;
             color: #333;
         }
 
@@ -1084,4 +1084,81 @@ body {
         max-width: 100%;
         margin-top: 20px;
     }
+}
+
+.guide-list-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.guide-mini-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: #f9f9f9;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #eee;
+}
+
+.guide-thumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.guide-info h4 { margin: 0; font-size: 1rem; }
+.guide-info p { margin: 2px 0; font-size: 0.85rem; color: #666; }
+
+.badge {
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+}
+.status-available { background: #28a745; }
+.status-booked { background: #dc3545; }
+/* Modal Overlay */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1000; 
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+}
+
+/* Modal Box */
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 15px;
+    width: 400px;
+    position: relative;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.close {
+    position: absolute;
+    right: 20px; top: 10px;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.form-group { margin-bottom: 15px; }
+.form-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+.form-group input, .form-group select {
+    width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px;
+}
+
+.confirm-btn {
+    width: 100%; background: #28a745; color: white;
+    border: none; padding: 12px; border-radius: 5px;
+    font-size: 16px; cursor: pointer; margin-top: 10px;
 }

@@ -2,32 +2,36 @@
 $conn = new mysqli("localhost","root","","travel_db");
 
 if(isset($_POST['add_guide'])){
-
     $destination_id = $_POST['destination_id'];
     $name = $_POST['name'];
     $phone = $_POST['phone'];
     $language = $_POST['language'];
     $experience = $_POST['experience_years'];
     $rating = $_POST['rating'];
+    $user_id = 1; // MAKE SURE THIS MATCHES AN EXISTING ID IN YOUR 'users' TABLE
 
-   $image = "";
+    $image = "";
+    if(!empty($_FILES['image']['name'])){
+        // Create directory if it doesn't exist automatically
+        if (!file_exists('../uploads')) {
+            mkdir('../uploads', 0777, true);
+        }
+        $image = time() . "_" . basename($_FILES['image']['name']);
+        move_uploaded_file($_FILES['image']['tmp_name'], "../uploads/" . $image);
+    }
 
-if(!empty($_FILES['image']['name'])){
-    $image = time() . "_" . basename($_FILES['image']['name']);
-    $target = "../uploads/" . $image;
+    // Prepared statement to prevent SQL injection and errors
+    $stmt = $conn->prepare("INSERT INTO guides (user_id, destination_id, name, phone, language, experience_years, rating, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("iisssids", $user_id, $destination_id, $name, $phone, $language, $experience, $rating, $image);
 
-    move_uploaded_file($_FILES['image']['tmp_name'], $target);
-}
-
-   $sql = "INSERT INTO guides
-(destination_id, name, phone, language, experience_years, rating, image)
-VALUES
-('$destination_id', '$name', '$phone', '$language', '$experience', '$rating', '$image')";
-    if($conn->query($sql)){
+    if($stmt->execute()){
         header("Location: guides.php");
         exit();
+    } else {
+        echo "Error: " . $stmt->error;
     }
 }
+
 ?>
 
 <!DOCTYPE html>
