@@ -1,5 +1,6 @@
 <?php
-include 'config/db.php';
+
+include 'db.php'; 
 $dest_id = $_GET['destination_id'];
 
 // Get destination name for the header
@@ -7,27 +8,15 @@ $res = mysqli_query($conn, "SELECT name FROM destinations WHERE id = $dest_id");
 $dest = mysqli_fetch_assoc($res);
 ?>
 
-<form action="process_booking.php" method="POST" id="bookingForm">
-    <input type="hidden" name="destination_id" value="<?php echo $dest_id; ?>">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="lalibela.css">
+    </head>
+<body>
 
-    <label>Travel Date</label>
-    <input type="date" name="travel_date" id="travel_date" min="<?php echo date('Y-m-d'); ?>" required onchange="fetchAvailableGuides()">
-
-    <label>Travel Time</label>
-    <input type="time" name="travel_time" required>
-
-    <label>Number of People</label>
-    <input type="number" name="people_count" min="1" required>
-
-    <div id="guide_selection">
-        <label>Select Guide</label>
-        <select name="guide_id" id="guide_dropdown" required>
-            <option value="">Select Date First</option>
-        </select>
-    </div>
-
-    <button type="submit" class="btn-primary">Confirm Booking</button>
-</form>
 
 <script>
 function fetchAvailableGuides() {
@@ -51,3 +40,4 @@ function fetchAvailableGuides() {
         });
 }
 </script>
+</body></html>

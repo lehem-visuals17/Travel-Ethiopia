@@ -1,5 +1,5 @@
 -<?php
-include 'config/db.php';
+include 'db.php'; 
 $date = $_GET['date'];
 $dest_id = $_GET['dest_id'];
 

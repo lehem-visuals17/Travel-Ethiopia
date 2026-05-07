@@ -47,7 +47,15 @@ if (!empty($user_data['image'])) {
     </head>
 
     <body>
-        <div class="sidebar">
+        <div class="mobile-toggle" onclick="toggleSidebar()">
+    <i class="fas fa-bars"></i>
+</div>
+
+    <div class="sidebar" id="sidebar">
+    <!-- Close button for mobile -->
+     <div id="sidebarXBtn" class="mobile-close" onclick="toggleSidebar()">
+        <i class="fas fa-times"></i>
+    </div>
     <div class="profile-section">
         <img src="../assets/avatar.jpg" class="profile-img">
         <h3><?php echo $_SESSION['username']; ?></h3>
@@ -86,5 +94,13 @@ if (!empty($user_data['image'])) {
     </div>
 </div>
 
+<script>
+    function toggleSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    // Toggle the 'active' class to show/hide the sidebar on mobile
+    sidebar.classList.toggle("active");
+}
+
+</script>
     </body>
 </html>

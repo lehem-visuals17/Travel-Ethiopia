@@ -200,7 +200,7 @@ $count = mysqli_num_rows($result);
             </div>
             
             <!-- Link with the 'source=public' flag for the back button fix -->
-            <a href="admin/view_destination.php?id=<?php echo $row['id']; ?>&source=public" class="details-btn">
+            <a href="destination-details.php?id=<?php echo $row['id']; ?>&source=public" class="details-btn">
                 View Details
             </a> 
         </div>
