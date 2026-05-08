@@ -104,6 +104,32 @@ body {
 .logout-btn i {
     margin-right: 10px;
 }
+.logout-card {
+    border: 1px solid #eee;
+    background: #fff;
+    margin-top: 30px; /* Space it out from the other settings */
+    transition: 0.3s;
+}
+
+.logout-card:hover {
+    background: #f8f8f8;
+    border-color: #ddd;
+}
+
+.gray-bg {
+    background: #f0f0f0;
+    color: #555;
+}
+
+.text-dark {
+    color: #333;
+}
+
+/* Optional: Add a slight hover effect to the arrow */
+.logout-card:hover .arrow {
+    transform: translateX(5px);
+    color: #333;
+}
 
 
 /* Container for the whole page content */
@@ -272,3 +298,386 @@ body {
 .list-item:last-child {
     border-bottom: none;
 }
+
+
+
+/*booking**/
+.main-layout {
+    display: flex;
+    min-height: 100vh; /* Forces the page to be at least the full height of the screen */
+    width: 100%;
+}
+.content-area {
+     flex: 1; /* Makes this area take up all remaining horizontal space */
+    padding: 40px 50px; /* Added 40px to top and 50px to sides for breathing room */
+    background-color: #ffffff;
+    box-sizing: border-box; /* Ensures padding doesn't break the width */
+    overflow-y: auto; }
+    .page-header {
+    margin-top: 20px; /* Extra safety margin to prevent clipping */
+    margin-bottom: 30px;
+}
+.page-header h1 {   font-size: 28px;
+    font-weight: 700;
+    margin: 0;}
+.page-header p { color: #888; font-size: 14px; margin-bottom: 20px; }
+
+/* Tabs */
+.filter-tabs { display: flex; gap: 10px; margin-bottom: 30px; }
+.tab { 
+    text-decoration: none; padding: 8px 16px; border-radius: 20px;
+    background: #f4f4f4; color: #333; font-size: 13px; transition: 0.3s;
+}
+.tab.active { background: #000; color: #fff; }
+
+/* Table Styling */
+.booking-section {
+    width: 100%;
+    margin-top: 20px;
+}
+.booking-section h3 { font-size: 18px; margin-bottom: 5px; }
+.sub-text { color: #888; font-size: 13px; margin-bottom: 20px; }
+
+.bookings-table {  width: 100%;
+    border-collapse: collapse;
+    background: #fff; }
+.bookings-table th { text-align: left; padding: 12px; color: #555; font-size: 14px; border-bottom: 1px solid #eee; }
+.bookings-table td { padding: 15px 12px; font-size: 14px; border-bottom: 1px solid #f9f9f9; }
+
+/* Status Badges */
+.status-badge { padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 500; }
+.status-badge.pending { background: #fff8e1; color: #ffa000; }
+.status-badge.confirmed { background: #e3f2fd; color: #1976d2; }
+.status-badge.completed { background: #e8f5e9; color: #388e3c; }
+.status-badge.cancelled { background: #ffebee; color: #d32f2f; }
+
+/* Action Buttons */
+.action-btns { display: flex; align-items: center; gap: 15px; }
+.btn-check { color: #28a745; }
+.btn-cancel { color: #dc3545; }
+.btn-view { color: #555; }
+.btn-complete { 
+    background: #f4f4f4; border: 1px solid #ddd; padding: 5px 10px; 
+    border-radius: 4px; font-size: 12px; cursor: pointer;
+}
+
+
+/*My Tours*/
+.content-area { padding: 40px; background-color: #fcfcfc; }
+.page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
+.page-header h1 { font-size: 28px; margin: 0; }
+.page-header p { color: #888; margin: 5px 0 0; }
+
+/* Grid Layout */
+.tours-grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(450px, 1fr)); 
+    gap: 25px; 
+}
+
+/* Card Styling */
+.tour-card {
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    padding: 25px;
+    transition: transform 0.2s;
+}
+
+.card-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+.title-section h3 { margin: 0; font-size: 18px; }
+.title-section span { color: #888; font-size: 13px; }
+
+.category-tag { 
+    background: #f0f0f0; 
+    padding: 4px 10px; 
+    border-radius: 6px; 
+    font-size: 11px; 
+    font-weight: bold; 
+    text-transform: uppercase;
+}
+
+.description { color: #666; font-size: 14px; line-height: 1.5; margin: 15px 0; }
+
+.tour-meta { display: flex; gap: 20px; color: #444; font-weight: 500; font-size: 14px; margin-bottom: 20px; }
+.tour-meta i { color: #888; margin-right: 5px; }
+
+.assignment-info { border-top: 1px solid #f5f5f5; padding-top: 15px; margin-bottom: 15px; font-size: 12px; }
+
+/* Buttons */
+.card-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.btn-outline { 
+    text-align: center; 
+    text-decoration: none; 
+    padding: 10px; 
+    border: 1px solid #ddd; 
+    border-radius: 8px; 
+    color: #333; 
+    font-size: 14px; 
+    font-weight: 500; 
+}
+.btn-outline:hover { background: #f9f9f9; }
+
+
+
+/*reviews*/
+/* Layout & Spacing */
+.content-area { padding: 40px; background-color: #ffffff; }
+.page-header h1 { font-size: 26px; font-weight: 600; margin-bottom: 5px; }
+.page-header p { color: #888; font-size: 14px; margin-bottom: 30px; }
+
+.stats-row { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr; 
+    gap: 30px; 
+    margin-bottom: 40px; 
+}
+
+/* Rating Cards */
+.rating-card { 
+    border: 1px solid #e0e0e0; 
+    border-radius: 12px; 
+    padding: 30px; 
+    min-height: 200px;
+}
+
+.rating-card h3 { font-size: 18px; font-weight: 600; margin: 0; }
+.sub-text { color: #999; font-size: 13px; margin: 5px 0 20px 0; }
+
+.big-rating { font-size: 54px; font-weight: 700; margin-bottom: 5px; }
+.stars-orange { color: #FFB400; font-size: 20px; letter-spacing: 2px; }
+.review-count-text { display: block; color: #999; font-size: 13px; margin-top: 5px; }
+
+/* Progress Bars */
+.dist-item { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    margin-bottom: 12px; 
+    font-size: 13px; 
+    color: #444;
+}
+.star-label { min-width: 25px; display: flex; align-items: center; gap: 4px; }
+.star-label i { color: #FFB400; font-size: 10px; }
+
+.bar-bg { 
+    flex: 1; 
+    height: 6px; 
+    background: #e0e0e0; 
+    border-radius: 10px; 
+    overflow: hidden; 
+}
+.bar-fill { 
+    height: 100%; 
+    background: #000000; /* Black bars as per image */
+    border-radius: 10px; 
+}
+.count-label { min-width: 20px; text-align: right; color: #999; }
+
+/* Recent Reviews Section */
+.reviews-section { 
+    border: 1px solid #e0e0e0; 
+    border-radius: 12px; 
+    padding: 30px; 
+    margin-top: 20px;
+}
+
+.review-item { 
+    display: flex; 
+    gap: 20px; 
+    padding: 25px 0; 
+    border-bottom: 1px solid #f0f0f0; 
+}
+.review-item:last-child { border-bottom: none; }
+
+.rev-user-icon { 
+    width: 45px; 
+    height: 45px; 
+    background: #f0f0f0; 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    font-weight: 500; 
+    color: #555;
+    flex-shrink: 0;
+}
+
+.rev-content { flex: 1; }
+.rev-user-header { display: flex; justify-content: space-between; align-items: flex-start; }
+.user-info h4 { margin: 0; font-size: 16px; font-weight: 600; }
+.user-info span { color: #888; font-size: 13px; }
+
+.individual-stars { color: #FFB400; font-weight: 600; font-size: 14px; }
+.rev-text { color: #444; font-size: 14px; line-height: 1.6; margin: 15px 0; }
+
+.rev-footer-meta { color: #999; font-size: 12px; display: flex; gap: 15px; }
+
+
+/*profile*/
+/* General Layout */
+.content-area { padding: 40px; background-color: #fff; }
+.profile-card { border: 1px solid #eee; border-radius: 12px; padding: 30px; margin-bottom: 25px; }
+.profile-card h3 { font-size: 16px; margin: 0; font-weight: 700; }
+.sub-text { color: #888; font-size: 13px; margin: 5px 0 20px 0; }
+
+/* Photo Section */
+.photo-flex { display: flex; align-items: center; gap: 20px; }
+.current-avatar { 
+    width: 100px; height: 100px; border-radius: 50%; 
+    object-fit: cover; border: 3px solid #ffb347; 
+}
+.btn-upload { 
+    background: #fff; border: 1px solid #ff4b2b; padding: 10px 15px; 
+    border-radius: 8px; cursor: pointer; font-size: 14px; 
+    display: inline-block; color: #ff4b2b; font-weight: 600;
+}
+
+/* Information List Alignment (Label: Value) */
+.info-list-card { background-color: #fafafa; border-top: 4px solid #ffb347; }
+/* Container for the whole list */
+.detail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+/* This forces the Label and Value to stay on one line */
+.detail-item {
+    display: flex;
+    align-items: center; /* Vertical centering */
+    padding: 10px 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Fixed width for labels so the colons align perfectly */
+.detail-item .label {
+    min-width: 180px; 
+    color: #444;
+    font-weight: 700;
+    font-size: 14px;
+}
+
+/* Automatically adds the colon after the label */
+.detail-item .label::after {
+    content: " :";
+    color: #ff4b2b; /* Using your requested color for the colon */
+}
+
+/* The actual data value */
+.detail-item .value {
+    color: #111;
+    font-weight: 500;
+    font-size: 15px;
+    padding-left: 15px;
+}
+
+/* Add a gradient border to the card for style */
+.info-list-card {
+    border-left: 5px solid #ffb347;
+    background-color: #fafafa;
+    padding: 30px;
+    border-radius: 12px;
+}
+
+/* Buttons with Gradient #ffb347 -> #ff4b2b */
+.btn-save, .btn-primary { 
+    background: linear-gradient(to right, #ffb347, #ff4b2b);
+    color: #fff; border: none; padding: 12px 30px; 
+    border-radius: 8px; cursor: pointer; font-weight: 600; 
+    margin-top: 20px; transition: opacity 0.3s;
+}
+.btn-save:hover { opacity: 0.9; }
+
+/* Badge and Status */
+.badge-role {
+    background: linear-gradient(to right, #ffb347, #ff4b2b);
+    color: #fff !important;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 11px !important;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.status-active { color: #ff4b2b !important; font-weight: 700; }
+
+/* Info Box / Input Grid */
+.info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.input-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 8px; }
+.info-box { 
+    width: 100%; padding: 12px; background-color: #f9f9f9; 
+    border-left: 3px solid #ffb347; /* Adds a color accent to boxes */
+    border-radius: 4px; font-size: 14px; color: #333;
+    min-height: 40px; box-sizing: border-box;
+}
+
+hr { border: none; border-top: 1px solid #eee; margin: 15px 0; }
+
+
+/*settings*/
+.content-area { padding: 40px; background: #f9f9f9; }
+h1 { font-size: 24px; margin-bottom: 30px; color: #1a1a1a; }
+
+.settings-card {
+    background: #fff; border-radius: 12px; padding: 20px;
+    display: flex; align-items: center; gap: 20px;
+    margin-bottom: 15px; cursor: pointer; border: 1px solid #eee;
+    transition: 0.2s;
+}
+.settings-card:hover { border-color: #ffb347; }
+
+.icon-box {
+    width: 45px; height: 45px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center; font-size: 18px;
+}
+.blue-bg { background: #e3f2fd; color: #2196f3; }
+.green-bg { background: #e8f5e9; color: #4caf50; }
+.red-bg { background: #ffebee; color: #f44336; }
+
+.card-info { flex: 1; }
+.card-info h3 { margin: 0; font-size: 16px; font-weight: 600; }
+.card-info p { margin: 5px 0 0; font-size: 13px; color: #888; }
+.arrow { color: #ccc; font-size: 14px; }
+
+/* Forms */
+.hidden-form { display: none; padding: 20px; background: #fff; margin-bottom: 20px; border-radius: 12px; border: 1px dashed #ddd; }
+.hidden-form input { 
+    width: 100%; padding: 12px; margin-bottom: 10px; border: 1px solid #eee; 
+    border-radius: 8px; background: #fcfcfc; box-sizing: border-box;
+}
+.btn-gradient {
+    background: linear-gradient(to right, #ffb347, #ff4b2b);
+    color: #fff; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;
+}
+.text-red { color: #d32f2f; }
+.border-red { border-left: 4px solid #f44336 !important; }
+.text-red { color: #d32f2f; }
+.red-bg { background: #ffebee; color: #f44336; }
+
+.warning-box {
+    border: 1px dashed #f44336 !important;
+    background-color: #fff9f9 !important;
+}
+
+.warning-text {
+    font-size: 13px;
+    color: #d32f2f;
+    margin-bottom: 15px;
+    font-weight: 500;
+}
+
+.btn-danger {
+    background: #d32f2f;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.btn-danger:hover { background: #b71c1c; }

@@ -13,7 +13,7 @@ if (!isset($_SESSION['user_id'])) {
 $u_id = $_SESSION['user_id'];
 $current_page = basename($_SERVER['PHP_SELF']);
 
-// JOIN the users table (u) with the guides table (g) using users.id = guides.user_id
+// write the php+ the users table (u) with the guides table (g) using users.id = guides.user_id
 $query = "SELECT u.username, u.role, u.profile_pic, g.rating, g.image 
           FROM users u 
           LEFT JOIN guides g ON u.id = g.user_id 

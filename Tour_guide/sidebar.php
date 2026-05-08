@@ -90,7 +90,7 @@ if (!empty($user_data['image'])) {
     </nav>
 
     <div class="logout-section">
-        <a href="../logout.php" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        <a href="logout.php" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
 </div>
 
