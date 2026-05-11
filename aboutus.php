@@ -3,221 +3,132 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Discover Ethiopia</title>
-  
-  <link href="https://fonts.googleapis.com" rel="stylesheet">
+   <link href="https://googleapis.com" rel="stylesheet">
   <link rel="stylesheet" href="https://cloudflare.com">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-
-
-    
 <link rel="stylesheet" href="welcome.css">
-  <link rel="stylesheet" href="blog.css">
-    <script src="https://unpkg.com/lucide@latest"></script>
-
+    <link rel="stylesheet" href="cards.css">
+    <link rel="stylesheet" href="ai.css">
+   <link rel="stylesheet" href="aboutus.css">
+  
 </head>
 
 <body>
 
-  <nav id="navbar">
-    <div class="brand">
-      <div class="bt">BT</div>
-      <div class="logo-text">
-        <h1>Betora Travels</h1>
-        <h2>Feel History. Live Culture. Explore Nature</h2>
-      </div>
-    </div>
+<nav id="navbar">
+  <div class="brand">
+    <div class="bt">BT</div>
+    <div class="logo-text">
+      <h1>  Betora Travels</h1>
+    <h2>Feel History. Live Culture. Explore Nature</h2>
 
-    <div class="menu-toggle" id="mobile-menu-toggle">☰</div>
+    </div></div>
+    
 
-    <ul class="menu" id="menu-list">
-      <div class="menu-close" id="menu-close">&times;</div>
-   <li><a class="underline-text" href="index.php#Home">Home</a></li>
-    <li><a class="underline-text" href="destination.php">Destinations</a></li>
+
+  <div class="menu-toggle" id="mobile-menu-toggle">&#9776;</div>
+
+  <!-- ✅ Added ID here -->
+  <ul class="menu" id="menu-list">
+    <div class="menu-close" id="menu-close">&times;</div>
+    <li><a class="underline-text" href="index.php#Home">Home</a></li>
+    <li><a class="underline-text" href="destination.php#Destinations">Destinations</a></li>
     <li><a class="underline-text" href="trip.php#trip">Trip Planner</a></li>
     <li><a class="underline-text" href="bookings.php#Bookings">Bookings</a></li>
     <li><a class="underline-text" href="packages.php#packages">Packages</a></li>
     <li><a class="underline-text" href="experience.php#Experience">Experience</a></li>
-      <li><a class="underline-text" href="blog.php#Blog">Blog</a></li>
-      <li><a class="underline-text" href="deals.php#Deals">Deals</a></li>
-      <li><a class="underline-text" href="aboutus.php#About-Us">About Us</a></li>
-      <li><a class="underline-text" href="contactus.php#Contact">Contact</a></li>
-      
-      <!-- Moved into a list item for valid HTML -->
-      <li>
-        <div class="header-actions">
-          <i class="fa-solid fa-magnifying-glass search-icon"></i>
-          <div class="login-pill">
-            <i class="fa-regular fa-circle-user"></i>
-            <span>Login/Sign up</span>
-          </div>
-        </div>
-      </li>
-    </ul>
-  </nav>
-<body>
-  <div id="Blog">
-    <section class="blog-hero">
-  <div class="hero-content">
-    <h1>Travel Blog & Guides</h1>
-    <p>Travel tips, inspiration, and destination guides</p>
+    <li><a class="underline-text" href="blog.php#Blog">Blog</a></li>
+    <li><a class="underline-text" href="deals.php#Deals">Deals</a></li>
+    <li><a class="underline-text" href="aboutus.php#About-Us">About Us</a></li>
+    <li><a class="underline-text" href="contactus.php#Contact">Contact</a></li>
+   
+    <div class="header-actions">
+     <i class="fa-solid fa-magnifying-glass search-icon"></i>
+  <div class="login-pill">
+    <i class="fa-regular fa-circle-user"></i>
+   <span>Login/Sign up</span>
+  
   </div>
-</section>
-<?php
-// 1. Establish Database Connection
-$conn = new mysqli("localhost", "root", "", "travel_db");
-if ($conn->connect_error) { die("Connection failed: " . $conn->connect_error); }
+  </div>
+  </ul>
+  
+ 
+   
 
-// 2. Fetch only published posts from latest to oldest
-$sql = "SELECT * FROM blog_posts WHERE status = 'published' ORDER BY id DESC";
-$result = $conn->query($sql);
-?>
-
-<!-- Blog Section -->
-<section class="blog-grid-section">
-  <div class="container">
-    <div class="blog-grid">
-
-    <?php if ($result->num_rows > 0): ?>
-      <?php while($row = $result->fetch_assoc()): 
-        
-        // Split the stored image URL string into an array for the JS slider
-        $image_string = $row['slider_images'] ?? '';
-        if (!empty($image_string)) {
-            $images_array = array_map('trim', explode(',', $image_string));
-        } else {
-            // Fallback to cover image if no slider images are provided
-            $images_array = [$row['cover_image']];
-        }
-        
-        // Convert to safe JSON for the JavaScript inline onclick event
-        $js_images_json = htmlspecialchars(json_encode($images_array), ENT_QUOTES, 'UTF-8');
-        $clean_title = htmlspecialchars($row['title'], ENT_QUOTES);
-        
-        // Content might contain HTML tags or quotes, let's keep it safe
-        $clean_content = htmlspecialchars($row['content'], ENT_QUOTES);
-      ?>
-      
-      <!-- Dynamic Database Card -->
-      <div class="blog-card">
-        <img src="<?php echo htmlspecialchars($row['cover_image']); ?>" alt="<?php echo $clean_title; ?>">
-        <div class="card-content">
-          <span class="category"><?php echo htmlspecialchars($row['category']); ?></span>
-          <h3><?php echo htmlspecialchars($row['title']); ?></h3>
-          <p class="meta"><?php echo htmlspecialchars($row['author_name']); ?> • <?php echo htmlspecialchars($row['read_time']); ?></p>
-          <p class="description"><?php echo htmlspecialchars($row['summary']); ?></p>
-          
-          <!-- Dynamic Click Trigger passing JSON array and strings -->
-          <a href="#" class="read-more" onclick="event.preventDefault(); openArticle(<?php echo $js_images_json; ?>, '<?php echo $clean_title; ?>', '<?php echo $clean_content; ?>')">
-            Read More <span class="arrow">→</span>
-          </a>
+ 
+ 
+    
+</nav>
+<div id="About-Us">
+<section class="about-container">
+    <!-- Top Orange Section -->
+    <div class="orange-header">
+        <div class="content-wrapper">
+            <h1>About Us</h1>
+            <p>Your trusted partner in Ethiopian travel</p>
         </div>
-      </div>
+    </div>
 
-      <?php endwhile; ?>
-    <?php else: ?>
-      <p style="grid-column: 1 / -1; text-align: center; color: #666;">No articles found. Check back later!</p>
-    <?php endif; ?>
+    <!-- Cards Row -->
+    <div class="content-wrapper">
+        <div class="card-row">
+            
+            <!-- Card 1 -->
+            <div class="card">
+                <div class="icon-gradient target-icon">
+                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                </div>
+                <h3>Our Mission</h3>
+                <p>To showcase the beauty and culture of Ethiopia to the world</p>
+            </div>
 
+            <!-- Card 2 -->
+            <div class="card">
+                <div class="icon-gradient heart-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                </div>
+                <h3>Our Vision</h3>
+                <p>Making Ethiopia a top global travel destination</p>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="card">
+                <div class="icon-gradient team-icon">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                </div>
+                 <h3>Our Team</h3>
+                <p>Passionate travel experts and local guides</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<section class="story-section">
+  <div class="story-container">
+    <h2 class="gradient-title">Our Story</h2>
+    
+    <div class="story-content">
+      <p>
+        Explore Ethiopia was founded in 2020 with a mission to share the incredible beauty, 
+        rich history, and vibrant culture of Ethiopia with travelers from around the world. 
+        Our team of local experts and passionate travel professionals work together to 
+        create unforgettable experiences.
+      </p>
+      
+      <p>
+        From the ancient rock-hewn churches of Lalibela to the dramatic landscapes of the 
+        Simien Mountains, we specialize in authentic, sustainable tourism that benefits 
+        local communities while providing travelers with life-changing experiences.
+      </p>
     </div>
   </div>
 </section>
-
-
-<!-- PLACE THE MODAL OUTSIDE HERE -->
-<div id="articleModal" class="modal" style="display:none; position:fixed; z-index:1000; left:0; top:0; width:100%; height:100%; background:rgba(0,0,0,0.8);">
-  <div class="modal-content" style="background:#fff; margin:5% auto; padding:20px; width:80%; max-width:800px; border-radius:15px; position:relative;">
-    <span class="close-btn" onclick="closeArticle()" style="position:absolute; right:20px; top:10px; font-size:30px; cursor:pointer;">&times;</span>
-    <div id="modalBody"></div>
-  </div>
 </div>
 
-</div>
-<script>
-/**
- * THE ULTIMATE TRAVEL BLOG SCRIPT
- * Features: Infinite Cross-Fade Slider, Dynamic Article Loading, 
- * and Modal Control.
- */
 
-let slideInterval; // Global variable to manage the slider timer
-
-function openArticle(imgInput, title, content) {
-    const modal = document.getElementById("articleModal");
-    const body = document.getElementById("modalBody");
-    
-    // 1. Clear any previous slider timers to prevent glitches
-    clearInterval(slideInterval);
-    
-    let imageSection = '';
-
-    // 2. CHECK: If input is a list (Array), build the Fading Slider
-    if (Array.isArray(imgInput)) {
-        imageSection = `
-            <div class="modal-slider">
-                ${imgInput.map((url, index) => 
-                    `<img src="${url}" class="slider-img ${index === 0 ? 'active' : ''}">`
-                ).join('')}
-            </div>`;
-        
-        // Fading Logic: Switches the "active" class every 4 seconds
-        let currentSlide = 0;
-        slideInterval = setInterval(() => {
-            const imgs = document.querySelectorAll('.slider-img');
-            if (imgs.length > 0) {
-                // Fade out current image
-                imgs[currentSlide].classList.remove('active');
-                
-                // Move to next index (loops back to 0 at the end)
-                currentSlide = (currentSlide + 1) % imgs.length;
-                
-                // Fade in the new image
-                imgs[currentSlide].classList.add('active');
-            }
-        }, 4000); 
-    } else {
-        // 3. SINGLE IMAGE: If only one URL is provided, show a fixed banner
-        imageSection = `
-            <div class="modal-slider">
-                <img src="${imgInput}" class="slider-img active" style="position:relative; opacity:1;">
-            </div>`;
-    }
-
-    // 4. INJECT CONTENT: Combine the Image/Slider with the Article Text
-    body.innerHTML = `
-        ${imageSection}
-        <div class="article-container">
-            <h2 class="article-title">${title}</h2>
-            <div class="article-content">${content.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#039;/g, "'")}</div>
-        </div>`;
-    
-    // 5. SHOW MODAL: Use "block" to allow proper scrolling
-    modal.style.display = "block";
-    document.body.style.overflow = "hidden"; // Disable background scrolling
-}
-
-/**
- * CLOSING LOGIC
- */
-function closeArticle() {
-    const modal = document.getElementById("articleModal");
-    modal.style.display = "none";
-    document.body.style.overflow = "auto"; // Re-enable background scrolling
-    clearInterval(slideInterval); // Stop the slider when modal is closed
-}
-
-/**
- * CLICK OUTSIDE TO CLOSE
- */
-window.onclick = function(event) {
-    const modal = document.getElementById("articleModal");
-    if (event.target == modal) {
-        closeArticle();
-    }
-}
-
-
-</script>
 
 
 <footer class="footer">
@@ -345,6 +256,7 @@ window.onclick = function(event) {
   </div>
 </div>
 
+
 <script>lucide.createIcons();</script>
 
 
@@ -387,10 +299,11 @@ window.onclick = function(event) {
         menuList.classList.remove("active");
       }
     });
-  }});
+  }
+  });
+
 
   
-
 document.addEventListener("DOMContentLoaded", () => {
     // 1. SELECT ELEMENTS (One time only)
     const authModal = document.getElementById("auth-modal");
@@ -530,6 +443,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 
+
 </script>
 
 
@@ -545,5 +459,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
+
+
+ 
 </body>
 </html>
+

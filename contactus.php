@@ -8,10 +8,11 @@
    <link href="https://googleapis.com" rel="stylesheet">
   <link rel="stylesheet" href="https://cloudflare.com">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
-
+  <link rel="stylesheet" href="welcome.css">
   <link rel="stylesheet" href="cards.css">
   <link rel="stylesheet" href="ai.css">
-   <link rel="stylesheet" href="aboutus.css">
+
+   <link rel="stylesheet" href="contactus.css">
   
 </head>
 
@@ -33,16 +34,16 @@
   <!-- ✅ Added ID here -->
   <ul class="menu" id="menu-list">
     <div class="menu-close" id="menu-close">&times;</div>
-    <li><a class="underline-text" href="welcome.html#Home">Home</a></li>
-    <li><a class="underline-text" href="index.html#Destinations">Destinations</a></li>
-    <li><a class="underline-text" href="trip.html#trip">Trip Planner</a></li>
-    <li><a class="underline-text" href="booking.html#Bookings">Bookings</a></li>
-    <li><a class="underline-text" href="packages.html#packages">Packages</a></li>
-    <li><a class="underline-text" href="experience.html#Experience">Experience</a></li>
-    <li><a class="underline-text" href="blog.html#Blog">Blog</a></li>
-    <li><a class="underline-text" href="deals.html#Deals">Deals</a></li>
-    <li><a class="underline-text" href="aboutus.html#About-Us">About Us</a></li>
-    <li><a class="underline-text" href="contactus.html#Contact">Contact</a></li>
+    <li><a class="underline-text" href="index.php#Home">Home</a></li>
+    <li><a class="underline-text" href="destination.php">Destinations</a></li>
+    <li><a class="underline-text" href="trip.php#trip">Trip Planner</a></li>
+    <li><a class="underline-text" href="bookings.php#Bookings">Bookings</a></li>
+    <li><a class="underline-text" href="packages.php#packages">Packages</a></li>
+    <li><a class="underline-text" href="experience.php#Experience">Experience</a></li>
+    <li><a class="underline-text" href="blog.php#Blog">Blog</a></li>
+    <li><a class="underline-text" href="deals.php#Deals">Deals</a></li>
+    <li><a class="underline-text" href="aboutus.php#About-Us">About Us</a></li>
+    <li><a class="underline-text" href="contactus.php#Contact">Contact</a></li>
    
     <div class="header-actions">
      <i class="fa-solid fa-magnifying-glass search-icon"></i>
@@ -52,83 +53,72 @@
   
   </div>
   </div>
-  </ul>
-  
- 
-   
-
- 
- 
-    
+  </ul>   
 </nav>
-<div id="About-Us">
-<section class="about-container">
-    <!-- Top Orange Section -->
-    <div class="orange-header">
-        <div class="content-wrapper">
-            <h1>About Us</h1>
-            <p>Your trusted partner in Ethiopian travel</p>
+
+<script src="https://unpkg.com"></script>
+
+<section id="Contact" class="contact-section">
+  <div class="contact-header">
+    <div class="container">
+      <h1>Contact Us</h1>
+      <p>We're here to help plan your perfect trip</p>
+    </div>
+  </div>
+
+  <div class="container contact-grid">
+    <!-- Form Card -->
+    <div class="contact-form-card">
+      <h3>Send Us a Message</h3>
+      <form>
+        <div class="form-row">
+          <input type="text" placeholder="Your Name">
+          <input type="email" placeholder="Your Email">
         </div>
+        <input type="text" placeholder="Subject">
+        <textarea placeholder="Your Message" rows="4"></textarea>
+        <button type="submit" class="gradient-btn">Send Message</button>
+      </form>
     </div>
 
-    <!-- Cards Row -->
-    <div class="content-wrapper">
-        <div class="card-row">
-            
-            <!-- Card 1 -->
-            <div class="card">
-                <div class="icon-gradient target-icon">
-                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
-                </div>
-                <h3>Our Mission</h3>
-                <p>To showcase the beauty and culture of Ethiopia to the world</p>
-            </div>
-
-            <!-- Card 2 -->
-            <div class="card">
-                <div class="icon-gradient heart-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                </div>
-                <h3>Our Vision</h3>
-                <p>Making Ethiopia a top global travel destination</p>
-            </div>
-
-            <!-- Card 3 -->
-            <div class="card">
-                <div class="icon-gradient team-icon">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                </div>
-                 <h3>Our Team</h3>
-                <p>Passionate travel experts and local guides</p>
-            </div>
-
+    <!-- Info Card with Lucide Icons -->
+    <div class="contact-info-card">
+      <div class="info-item">
+        <i data-lucide="map-pin" class="contact-icon"></i>
+        <div>
+          <h4>Address</h4>
+          <p>Bole Road, Addis Ababa, Ethiopia</p>
         </div>
-    </div>
-</section>
-
-<section class="story-section">
-  <div class="story-container">
-    <h2 class="gradient-title">Our Story</h2>
-    
-    <div class="story-content">
-      <p>
-        Explore Ethiopia was founded in 2020 with a mission to share the incredible beauty, 
-        rich history, and vibrant culture of Ethiopia with travelers from around the world. 
-        Our team of local experts and passionate travel professionals work together to 
-        create unforgettable experiences.
-      </p>
-      
-      <p>
-        From the ancient rock-hewn churches of Lalibela to the dramatic landscapes of the 
-        Simien Mountains, we specialize in authentic, sustainable tourism that benefits 
-        local communities while providing travelers with life-changing experiences.
-      </p>
+      </div>
+      <div class="info-item">
+        <i data-lucide="phone" class="contact-icon"></i>
+        <div>
+          <h4>Phone</h4>
+          <p>+251 11 123 4567</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <i data-lucide="mail" class="contact-icon"></i>
+        <div>
+          <h4>Email</h4>
+          <p>info@exploreethiopia.com</p>
+        </div>
+      </div>
+      <div class="info-item">
+        <i data-lucide="message-square" class="contact-icon"></i>
+        <div>
+          <h4>Live Chat</h4>
+          <p>Available 24/7</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
-</div>
 
-
+<!-- Required to render the icons -->
+<script>
+  lucide.createIcons();
+</script>
 
 
 <footer class="footer">
@@ -213,7 +203,6 @@
   </div>
 </footer>
 
-
 <script>lucide.createIcons();</script>
 
 
@@ -257,9 +246,7 @@
       }
     });
   }
-  });
-
-
+});
 </script>
 
 
@@ -275,9 +262,5 @@
 
 
 
-
-
- 
 </body>
 </html>
-

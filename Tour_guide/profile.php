@@ -55,6 +55,7 @@ if (isset($_FILES['image']) && $_FILES['image']['error'] === 0) {
 }
 
 // --- 3. FETCH FULL GUIDE DATA ---
+// Fetch joined data including the language field
 $query = "SELECT u.*, g.experience_years, g.language, g.rating, g.image as guide_image, d.name as destination_name 
           FROM users u 
           LEFT JOIN guides g ON u.id = g.user_id 
@@ -64,6 +65,7 @@ $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $u_id);
 $stmt->execute();
 $guideData = $stmt->get_result()->fetch_assoc();
+
 
 // Determine Image Path
 $display_img = "../assets/default-avatar.png"; 
@@ -153,9 +155,15 @@ elseif (!empty($guideData['profile_pic'])) { $display_img = "../uploads/" . $gui
 
         <!-- Experience -->
         <div class="detail-item">
-            <span class="label">Years of Experience</span>
-            <span class="value"><?= $guideData['experience_years'] ?? '0' ?> Years</span>
-        </div>
+        <span class="label">Experience</span>
+        <!-- Accessing the joined column directly -->
+        <span class="value"><?= isset($guideData['experience_years']) ? $guideData['experience_years'] : '0' ?> Years</span>
+    </div>
+    <div class="detail-item">
+    <span class="label">Languages</span>
+    <span class="value"><?= htmlspecialchars($guideData['language'] ?? 'Not Set') ?></span>
+</div>
+
     </div>
 </div>
 

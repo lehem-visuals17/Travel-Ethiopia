@@ -681,3 +681,17 @@ h1 { font-size: 24px; margin-bottom: 30px; color: #1a1a1a; }
 }
 
 .btn-danger:hover { background: #b71c1c; }
+.input-group { margin-bottom: 15px; }
+.input-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #444;
+    text-align: left;
+}
+.hidden-form input { 
+    width: 100%; padding: 12px; border: 1px solid #ddd; 
+    border-radius: 8px; background: #fff; box-sizing: border-box;
+}
+

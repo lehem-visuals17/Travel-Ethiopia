@@ -1,55 +1,28 @@
 <?php
-// 1. Enable error reporting to see hidden PHP errors
-mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 session_start();
 include 'db.php';
 
-// Check if user is logged in
-if (!isset($_SESSION['user_id'])) {
-    // Redirect to login page if not logged in
-    header("Location: login.php?msg=Please login to book a trip");
-    exit();
-}
-$user_id = $_SESSION['user_id'];
-// 2. Validate the Connection (Crucial)
-if (!$conn) {
-    die("CRITICAL ERROR: Connection to database failed: " . mysqli_connect_error());
-}
+// We no longer redirect here. We just check if they ARE logged in for later use.
+$is_logged_in = isset($_SESSION['user_id']);
 
-// 3. Get and validate the ID from the URL
 $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
 if ($id > 0) {
-    // 4. Fetch destination details
-    $sql = "SELECT * FROM destinations WHERE id = $id";
-    $result = mysqli_query($conn, $sql);
+    $stmt = $conn->prepare("SELECT * FROM destinations WHERE id = ?");
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $row = $stmt->get_result()->fetch_assoc();
     
-    // Check if the query returned anything
-    if ($result && mysqli_num_rows($result) > 0) {
-        $row = mysqli_fetch_assoc($result);
-    } else {
-        // This runs if the ID exists in the URL but not in your database table
-        die("DATABASE ERROR: No destination found with ID: " . $id . ". Check your 'destinations' table in phpMyAdmin.");
-    }
+    if (!$row) { die("Destination not found."); }
 
-    // 5. Fetch guides for this specific destination
-    $guide_sql = "SELECT g.*, 
-             (SELECT status FROM guide_availability 
-              WHERE guide_id = g.id AND available_date = CURDATE() 
-              LIMIT 1) AS current_status
-             FROM guides g 
-             WHERE g.destination_id = $id";
-
-
+    $guide_sql = "SELECT g.*, (SELECT status FROM guide_availability WHERE guide_id = g.id AND available_date = CURDATE() LIMIT 1) AS current_status FROM guides g WHERE g.destination_id = $id";
     $guide_result = mysqli_query($conn, $guide_sql);
 } else {
-    // This runs if you visit the page without ?id=1 in the URL
-    die("URL ERROR: No valid ID detected. Please ensure your URL ends with ?id=1 (or another number).");
+    die("Invalid ID.");
 }
 ?>
+
+
 
 
 
@@ -72,7 +45,8 @@ if ($id > 0) {
 
 <section class="image-header">
     <div class="image-container">
-        <img src="images/<?php echo $row['image']; ?>" class="main-img" onclick="openModal()">
+        <img src="admin/uploads/<?php echo $row['image']; ?>" 
+        class="main-img" onclick="openModal()">
 
         <div class="top-icons">
             <span id="favorite" class="fa-regular fa-heart" onclick="toggleActive(this)"></span>
@@ -99,20 +73,20 @@ if ($id > 0) {
     <div class="gallery-container">
         <p><b>Gallery</b></p>
 
-        <div class="gallery-item active" onclick="changeImage(this,'images/<?php echo $row['image']; ?>')">
-            <img src="images/<?php echo $row['image']; ?>">
+        <div class="gallery-item active" onclick="changeImage(this,'admin/uploads/<?php echo $row['image']; ?>')">
+            <img src="admin/uploads/<?php echo $row['image']; ?>">
         </div>
 
-        <div class="gallery-item" onclick="changeImage(this,'images/<?php echo $row['image2']; ?>')">
-            <img src="images/<?php echo $row['image2']; ?>">
+        <div class="gallery-item" onclick="changeImage(this,'admin/uploads/<?php echo $row['image2']; ?>')">
+            <img src="admin/uploads/<?php echo $row['image2']; ?>">
         </div>
 
-        <div class="gallery-item" onclick="changeImage(this,'images/<?php echo $row['image3']; ?>')">
-            <img src="images/<?php echo $row['image3']; ?>">
+        <div class="gallery-item" onclick="changeImage(this,'admin/uploads/<?php echo $row['image3']; ?>')">
+            <img src="admin/uploads/<?php echo $row['image3']; ?>">
         </div>
 
-        <div class="gallery-item" onclick="changeImage(this,'images/<?php echo $row['image4']; ?>')">
-            <img src="images/<?php echo $row['image4']; ?>">
+        <div class="gallery-item" onclick="changeImage(this,'admin/uploads/<?php echo $row['image4']; ?>')">
+            <img src="admin/uploads/<?php echo $row['image4']; ?>">
         </div>
     </div>
 </section>
@@ -143,6 +117,53 @@ if ($id > 0) {
             </div>
         </div>
 
+
+       <div class="map-section" style="margin-top: 30px;">
+    <h3><i class="fa-solid fa-map-location-dot"></i> Location Map</h3>
+    <div class="map-container" style="border-radius: 12px; overflow: hidden; border: 1px solid #eee;">
+        <?php 
+            $map_source = $row['map_location'];
+            
+            // Check if it's already an iframe
+            if (strpos($map_source, '<iframe') !== false) {
+                echo $map_source; // Display the raw iframe if the admin pasted it
+            } else {
+                // If it's a URL, ensure it's a Google Embed URL. 
+                // If it's a standard URL, this might still be blank.
+                echo '<iframe src="'.$map_source.'" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>';
+            }
+        ?>
+    </div>
+</div>
+
+
+<div class="video-section" style="margin-top: 30px;">
+    <h3><i class="fa-solid fa-video"></i> Destination Video</h3>
+    <div class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 12px; background: #000;">
+        <?php 
+            $raw_url = $row['video_url'];
+            $video_id = "";
+
+            // Logic to extract Video ID from various YouTube link formats
+            if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $raw_url, $match)) {
+                $video_id = $match[1];
+            }
+
+            if (!empty($video_id)): 
+        ?>
+            <iframe 
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;"
+                src="https://youtube.com<?php echo $video_id; ?>" 
+                allowfullscreen>
+            </iframe>
+        <?php else: ?>
+            <p style="color: white; text-align: center; padding-top: 20%;">Invalid Video URL Provided</p>
+        <?php endif; ?>
+    </div>
+</div>
+
+
+
     </div>
 
     <div class="right-side">
@@ -154,12 +175,17 @@ if ($id > 0) {
 
             <p class="reviews"><?php echo $row['reviews']; ?> reviews</p>
 
-            <a href="booking.php?destination_id=<?php echo $row['id']; ?>">
-                <!-- Replace your existing <a> tag with this -->
-<button class="book-btn" onclick="openBookingModal(event)">Book Now</button>
+            <?php if ($is_logged_in): ?>
+    <!-- User is logged in: Open the modal normally -->
+    <button class="book-btn" onclick="openBookingModal(event)">Book Now</button>
+<?php else: ?>
+    <!-- User is a guest: Redirect to index.php with a trigger parameter -->
+   <a href="index.php?showLogin=true&redirect=destination_details.php?id=<?= $id ?>">
+    <button class="book-btn" style="background: #888;">Login to Book</button>
+</a>
 
+<?php endif; ?>
 
-            </a>
         </div>
 
         <div class="travel-cost-card">
@@ -367,15 +393,22 @@ if ($id > 0) {
 
 <script>
    function openBookingModal(event) {
-    // 1. Prevent the page from refreshing or navigating
-    if (event) event.preventDefault(); 
+    if (event) event.preventDefault();
     
-    // 2. Open the modal
+    // Check if the PHP variable $is_logged_in is true
+    var isLoggedIn = <?php echo $is_logged_in ? 'true' : 'false'; ?>;
+    
+    if (!isLoggedIn) {
+        window.location.href = "login.php?msg=Please login to book";
+        return;
+    }
+
     var modal = document.getElementById("bookingModal");
     if (modal) {
         modal.style.display = "block";
     }
 }
+
 
 
 function closeBookingModal() {

@@ -59,6 +59,9 @@ if (isset($_POST['username']) && !isset($_POST['fullname'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
             
+            $location = isset($_POST['redirect_to']) ? $_POST['redirect_to'] : 'index.php';
+    header("Location: " . $location);
+    exit();
             // --- DEBUGGING BLOCK ---
             $raw_role = $user['role']; 
             $clean_role = strtolower(trim($raw_role));
@@ -97,3 +100,13 @@ if (isset($_POST['username']) && !isset($_POST['fullname'])) {
 
 $conn->close();
 ?>
+<form id="login-form" action="login.php" method="POST">
+    <h2>Sign In</h2>
+    <!-- Hidden input to store where to go back to -->
+    <input type="hidden" name="redirect_to" value="<?= isset($_GET['redirect']) ? htmlspecialchars($_GET['redirect']) : 'index.php' ?>">
+    
+    <input type="text" name="username" placeholder="Username" required>
+    <input type="password" name="password" placeholder="Password" required>
+    <button type="submit" class="btn">Login</button>
+    <p>New here? <a href="#" id="go-to-signup">Create an account</a></p>
+</form>

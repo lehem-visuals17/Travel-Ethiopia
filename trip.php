@@ -31,16 +31,16 @@
   <!-- ✅ Added ID here -->
   <ul class="menu" id="menu-list">
     <div class="menu-close" id="menu-close">&times;</div>
-     <li><a class="underline-text" href="welcome.html#Home">Home</a></li>
-    <li><a class="underline-text" href="index.html#Destinations">Destinations</a></li>
-    <li><a class="underline-text" href="trip.html#trip">Trip Planner</a></li>
-    <li><a class="underline-text" href="booking.html#Bookings">Bookings</a></li>
-    <li><a class="underline-text" href="packages.html#packages">Packages</a></li>
-    <li><a class="underline-text" href="experience.html#Experience">Experience</a></li>
-    <li><a class="underline-text" href="blog.html#Blog">Blog</a></li>
-    <li><a class="underline-text" href="deals.html#Deals">Deals</a></li>
-    <li><a class="underline-text" href="aboutus.html#About-Us">About Us</a></li>
-    <li><a class="underline-text" href="contactus.html#Contact">Contact</a></li>
+     <li><a class="underline-text" href="index.php#Home">Home</a></li>
+    <li><a class="underline-text" href="destination.php">Destinations</a></li>
+    <li><a class="underline-text" href="trip.php#trip">Trip Planner</a></li>
+    <li><a class="underline-text" href="bookings.php#Bookings">Bookings</a></li>
+    <li><a class="underline-text" href="packages.php#packages">Packages</a></li>
+    <li><a class="underline-text" href="experience.php#Experience">Experience</a></li>
+    <li><a class="underline-text" href="blog.php#Blog">Blog</a></li>
+    <li><a class="underline-text" href="deals.php#Deals">Deals</a></li>
+    <li><a class="underline-text" href="aboutus.php#About-Us">About Us</a></li>
+    <li><a class="underline-text" href="contactus.php#Contact">Contact</a></li>
    
     <div class="header-actions">
      <i class="fa-solid fa-magnifying-glass search-icon"></i>
