@@ -38,7 +38,7 @@ $result = $conn->query("SELECT * FROM packages ORDER BY id DESC");
             <?php while($row = $result->fetch_assoc()): ?>
                 <div class="card">
                     <div style="height:180px; overflow:hidden;">
-                        <img src="../uploads/<?php echo htmlspecialchars($row['image']); ?>" style="width:100%; height:100%; object-fit:cover;">
+                        <img src="uploads/<?php echo htmlspecialchars($row['image']); ?>" style="width:100%; height:100%; object-fit:cover;">
                     </div>
                     <div class="card-content">
                         <div style="display:flex; justify-content:space-between; align-items:center;">

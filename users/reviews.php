@@ -321,9 +321,12 @@ if (isset($_POST['submit_review'])) {
             </div>
 
             <label>Rating</label>
-            <div class="star-rating-input">
-                <input type="number" name="rating" min="1" max="5" value="5" required> <span>/ 5 Stars</span>
-            </div>
+<div class="star-rating-input">
+    <!-- step="0.1" allows 4.1, 4.2, etc. -->
+    <input type="number" name="rating" min="1" max="5" step="0.1" value="5.0" required> 
+    <span>/ 5 Stars</span>
+</div>
+
 
             <label>Your Comment</label>
             <textarea name="comment" rows="4" placeholder="Write your feedback here..." required></textarea>

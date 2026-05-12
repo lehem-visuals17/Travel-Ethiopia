@@ -2,31 +2,66 @@
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 include('../db.php');
 
-$guide_id = $_SESSION['user_id'];
+// 1. SECURITY & ID MAPPING
+if (!isset($_SESSION['user_id'])) {
+    header("Location: ../login.php");
+    exit();
+}
 
-// 1. Fetch Overall Stats
-$stats = mysqli_fetch_assoc(mysqli_query($conn, "SELECT AVG(rating) as avg_rating, COUNT(*) as total_rev FROM reviews WHERE guide_id = '$guide_id'"));
+$u_id = $_SESSION['user_id'];
+
+// Get the actual Guide ID from the guides table using the logged-in User ID
+$guide_lookup = mysqli_query($conn, "SELECT id FROM guides WHERE user_id = '$u_id'");
+$guide_data = mysqli_fetch_assoc($guide_lookup);
+$guide_id = $guide_data['id'] ?? 0;
+
+// 2. STATS CALCULATIONS
+// Overall Rating & Total Reviews
+$stats_query = mysqli_query($conn, "SELECT AVG(rating) as avg_rating, COUNT(*) as total_rev FROM reviews WHERE guide_id = '$guide_id'");
+$stats = mysqli_fetch_assoc($stats_query);
 $avg_rating = number_format($stats['avg_rating'] ?? 0, 1);
 $total_reviews = $stats['total_rev'];
 
-// 2. Fetch Rating Distribution (5 star, 4 star, etc.)
+// Rating Distribution (1 to 5 stars)
 $distribution = [5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0];
-$dist_query = mysqli_query($conn, "SELECT rating, COUNT(*) as count FROM reviews WHERE guide_id = '$guide_id' GROUP BY rating");
+$dist_query = mysqli_query($conn, "SELECT FLOOR(rating) as star_level, COUNT(*) as count FROM reviews WHERE guide_id = '$guide_id' GROUP BY star_level");
 while($row = mysqli_fetch_assoc($dist_query)) {
-    $distribution[(int)$row['rating']] = $row['count'];
+    $level = (int)$row['star_level'];
+    if($level >= 1 && $level <= 5) {
+        $distribution[$level] = $row['count'];
+    }
 }
 
-// 3. Fetch Recent Reviews with User Details
-$reviews_query = "SELECT r.*, u.fullname, u.nationality 
-                  FROM reviews r 
-                  JOIN users u ON r.user_id = u.id 
-                  WHERE r.guide_id = ? 
-                  ORDER BY r.created_at DESC LIMIT 5";
+// 3. FETCH RECENT REVIEWS
+$reviews_query = "
+    SELECT r.*, u.fullname, u.nationality, u.profile_pic 
+    FROM reviews r 
+    JOIN users u ON r.user_id = u.id 
+    WHERE r.guide_id = ? 
+    ORDER BY r.created_at DESC";
+
 $stmt = $conn->prepare($reviews_query);
 $stmt->bind_param("i", $guide_id);
 $stmt->execute();
 $recent_reviews = $stmt->get_result();
+
+// 4. STAR RATING FUNCTION
+function renderStars($rating) {
+    $output = '';
+    for ($i = 1; $i <= 5; $i++) {
+        if ($rating >= $i) {
+            $output .= '<i class="fas fa-star" style="color: #ff9800;"></i>';
+        } elseif ($rating > ($i - 1) && $rating < $i) {
+            $output .= '<i class="fas fa-star-half-alt" style="color: #ff9800;"></i>';
+        } else {
+            $output .= '<i class="far fa-star" style="color: #ccc;"></i>';
+        }
+    }
+    return $output;
+}
 ?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,14 +78,17 @@ $recent_reviews = $stmt->get_result();
             <p>See what your clients say about you</p>
         </header>
 
+
         <div class="stats-row">
             <!-- Overall Rating Card -->
             <div class="rating-card overall">
                 <h3>Overall Rating</h3>
                 <p class="sub-text">Your average rating from all reviews</p>
                 <div class="big-rating"><?= $avg_rating ?></div>
-                <div class="stars">★★★★★</div>
-                <small><?= $total_reviews ?> reviews</small>
+                <div class="stars">
+                    <?= renderStars($avg_rating) ?>
+                </div>
+                <small style="display:block; margin-top:10px;"><?= $total_reviews ?> reviews in total</small>
             </div>
 
             <!-- Rating Distribution Card -->
@@ -62,9 +100,11 @@ $recent_reviews = $stmt->get_result();
                         $pct = ($total_reviews > 0) ? ($distribution[$i] / $total_reviews) * 100 : 0;
                     ?>
                     <div class="dist-item">
-                        <span><?= $i ?> ★</span>
-                        <div class="bar-bg"><div class="bar-fill" style="width: <?= $pct ?>%;"></div></div>
-                        <span><?= $distribution[$i] ?></span>
+                        <span style="width: 30px;"><?= $i ?> ★</span>
+                        <div class="bar-bg">
+                            <div class="bar-fill" style="width: <?= $pct ?>%;"></div>
+                        </div>
+                        <span style="width: 20px; text-align: right;"><?= $distribution[$i] ?></span>
                     </div>
                     <?php endfor; ?>
                 </div>

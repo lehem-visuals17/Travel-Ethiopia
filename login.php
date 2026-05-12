@@ -55,24 +55,21 @@ if (isset($_POST['username']) && !isset($_POST['fullname'])) {
 
     if ($user = $result->fetch_assoc()) {
         if (password_verify($password, $user['password'])) {
-            // Set Session Data
+            // 1. Set Session Data
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
             
-            $location = isset($_POST['redirect_to']) ? $_POST['redirect_to'] : 'index.php';
-    header("Location: " . $location);
-    exit();
-            // --- DEBUGGING BLOCK ---
             $raw_role = $user['role']; 
             $clean_role = strtolower(trim($raw_role));
-            
-            // IF THE LOGIN STILL FAILS: Remove the '//' from the line below and try to login again.
-            // die("DEBUG: DB says role is: [" . $raw_role . "] | Cleaned to: [" . $clean_role . "]");
-            // --- END DEBUGGING BLOCK ---
-
             $_SESSION['role'] = $clean_role;
 
-            // Strict Redirection Logic
+            // 2. Check for manual redirect first (only if provided and not the default)
+            if (isset($_POST['redirect_to']) && $_POST['redirect_to'] !== 'index.php') {
+                header("Location: " . $_POST['redirect_to']);
+                exit();
+            }
+
+            // 3. Strict Role-Based Redirection Logic
             if ($clean_role === 'admin') {
                 header("Location: admin/dashboard.php");
                 exit();
@@ -86,7 +83,7 @@ if (isset($_POST['username']) && !isset($_POST['fullname'])) {
                 exit();
             } 
             else {
-                header("Location: index.php?error=unknown_role&role_found=" . urlencode($clean_role));
+                header("Location: index.php");
                 exit();
             }
         } else {
@@ -97,6 +94,7 @@ if (isset($_POST['username']) && !isset($_POST['fullname'])) {
     }
     $stmt->close();
 }
+
 
 $conn->close();
 ?>

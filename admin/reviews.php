@@ -13,16 +13,20 @@ if(isset($_GET['delete'])){
 /* Fetch reviews */
 $reviews = $conn->query("
     SELECT 
-        reviews.*,
-        users.fullname,
-        destinations.name AS destination_name,
-        packages.title AS package_name
-    FROM reviews
-    LEFT JOIN users ON reviews.user_id = users.id
-    LEFT JOIN destinations ON reviews.destination_id = destinations.id
-    LEFT JOIN packages ON reviews.package_id = packages.id
-    ORDER BY reviews.created_at DESC
+        r.*,
+        u.fullname,
+        u.email,
+        d.name AS destination_name,
+        p.title AS package_name,
+        g.fullname AS guide_name
+    FROM reviews r
+    LEFT JOIN users u ON r.user_id = u.id
+    LEFT JOIN destinations d ON r.destination_id = d.id
+    LEFT JOIN packages p ON r.package_id = p.id
+    LEFT JOIN users g ON r.guide_id = g.id  -- Assumes guides are also in 'users' table
+    ORDER BY r.created_at DESC
 ");
+
 ?>
 
 <!DOCTYPE html>

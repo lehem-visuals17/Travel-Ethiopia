@@ -35,7 +35,7 @@ $result = $conn->query($query);
         <div class="dest-card">
 
             <div class="card-img-area">
-                <img src="../uploads/<?php echo htmlspecialchars($row['image']); ?>" alt="">
+                <img src="uploads/<?php echo htmlspecialchars($row['image']); ?>" alt="">
                 <span class="type-badge"><?php echo ucfirst($row['type']); ?></span>
             </div>
 

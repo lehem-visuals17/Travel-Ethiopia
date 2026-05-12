@@ -13,6 +13,8 @@ if (!isset($_SESSION['user_id'])) {
 $u_id = $_SESSION['user_id'];
 $current_page = basename($_SERVER['PHP_SELF']);
 
+
+
 // write the php+ the users table (u) with the guides table (g) using users.id = guides.user_id
 $query = "SELECT u.username, u.role, u.profile_pic, g.rating, g.image 
           FROM users u 
@@ -44,6 +46,16 @@ $earn = mysqli_fetch_assoc(mysqli_query($conn, "SELECT SUM(amount) as total FROM
 // 4. Review Count
 $rev_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FROM reviews WHERE guide_id='$guide_id'"));
 
+$recent_rev_query = "SELECT r.*, u.fullname 
+                     FROM reviews r 
+                     JOIN users u ON r.user_id = u.id 
+                     WHERE r.guide_id = ? 
+                     ORDER BY r.created_at DESC 
+                     LIMIT 2";
+$stmt_rev = $conn->prepare($recent_rev_query);
+$stmt_rev->bind_param("i", $guide_id);
+$stmt_rev->execute();
+$recent_reviews = $stmt_rev->get_result();
 ?>
 <!DOCTYPE html>
 <html>
@@ -95,12 +107,14 @@ $rev_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FR
 
     <!-- Card 4 -->
     <div class="stat-card">
-        <i class="fa-solid fa-star"></i>
-        <div class="card-label">Reviews</div>
-        <h2><?= $rev_count['total'] ?></h2>
-        <small>Total reviews received</small>
-    </div>
+    <i class="fa-solid fa-star"></i>
+    <div class="card-label">Reviews</div>
+    <h2><?= $rev_count['total'] ?></h2>
+    <small>Total reviews received</small>
 </div>
+</div>
+
+
 
 
         <!-- Lists Grid (Recent Bookings & Reviews) -->
@@ -110,9 +124,36 @@ $rev_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as total FR
                 <!-- Loop your recent bookings here as done before -->
             </div>
             <div class="data-box">
-                <h3>Recent Reviews</h3>
-                <!-- Loop your recent reviews here as done before -->
-            </div>
+    <h3>Recent Reviews</h3>
+    
+    <?php if ($recent_reviews && $recent_reviews->num_rows > 0): ?>
+        <div class="reviews-list">
+            <?php while($rev = $recent_reviews->fetch_assoc()): ?>
+                <div class="review-item" style="padding: 12px 0; border-bottom: 1px solid #eee;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-weight: 600; color: #333;">
+                            <?= htmlspecialchars($rev['fullname']) ?>
+                        </span>
+                        <span style="color: #ff9800; font-weight: bold;">
+                            <?= number_format($rev['rating'], 1) ?> ★
+                        </span>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #666; margin: 5px 0;">
+                        "<?= htmlspecialchars(strlen($rev['comment']) > 70 ? substr($rev['comment'], 0, 70) . '...' : $rev['comment']) ?>"
+                    </p>
+                    <small style="color: #999; font-size: 0.75rem;">
+                        <?= date('M d, Y', strtotime($rev['created_at'])) ?>
+                    </small>
+                </div>
+            <?php endwhile; ?>
+        </div>
+        <div style="margin-top: 15px;">
+            <a href="review.php" style="color: #ff9800; font-size: 0.85rem; text-decoration: none; font-weight: 600;">View All Reviews &rarr;</a>
+        </div>
+    <?php else: ?>
+        <p style="color: #888; font-size: 0.9rem; padding: 20px 0;">No reviews received yet.</p>
+    <?php endif; ?>
+</div>
         </div>
     </div>
 </div>

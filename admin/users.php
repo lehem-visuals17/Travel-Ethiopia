@@ -16,6 +16,67 @@ ORDER BY u.id DESC
 
 $result = $conn->query($query);
 $user_count = $result->num_rows;
+
+
+$limit = 5;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$offset = ($page - 1) * $limit;
+
+// Build Dynamic WHERE Clause
+$where_clauses = [];
+$params = [];
+$types = "";
+
+if (!empty($_GET['search_name'])) {
+    $where_clauses[] = "(fullname LIKE ? OR email LIKE ?)";
+    $search_val = "%" . $_GET['search_name'] . "%";
+    $params[] = $search_val; $params[] = $search_val;
+    $types .= "ss";
+}
+if (!empty($_GET['search_role'])) {
+    $where_clauses[] = "role = ?";
+    $params[] = $_GET['search_role'];
+    $types .= "s";
+}
+if (!empty($_GET['search_status'])) {
+    $where_clauses[] = "status = ?";
+    $params[] = $_GET['search_status'];
+    $types .= "s";
+}
+if (!empty($_GET['search_date'])) {
+    $where_clauses[] = "DATE(created_at) = ?";
+    $params[] = $_GET['search_date'];
+    $types .= "s";
+}
+
+$where_sql = count($where_clauses) > 0 ? "WHERE " . implode(" AND ", $where_clauses) : "";
+
+// Count Total for Pagination
+$count_stmt = $conn->prepare("SELECT COUNT(*) as total FROM users $where_sql");
+if (!empty($types)) $count_stmt->bind_param($types, ...$params);
+$count_stmt->execute();
+$total_users = $count_stmt->get_result()->fetch_assoc()['total'];
+$total_pages = ceil($total_users / $limit);
+
+$filters = $_GET;
+unset($filters['page']); // Remove old page so we can add the new one
+$query_string = http_build_query($filters);
+
+// Main Query with Pagination
+$query = "SELECT *, 
+          (SELECT COUNT(*) FROM bookings WHERE user_id = users.id) as bookings_count,
+          (SELECT SUM(amount) FROM payments WHERE user_id = users.id) as total_spent 
+          FROM users $where_sql 
+          ORDER BY created_at DESC LIMIT ?, ?";
+
+$stmt = $conn->prepare($query);
+$params[] = $offset; $params[] = $limit;
+$types .= "ii";
+$stmt->bind_param($types, ...$params);
+$stmt->execute();
+$result = $stmt->get_result();
+
+
 ?>
 
 <!DOCTYPE html>
@@ -28,7 +89,20 @@ $user_count = $result->num_rows;
     
     
     <!-- 1. DataTables CSS (Version 2.3.8) -->
-    <link rel="stylesheet" href="//cdn.datatables.net/2.3.8/css/dataTables.dataTables.min.css">
+   <!-- DataTables CSS -->
+<!-- DataTables 2.3.8 CSS -->
+<link rel="stylesheet" href="https://datatables.net">
+
+<style>
+    /* Custom styling to match your badges with DataTables */
+    .table-card { padding: 20px; background: #fff; border-radius: 8px; }
+    .role-badge, .status-badge { padding: 4px 8px; border-radius: 4px; font-size: 0.85em; }
+    .role-admin { background: #ffebee; color: #c62828; }
+    .role-customer { background: #e3f2fd; color: #1565c0; }
+    .role-tour_guide { background: #f0f8e8; color: #2e7d32; }
+    /* DataTables search box styling fix */
+    .dt-search input { border: 1px solid #ccc !important; border-radius: 4px; padding: 5px; }
+</style>
 
     <?php include "layout.php"; ?>
     
@@ -59,6 +133,41 @@ $user_count = $result->num_rows;
         <h3>All Users (<?php echo $user_count; ?>)</h3>
 
         <div class="table-scroll">
+           <form method="GET" class="filter-form">
+    <div class="filter-group">
+        <label>Name or Email</label>
+        <input type="text" name="search_name" placeholder="Search keyword..." value="<?= htmlspecialchars($_GET['search_name'] ?? '') ?>">
+    </div>
+    
+    <div class="filter-group">
+        <label>Role</label>
+        <select name="search_role">
+            <option value="">All Roles</option>
+            <option value="admin" <?= (($_GET['search_role'] ?? '') == 'admin') ? 'selected' : '' ?>>Admin</option>
+            <option value="customer" <?= (($_GET['search_role'] ?? '') == 'customer') ? 'selected' : '' ?>>Customer</option>
+            <option value="tour_guide" <?= (($_GET['search_role'] ?? '') == 'tour_guide') ? 'selected' : '' ?>>Tour Guide</option>
+        </select>
+    </div>
+
+    <div class="filter-group">
+        <label>Status</label>
+        <select name="search_status">
+            <option value="">All Status</option>
+            <option value="active" <?= (($_GET['search_status'] ?? '') == 'active') ? 'selected' : '' ?>>Active</option>
+            <option value="inactive" <?= (($_GET['search_status'] ?? '') == 'inactive') ? 'selected' : '' ?>>Inactive</option>
+        </select>
+    </div>
+
+    <div class="filter-group">
+        <label>Date Joined</label>
+        <input type="date" name="search_date" value="<?= htmlspecialchars($_GET['search_date'] ?? '') ?>">
+    </div>
+    
+    <button type="submit" class="btn-search">Filter</button>
+    <a href="?" class="btn-clear">Clear</a>
+</form>
+
+
             <!-- 2. Added id="usersTable" for DataTables initialization -->
             <table id="usersTable" class="display" style="width:100%">
                 <thead>
@@ -131,6 +240,29 @@ $user_count = $result->num_rows;
                 </tbody>
             </table>
         </div>
+
+    <div class="pagination-container">
+    
+    <!-- Previous Button -->
+    <?php if($page > 1): ?>
+        <a href="?<?php echo $query_string; ?>&page=<?php echo $page - 1; ?>" class="pagination-link">&laquo; Previous</a>
+    <?php else: ?>
+        <span class="pagination-disabled">&laquo; Previous</span>
+    <?php endif; ?>
+
+    <!-- Page Info -->
+    <span class="pagination-info">Page <strong><?php echo $page; ?></strong> of <?php echo $total_pages; ?></span>
+
+    <!-- Next Button -->
+    <?php if($page < $total_pages): ?>
+        <a href="?<?php echo $query_string; ?>&page=<?php echo $page + 1; ?>" class="pagination-link">Next &raquo;</a>
+    <?php else: ?>
+        <span class="pagination-disabled">Next &raquo;</span>
+    <?php endif; ?>
+
+</div>
+
+
     </div>
 </div>
 
@@ -190,24 +322,8 @@ $user_count = $result->num_rows;
     </div>
 </div>
 
-<!-- 3. jQuery and DataTables JS (Version 2.3.8) -->
-<script src="https://jquery.com"></script>
-<!-- 3. jQuery and DataTables JS (Corrected Links) -->
-
-<script src="https://datatables.net"></script>
-
-
 <script>
-$(document).ready(function() {
-    // 4. Initialize DataTables
-    $('#usersTable').DataTable({
-        "order": [[ 8, "desc" ]], // Sort by 'Created' column descending by default
-        "pageLength": 5,
-        "columnDefs": [
-            { "orderable": false, "targets": 9 } // Disable sorting on the "Actions" column
-        ]
-    });
-});
+
 
 // --- Your Existing Modal JS Functions ---
 function openPasswordModal(id){
@@ -251,6 +367,30 @@ function openEditModal(id, name, uname, userEmail, userPhone, userRole, userStat
 function closeModal(){
     document.getElementById("userModal").style.display = "none";
 }
+</script>
+
+<!-- 1. Load jQuery First -->
+<script src="https://jquery.com"></script>
+
+<!-- 2. Load DataTables JS -->
+<script src="https://datatables.net"></script>
+
+<!-- 3. Initialize with 5 rows per page -->
+<script>
+$(document).ready(function() {
+    if ($.fn.DataTable.isDataTable('#usersTable')) {
+        $('#usersTable').DataTable().destroy();
+    }
+
+    $('#usersTable').DataTable({
+        "pageLength": 5,
+        "lengthMenu": [5, 10, 25, 50],
+        "order": [[ 8, "desc" ]], // Sort by 'Created' column
+        "columnDefs": [
+            { "orderable": false, "targets": 9 } // Disable sorting on 'Actions'
+        ]
+    });
+});
 </script>
 
 </body>
