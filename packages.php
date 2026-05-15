@@ -5,6 +5,40 @@ if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
 
 // Fetch all packages
 $result = $conn->query("SELECT * FROM packages ORDER BY id DESC");
+
+
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
+include('db.php'); // Your connection file
+
+$msg = "";
+
+if (isset($_POST['confirm_booking'])) {
+    if (!isset($_SESSION['user_id'])) {
+        $msg = "<script>alert('Please login first to book a package!');</script>";
+    } else {
+        $u_id = $_SESSION['user_id'];
+        $pkg_id = $_POST['package_id'];
+        $guide_id = !empty($_POST['guide_id']) ? $_POST['guide_id'] : NULL;
+        $travel_date = $_POST['travel_date'];
+        $people_count = (int)$_POST['adults'] + (int)$_POST['children'];
+        $pay_status = ($_POST['payment_mode'] == 'now') ? 'paid' : 'unpaid';
+        $total = $_POST['total_price'];
+
+        $stmt = $conn->prepare("INSERT INTO bookings (user_id, package_id, guide_id, travel_date, people_count, status, payment_status, total_price) VALUES (?, ?, ?, ?, ?, 'pending', ?, ?)");
+        $stmt->bind_param("iiisiss", $u_id, $pkg_id, $guide_id, $travel_date, $people_count, $pay_status, $total);
+
+        if ($stmt->execute()) {
+            $msg = "<script>alert('Booking successful! Admin will review it shortly.'); window.location.href='packages.php';</script>";
+        } else {
+            $msg = "<script>alert('Error: " . $conn->error . "');</script>";
+        }
+    }
+}
+echo $msg;
+
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -231,6 +265,85 @@ $result = $conn->query("SELECT * FROM packages ORDER BY id DESC");
     <?php endif; ?>
   </div>
 </div>
+
+
+<!-- The Booking Form -->
+<form id="bookingForm" method="POST" class="booking-card" style="background:#fff; padding:20px; border-radius:10px; border:1px solid #ff9800;">
+    <!-- Values updated dynamically when user selects a package -->
+    <input type="hidden" name="package_id" id="form_pkg_id" value="1">
+    <input type="hidden" name="package_price" id="form_pkg_price" value="250">
+    <input type="hidden" name="total_price" id="form_total_price">
+
+    <h3>Book This Package</h3>
+    
+    <div style="margin-bottom:15px;">
+        <label>Travel Date</label>
+        <input type="date" name="travel_date" required style="width:100%; padding:8px;" min="<?= date('Y-m-d') ?>">
+    </div>
+
+    <div style="display:flex; gap:10px; margin-bottom:15px;">
+        <div>
+            <label>Adults</label>
+            <input type="number" name="adults" id="num_adults" value="1" min="1" onchange="calcPrice()" style="width:100%; padding:8px;">
+        </div>
+        <div>
+            <label>Children</label>
+            <input type="number" name="children" id="num_children" value="0" min="0" onchange="calcPrice()" style="width:100%; padding:8px;">
+        </div>
+    </div>
+
+    <div style="margin-bottom:15px;">
+        <label>Select Guide</label>
+        <select name="guide_id" id="guide_select" onchange="calcPrice()" style="width:100%; padding:8px;">
+            <option value="" data-fee="0">No Guide Needed</option>
+            <?php 
+            $guides = $conn->query("SELECT id, fullname FROM users WHERE role='tour_guide'");
+            while($g = $guides->fetch_assoc()) {
+                echo "<option value='{$g['id']}' data-fee='40'>{$g['fullname']} (+$40)</option>";
+            }
+            ?>
+        </select>
+    </div>
+
+    <div class="summary" style="background:#f9f9f9; padding:15px; border-radius:5px; margin-bottom:15px;">
+        <p>People: <span id="lbl_people">1</span></p>
+        <p>Guide Fee: $<span id="lbl_guide">0</span></p>
+        <h2 style="color:#ff9800;">Total: $<span id="lbl_total">0</span></h2>
+    </div>
+
+    <div style="margin-bottom:15px;">
+        <label style="display:block; margin-bottom:5px;">Payment</label>
+        <label><input type="radio" name="payment_mode" value="now" checked> Pay Now</label> &nbsp;
+        <label><input type="radio" name="payment_mode" value="later"> Pay Later</label>
+    </div>
+
+    <button type="submit" name="confirm_booking" style="background:#ff9800; color:#fff; border:none; padding:12px; width:100%; border-radius:5px; font-weight:bold; cursor:pointer;">Confirm Booking</button>
+</form>
+
+<script>
+function calcPrice() {
+    const base = parseFloat(document.getElementById('form_pkg_price').value);
+    const adults = parseInt(document.getElementById('num_adults').value) || 0;
+    const children = parseInt(document.getElementById('num_children').value) || 0;
+    const people = adults + children;
+    
+    // Get guide fee from the selected option's data attribute
+    const guideSelect = document.getElementById('guide_select');
+    const guideFee = parseFloat(guideSelect.options[guideSelect.selectedIndex].getAttribute('data-fee')) || 0;
+    
+    const total = (base * people) + guideFee;
+    
+    document.getElementById('lbl_people').innerText = people;
+    document.getElementById('lbl_guide').innerText = guideFee;
+    document.getElementById('lbl_total').innerText = total.toFixed(2);
+    document.getElementById('form_total_price').value = total.toFixed(2);
+}
+
+// Run once on load to set initial values
+window.onload = calcPrice;
+</script>
+
+
 
 <script>
   document.addEventListener("DOMContentLoaded", () => {

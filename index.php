@@ -13,14 +13,11 @@ if ($dest_result) {
 }
 
 // 2. Fetch Packages (Featured first, then Latest)
-$sql = "SELECT * FROM packages ORDER BY featured DESC, id DESC LIMIT 3";
-$pkg_result = $conn->query($sql);
 
-// Fallback if no packages exist at all
-if ($pkg_result && $pkg_result->num_rows == 0) {
-    $sql = "SELECT * FROM packages ORDER BY id DESC LIMIT 3";
-    $pkg_result = $conn->query($sql);
-}
+$result = $conn->query("SELECT * FROM packages WHERE featured = 1 ORDER BY id DESC LIMIT 3");
+
+
+
 
 // 3. Fetch Experiences
 $exp_query = "SELECT * FROM experiences WHERE status = 'Active' ORDER BY is_featured DESC, id DESC LIMIT 4";
@@ -42,6 +39,9 @@ $rev_result = $conn->query($rev_sql);
 
 $blog_sql = "SELECT * FROM blog_posts WHERE status = 'published' ORDER BY id DESC LIMIT 3";
 $blog_result = $conn->query($blog_sql);
+
+// Use this on index.php to only show packages the admin checked as "Featured"
+
 ?>
 
 
@@ -150,61 +150,7 @@ $blog_result = $conn->query($blog_sql);
       <h3>✦ Discover Ethiopia ✦</h3>
       <h2>Explore Ethioppia with <span>confidence</span></h2>
       <p>Discover ancient churches, stunning mountains, and rich culture in the<br> land of origins</p>
-      <div class="se-ca">
-        <div class="search-card">
-        <div class="input-row">
-          
-          <div class="input-group">
-            <label>Destination</label>
-            <div class="input-wrapper">
-              <i class="fa-solid fa-location-dot"></i>
-              <input type="text"  id="dest-input" placeholder="Where to?">
-            </div>
-          </div>
-
-          <div class="input-group">
-            <label>Travel Dates</label>
-            <div class="input-wrapper">
-              <i class="fa-solid fa-calendar-days"></i>
-              <input type="text" placeholder="mm/dd/yyyy" onfocus="(this.type='date')">
-            </div>
-          </div>
-          <div class="input-group">
-            <label>Budget Range</label>
-            <div class="input-wrapper">
-              <i class="fa-solid fa-dollar-sign"></i>
-              <select class="custom-select">
-                <option value="" disabled selected>Select Budget</option>
-                <option value="1">Budget ($50-100/day)</option>
-                <option value="2">Standard ($150-250/day)</option>
-                <option value="3">Luxury ($400+)</option>
-                
-              </select>
-            </div>
-          </div>
-          <div class="input-group">
-            <label>Travel Type</label>
-            <div class="input-wrapper">
-              <i class="fa-solid fa-compass"></i>
-              <select class="custom-select">
-                <option value="" disabled selected>Select Type</option>
-                <option value="1">Adventure</option>
-                <option value="2">Cultural</option>
-                <option value="3">Relaxation</option>
-                <option value="4">Family</option>
-                <option value="5">Solo Travel</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <button class="search-btn">
-          <i class="fa-solid fa-magnifying-glass"></i> Search Destinations
-        </button>
-        
-
-
-      </div>
+      
 
      
       
@@ -678,7 +624,7 @@ $result = mysqli_query($conn, $sql);
   </div>
 
   <div class="view-article-container">
-    <a href="all_blogs.php">
+    <a href="blog.php">
       <button class="view-article-btn">View All Articles</button>
     </a>
   </div>

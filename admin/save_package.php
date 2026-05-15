@@ -17,29 +17,37 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $badge_text = $_POST['badge_text'];
     $includes_list = $_POST['includes_list'];
 
-    // Handle File Upload if an image exists
-    $image_sql = "";
-    if (!empty($_FILES["image"]["name"])) {
-        $image = $_FILES['image']['name'];
-        move_uploaded_file($_FILES['image']['tmp_name'], "../uploads/" . $image);
-        $image_sql = ", image='$image'";
-    }
-
     if ($id == "") {
-        // INSERT MODE
-        $image = $_FILES['image']['name']; // Image is required here
+        // --- INSERT MODE ---
+        $image = $_FILES['image']['name'];
+        move_uploaded_file($_FILES['image']['tmp_name'], "uploads/" . $image);
+        
         $stmt = $conn->prepare("INSERT INTO packages (title, type, description, price, duration, rating, reviews_count, max_people, featured, badge_text, includes_list, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssssdiisss", $title, $type, $description, $price, $duration, $rating, $reviews_count, $max_people, $featured, $badge_text, $includes_list, $image);
+        // s = string, d = double, i = integer
+        $stmt->bind_param("sssdssdiisss", $title, $type, $description, $price, $duration, $rating, $reviews_count, $max_people, $featured, $badge_text, $includes_list, $image);
     } else {
-        // UPDATE MODE
-        $sql = "UPDATE packages SET title=?, type=?, description=?, price=?, duration=?, rating=?, reviews_count=?, max_people=?, featured=?, badge_text=?, includes_list=? $image_sql WHERE id=?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssssssdiissi", $title, $type, $description, $price, $duration, $rating, $reviews_count, $max_people, $featured, $badge_text, $includes_list, $id);
+        // --- UPDATE MODE ---
+        if (!empty($_FILES["image"]["name"])) {
+            // Update including NEW image
+            $image = $_FILES['image']['name'];
+            move_uploaded_file($_FILES['image']['tmp_name'], "uploads/" . $image);
+            
+            $sql = "UPDATE packages SET title=?, type=?, description=?, price=?, duration=?, rating=?, reviews_count=?, max_people=?, featured=?, badge_text=?, includes_list=?, image=? WHERE id=?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("sssdssdiisssi", $title, $type, $description, $price, $duration, $rating, $reviews_count, $max_people, $featured, $badge_text, $includes_list, $image, $id);
+        } else {
+            // Update KEEPING OLD image
+            $sql = "UPDATE packages SET title=?, type=?, description=?, price=?, duration=?, rating=?, reviews_count=?, max_people=?, featured=?, badge_text=?, includes_list=? WHERE id=?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("sssdssdiissi", $title, $type, $description, $price, $duration, $rating, $reviews_count, $max_people, $featured, $badge_text, $includes_list, $id);
+        }
     }
 
     if ($stmt->execute()) {
         header("Location: packages.php");
         exit();
+    } else {
+        echo "Error: " . $stmt->error;
     }
 }
 ?>

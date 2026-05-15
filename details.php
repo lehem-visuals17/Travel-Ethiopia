@@ -9,7 +9,7 @@
 </head>
 <body>
     <!-- Back Button -->
-<a href="packages.html" class="back-btn">
+<a href="packages.php" class="back-btn">
     <i class="fa-solid fa-arrow-left"></i> Back to Packages
 </a>
 
